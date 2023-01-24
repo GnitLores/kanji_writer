@@ -5,6 +5,14 @@
 
 <script setup>
 import { onMounted } from "vue";
+// import userData from "@/kanji-data/丈.json";
+// console.log(userData);
+
+// import { storage, kanjiCollection } from "@/includes/firebase";
+import { useStoreKanji } from "@/stores/storeKanji";
+
+const storeKanji = useStoreKanji();
+
 /**
  * Hanzi Writer v3.4.0 | https://chanind.github.io/hanzi-writer
  */
@@ -3224,12 +3232,20 @@ var HanziWriter = (function () {
   return HanziWriter;
 })();
 
-onMounted(() => {
-  HanziWriter.create("character-target-div", "我", {
-    width: 100,
-    height: 100,
-    padding: 5,
+const loadKanji = () => {
+  const char = "丈";
+
+  const userData = storeKanji.loadKanji(char);
+
+  HanziWriter.create("character-target-div", char, {
+    charDataLoader: function (char, onComplete) {
+      onComplete(userData);
+    },
   });
+};
+
+onMounted(() => {
+  loadKanji();
 });
 </script>
 
