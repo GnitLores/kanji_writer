@@ -1,10 +1,20 @@
 <template>
-  <div><p>Hej</p></div>
   <div id="character-target-div"></div>
+  <div>
+    <ul>
+      <li
+        v-for="kanji in kanjiList.list"
+        :key="kanji"
+        @click.prevent="startQuiz(kanji)"
+      >
+        <p>{{ kanji }}</p>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 // import userData from "@/kanji-data/丈.json";
 // console.log(userData);
 
@@ -3234,11 +3244,17 @@ var HanziWriter = (function () {
   return HanziWriter;
 })();
 
-const loadKanji = () => {
-  storeKanji.loadKanjiList();
-  // const char = "丈";
-  // const char = "睡";
-  const char = "斤";
+// const kanjis = ref([]);
+const kanjiList = reactive({
+  list: [],
+});
+
+const loadKanji = async () => {
+  kanjiList.list = await storeKanji.loadKanjiList();
+};
+
+const startQuiz = (char) => {
+  // const char = "斤";
 
   const userData = storeKanji.loadKanji(char);
 
@@ -3252,13 +3268,6 @@ const loadKanji = () => {
   });
   writer.quiz();
 };
-// var writer = HanziWriter.create("character-target-div", "测", {
-//   width: 150,
-//   height: 150,
-//   showCharacter: false,
-//   padding: 5,
-// });
-// writer.quiz();
 
 onMounted(() => {
   loadKanji();

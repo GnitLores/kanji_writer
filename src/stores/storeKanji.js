@@ -12,7 +12,11 @@ export const useStoreKanji = defineStore("storeKanji", {
     },
     async loadKanjiList(list = "kanken") {
       const docRef = doc(db, "lists", list);
+
       const docSnap = await getDoc(docRef);
+      // console.log(docSnap.data());
+      // const kanjiList = docSnap.data();
+      // console.log(docSnap.data());
       return docSnap.data().list;
     },
   },
