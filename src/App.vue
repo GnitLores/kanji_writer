@@ -715,7 +715,9 @@ var HanziWriter = (function () {
 
   const START_AND_END_DIST_THRESHOLD = 250; // bigger = more lenient
 
-  const FRECHET_THRESHOLD = 0.4; // bigger = more lenient
+  // TODO FRECHET_THRESHOLD seems to be the problem, setting it to 0.5 or 0.6 makes 斤 far more writable
+  // Default value was 0.4
+  const FRECHET_THRESHOLD = 0.6; // bigger = more lenient
 
   const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient
 
@@ -3233,16 +3235,29 @@ var HanziWriter = (function () {
 })();
 
 const loadKanji = () => {
-  const char = "丈";
+  // const char = "丈";
+  // const char = "睡";
+  const char = "斤";
 
   const userData = storeKanji.loadKanji(char);
 
-  HanziWriter.create("character-target-div", char, {
+  const writer = HanziWriter.create("character-target-div", char, {
     charDataLoader: function (char, onComplete) {
       onComplete(userData);
     },
+    showCharacter: false,
+    // showOutline: false,
+    showHintAfterMisses: 1,
   });
+  writer.quiz();
 };
+// var writer = HanziWriter.create("character-target-div", "测", {
+//   width: 150,
+//   height: 150,
+//   showCharacter: false,
+//   padding: 5,
+// });
+// writer.quiz();
 
 onMounted(() => {
   loadKanji();
