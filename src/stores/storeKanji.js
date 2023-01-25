@@ -10,5 +10,10 @@ export const useStoreKanji = defineStore("storeKanji", {
       const obj = JSON.parse(docSnap.data().data);
       return obj;
     },
+    async loadKanjiList(list = "kanken") {
+      const docRef = doc(db, "lists", list);
+      const docSnap = await getDoc(docRef);
+      return docSnap.data().list;
+    },
   },
 });

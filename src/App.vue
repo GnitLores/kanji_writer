@@ -3235,6 +3235,7 @@ var HanziWriter = (function () {
 })();
 
 const loadKanji = () => {
+  storeKanji.loadKanjiList();
   // const char = "丈";
   // const char = "睡";
   const char = "斤";
