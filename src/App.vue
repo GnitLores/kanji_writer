@@ -3,6 +3,7 @@
   <div>
     <ul>
       <li
+        class="text-sky-400"
         v-for="kanji in kanjiList.list"
         :key="kanji"
         @click.prevent="startQuiz(kanji)"
