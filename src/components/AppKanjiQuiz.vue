@@ -52,7 +52,13 @@ const emptyQuiz = () => {
   drawPlaceHolderLines();
 };
 
-const drawPlaceHolderLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0) => {
+const drawPlaceHolderLine = (
+  x1 = 0,
+  y1 = 0,
+  x2 = 0,
+  y2 = 0,
+  dashed = false
+) => {
   const quizBackground = document.getElementById("character-target-svg");
   var newLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
@@ -61,17 +67,23 @@ const drawPlaceHolderLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0) => {
   newLine.setAttribute("x2", x2);
   newLine.setAttribute("y2", y2);
   newLine.setAttribute("stroke", "#DDD");
-
+  if (dashed) {
+    newLine.setAttribute("stroke-dasharray", "5,5");
+  }
   quizBackground.append(newLine);
 };
 
 const drawPlaceHolderLines = () => {
   const dim = quizdim.value;
   const halfDim = dim / 2;
-  drawPlaceHolderLine(0, 0, dim, dim);
-  drawPlaceHolderLine(dim, 0, 0, dim);
-  drawPlaceHolderLine(halfDim, 0, halfDim, dim);
-  drawPlaceHolderLine(0, halfDim, dim, halfDim);
+  // drawPlaceHolderLine(0, 0, dim, dim, true);
+  // drawPlaceHolderLine(dim, 0, 0, dim, true);
+  drawPlaceHolderLine(halfDim, 0, halfDim, dim, true);
+  drawPlaceHolderLine(0, halfDim, dim, halfDim, true);
+  drawPlaceHolderLine(0, 0, 0, dim);
+  drawPlaceHolderLine(0, 0, dim, 0);
+  drawPlaceHolderLine(dim, 0, dim, dim);
+  drawPlaceHolderLine(0, dim, dim, dim);
 };
 
 onMounted(() => {
