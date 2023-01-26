@@ -1,7 +1,9 @@
 <template>
-  <div></div>
+  <AppKanjiGrid />
 </template>
 
-<script setup></script>
+<script setup>
+import AppKanjiGrid from "@/components/AppKanjiGrid.vue";
+</script>
 
 <style scoped></style>
