@@ -1,8 +1,16 @@
 <template>
-  <div>
+  <div class="bg-gray-900">
     <div id="character-target-div"></div>
-    <div>
-      <ul>
+    <div class="text-sky-400">
+      <div
+        v-for="kanji in kanjiList.list"
+        :key="kanji"
+        class="inline-block p-0.5"
+        @click.prevent="startQuiz(kanji)"
+      >
+        {{ kanji }}
+      </div>
+      <!-- <ul class="list-none">
         <li
           class="text-sky-400"
           v-for="kanji in kanjiList.list"
@@ -11,7 +19,7 @@
         >
           <p>{{ kanji }}</p>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>
