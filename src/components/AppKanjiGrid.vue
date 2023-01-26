@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-900">
     <div id="character-target-div"></div>
-    <div class="text-sky-400">
+    <div class="text-sky-400 p-1">
       <div
         v-for="kanji in kanjiList.list"
         :key="kanji"
@@ -10,16 +10,6 @@
       >
         {{ kanji }}
       </div>
-      <!-- <ul class="list-none">
-        <li
-          class="text-sky-400"
-          v-for="kanji in kanjiList.list"
-          :key="kanji"
-          @click.prevent="startQuiz(kanji)"
-        >
-          <p>{{ kanji }}</p>
-        </li>
-      </ul> -->
     </div>
   </div>
 </template>
@@ -30,7 +20,10 @@ import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
-const kanjiWriter = useKanjiWriter();
+const KanjiWriter = useKanjiWriter();
+let currentWriter = null;
+
+const quizFieldRef = ref(null);
 
 const kanjiList = reactive({
   list: [],
@@ -42,10 +35,11 @@ const loadKanji = async () => {
 
 const startQuiz = (char) => {
   // const char = "斤";
+  emptyQuiz();
 
   const userData = storeKanji.loadKanji(char);
 
-  const writer = kanjiWriter.create("character-target-div", char, {
+  currentWriter = KanjiWriter.create("character-target-div", char, {
     charDataLoader: function (char, onComplete) {
       onComplete(userData);
     },
@@ -53,7 +47,14 @@ const startQuiz = (char) => {
     // showOutline: false,
     showHintAfterMisses: 1,
   });
-  writer.quiz();
+  currentWriter.quiz();
+};
+
+const emptyQuiz = () => {
+  const div = document.querySelector("#character-target-div");
+  if (div) {
+    [].slice.call(div.children).forEach((child) => div.removeChild(child));
+  }
 };
 
 onMounted(() => {
