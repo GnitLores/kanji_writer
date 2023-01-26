@@ -1,14 +1,14 @@
 <template>
   <div class="bg-gray-900">
-    <div>
+    <div id="writer-div" class="mx-auto p-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         :width="quizdim"
         :height="quizdim"
         id="character-target-svg"
-        class="absolute m-50"
+        class="absolute"
       ></svg>
-      <div id="placeholder-div" style="min-height: 144px"></div>
+      <div id="placeholder-div"></div>
       <div id="character-target-div"></div>
     </div>
 
@@ -26,14 +26,15 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
 const KanjiWriter = useKanjiWriter();
 let currentWriter = null;
-const quizdim = ref(144);
+const quizdim = ref(200);
+const quizdimStyle = ref(quizdim.value + "px");
 
 const kanjiList = reactive({
   list: [],
@@ -108,6 +109,20 @@ onMounted(() => {
   loadKanji();
   drawPlaceHolderLines(quizdim.value);
 });
+
+const cssVars = computed(() => {
+  return {
+    "--quizdim": quizdim.value,
+  };
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+#writer-div {
+  max-width: v-bind(quizdimStyle);
+}
+
+#placeholder-div {
+  min-height: v-bind(quizdimStyle);
+}
+</style>
