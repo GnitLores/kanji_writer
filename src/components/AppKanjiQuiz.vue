@@ -6,9 +6,7 @@
         :width="quizdim"
         :height="quizdim"
         id="character-target-svg"
-        class="absolute"
       ></svg>
-      <div id="placeholder-div"></div>
       <div id="character-target-div"></div>
     </div>
   </div>
