@@ -23,8 +23,6 @@ const storeKanji = useStoreKanji();
 const KanjiWriter = useKanjiWriter();
 let currentWriter = null;
 
-const quizFieldRef = ref(null);
-
 const kanjiList = reactive({
   list: [],
 });
