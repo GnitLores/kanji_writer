@@ -7,6 +7,8 @@ export const useStoreQuiz = defineStore("storeQuiz", {
       title: "Kanji Writer",
       kanji: "",
       mistakes: 0,
+      currentStroke: 0,
+      status: {},
       quizSize: 200, // pixels
     };
   },
@@ -15,6 +17,8 @@ export const useStoreQuiz = defineStore("storeQuiz", {
       this.title = "Kanji Writer";
       this.kanji = "";
       this.mistakes = 0;
+      this.currentStroke = 0;
+      this.status = {};
     },
     startQuiz(kanji) {
       this.initQuiz();
@@ -26,8 +30,18 @@ export const useStoreQuiz = defineStore("storeQuiz", {
       this.kanji = kanji;
       this.title = "Learn";
     },
-    addMistake() {
+    addMistake(status) {
       this.mistakes += 1;
+      this.status = status;
     },
+    addStroke(status) {
+      this.currentStroke += 1;
+      this.status = status;
+    },
+  },
+  getters: {
+    strokesRemain: (state) =>
+      !(state.status && state.status.strokesRemaining == 0),
+    quizIsActive: (state) => state.kanji !== "",
   },
 });

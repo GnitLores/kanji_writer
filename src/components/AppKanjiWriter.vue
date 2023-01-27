@@ -19,6 +19,10 @@ const KanjiWriter = useKanjiWriter();
 let writer = null;
 const quizFieldRef = ref(null);
 
+const giveHint = () => {
+  if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
+};
+
 const startQuiz = (char, properties = {}, options = {}) => {
   // const char = "斤";
   emptyQuiz();
@@ -35,7 +39,12 @@ const startQuiz = (char, properties = {}, options = {}) => {
     leniency: 1.5,
     ...properties,
   });
-  writer.quiz(options);
+  writer.quiz({
+    onCorrectStroke: (status) => {
+      storeQuiz.addStroke(status);
+    },
+    ...options,
+  });
 };
 
 const emptyQuiz = () => {
@@ -80,7 +89,9 @@ onMounted(() => {
 });
 
 defineExpose({
+  writer,
   startQuiz,
+  giveHint,
 });
 </script>
 

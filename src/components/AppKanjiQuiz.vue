@@ -11,17 +11,20 @@
     <div class="flex justify-evenly mt-2">
       <button
         class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
-        :disabled="!storeQuiz.kanji"
+        :disabled="!storeQuiz.quizIsActive"
       >
         Type
       </button>
       <button
-        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14"
+        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
+        :disabled="!storeQuiz.quizIsActive || !storeQuiz.strokesRemain"
+        @click.prevent="giveHint"
       >
         Hint
       </button>
       <button
-        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14"
+        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
+        :disabled="!storeQuiz.quizIsActive"
       >
         Reset
       </button>
@@ -39,8 +42,12 @@ const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const writerRef = ref(null);
 
-const onMistake = () => {
-  storeQuiz.addMistake();
+const onMistake = (status) => {
+  storeQuiz.addMistake(status);
+};
+
+const giveHint = () => {
+  writerRef.value.giveHint();
 };
 
 const startQuiz = (kanji) => {
