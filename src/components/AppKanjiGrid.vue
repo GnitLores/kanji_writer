@@ -1,10 +1,11 @@
 <template>
   <div class="bg-gray-900">
-    <div class="text-sky-400 p-1">
+    <div class="p-1">
       <div
         v-for="kanji in kanjiList.list"
         :key="kanji"
         class="inline-block p-0.5"
+        :class="[kanji !== selectedChar ? 'text-sky-400' : 'text-orange-400']"
         @click.prevent="kanjiClickHandler(kanji)"
       >
         {{ kanji }}
@@ -19,6 +20,9 @@ import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
 
+let selectedChar = ref("");
+const orange = ref("sky");
+
 const kanjiList = reactive({
   list: [],
 });
@@ -30,6 +34,7 @@ const loadKanjiList = async () => {
 const emit = defineEmits(["kanji-clicked"]);
 
 const kanjiClickHandler = (kanji) => {
+  selectedChar.value = kanji;
   emit("kanji-clicked", kanji);
 };
 
