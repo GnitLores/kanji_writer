@@ -23,11 +23,10 @@ const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 
-const startQuiz = (char, properties = {}, options = {}) => {
-  // const char = "斤";
+const startQuiz = (properties = {}, options = {}) => {
   emptyQuiz();
 
-  writer = KanjiWriter.create(quizFieldRef.value, char, {
+  writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
     charDataLoader: function (char, onComplete) {
       onComplete(storeKanji.writingData);
     },
@@ -87,7 +86,6 @@ onMounted(() => {
 });
 
 defineExpose({
-  writer,
   startQuiz,
   giveHint,
 });

@@ -55,11 +55,12 @@ const reset = () => {
   startQuiz();
 };
 
-const startQuiz = async (kanji) => {
+const prepareQuiz = async (kanji) => {
   await storeKanji.loadKanji(kanji);
-  console.log(storeKanji.writingData);
   storeQuiz.startQuiz(kanji);
+};
 
+const startQuiz = () => {
   const properties = {
     showCharacter: false,
     showOutline: false,
@@ -70,10 +71,11 @@ const startQuiz = async (kanji) => {
     onMistake: onMistake,
   };
 
-  writerRef.value.startQuiz(kanji, properties, options);
+  writerRef.value.startQuiz(properties, options);
 };
 
 defineExpose({
+  prepareQuiz,
   startQuiz,
 });
 </script>

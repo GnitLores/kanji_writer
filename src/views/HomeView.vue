@@ -16,7 +16,8 @@ import AppKanjiGrid from "@/components/AppKanjiGrid.vue";
 const quizRef = ref(null);
 
 const startQuiz = (kanji) => {
-  quizRef.value.startQuiz(kanji);
+  quizRef.value.prepareQuiz(kanji);
+  quizRef.value.startQuiz();
 };
 </script>
 

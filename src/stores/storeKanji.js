@@ -9,10 +9,13 @@ export const useStoreKanji = defineStore("storeKanji", {
     };
   },
   actions: {
-    async loadKanji(char) {
+    loadKanji(char) {
+      this.writingData = this.loadKanjiFromDatabase(char);
+    },
+    async loadKanjiFromDatabase(char) {
       const docRef = doc(db, "kanji", char);
       const docSnap = await getDoc(docRef);
-      this.writingData = JSON.parse(docSnap.data().data);
+      return JSON.parse(docSnap.data().data);
     },
     async loadKanjiList(list = "kanken") {
       const docRef = doc(db, "lists", list);
