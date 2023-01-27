@@ -694,17 +694,18 @@ var HanziWriter = (function () {
     }
   }
 
-  const AVG_DIST_THRESHOLD = 350; // bigger = more lenient
+  //TODO The problem with drawing long vertical strokes as in 本 seems to depend most on AVG_DIST_THRESHOLD and START_AND_END_DIST_THRESHOLD. Setting them to 450 and 350 makes it easier. Might possibly also want to to make MIN_LEN_THRESHOLD more lenient to e.g 0.25.
+  // TODO The problem with small curved strokes like the first stroke in 斤 seems to be due to FRECHET_THRESHOLD. setting it to 0.5 or 0.6 makes 斤 far more writable
 
-  const COSINE_SIMILARITY_THRESHOLD = 0; // -1 to 1, smaller = more lenient
+  const AVG_DIST_THRESHOLD = 450; // bigger = more lenient (DEFAULT 350)
 
-  const START_AND_END_DIST_THRESHOLD = 250; // bigger = more lenient
+  const COSINE_SIMILARITY_THRESHOLD = 0; // -1 to 1, smaller = more lenient (DEFAULT 0)
 
-  // TODO FRECHET_THRESHOLD seems to be the problem, setting it to 0.5 or 0.6 makes 斤 far more writable
-  // Default value was 0.4
-  const FRECHET_THRESHOLD = 0.6; // bigger = more lenient
+  const START_AND_END_DIST_THRESHOLD = 350; // bigger = more lenient (DEFAULT 250)
 
-  const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient
+  const FRECHET_THRESHOLD = 0.6; // bigger = more lenient (DEFAULT 0.4)
+
+  const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient (DEFAULT 0.35)
 
   function strokeMatches(userStroke, character, strokeNum, options = {}) {
     const strokes = character.strokes;
