@@ -18,11 +18,18 @@ import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
-
 const KanjiWriter = useKanjiWriter();
-let currentWriter = null;
+let writer = null;
+
 const quizdim = ref(200);
 const quizdimStyle = ref(quizdim.value + "px");
+
+let mistakes = 0;
+
+const onMistake = () => {
+  mistakes += 1;
+  console.log(`Mistakes: ${mistakes}`);
+};
 
 const startQuiz = (char) => {
   // const char = "斤";
@@ -30,18 +37,21 @@ const startQuiz = (char) => {
 
   const writingData = storeKanji.loadKanji(char);
 
-  currentWriter = KanjiWriter.create("character-target-svg", char, {
+  writer = KanjiWriter.create("character-target-svg", char, {
     charDataLoader: function (char, onComplete) {
       onComplete(writingData);
     },
     showCharacter: false,
-    // showOutline: false,
+    showOutline: false,
     width: quizdim.value,
     height: quizdim.value,
-    showHintAfterMisses: 1,
+    showHintAfterMisses: 3,
     padding: 0,
   });
-  currentWriter.quiz();
+  const options = {
+    onMistake: onMistake,
+  };
+  writer.quiz(options);
 };
 
 const emptyQuiz = () => {
