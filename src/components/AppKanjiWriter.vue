@@ -26,11 +26,7 @@ let writer = null;
 const quizdim = ref(200);
 const quizdimStyle = ref(quizdim.value + "px");
 
-const onMistake = () => {
-  storeQuiz.addMistake();
-};
-
-const startQuiz = (char) => {
+const startQuiz = (char, properties = {}, options = {}) => {
   // const char = "斤";
   emptyQuiz();
 
@@ -40,17 +36,12 @@ const startQuiz = (char) => {
     charDataLoader: function (char, onComplete) {
       onComplete(writingData);
     },
-    showCharacter: false,
-    showOutline: false,
     width: quizdim.value,
     height: quizdim.value,
-    showHintAfterMisses: 3,
     padding: 0,
     leniency: 1.5,
+    ...properties,
   });
-  const options = {
-    onMistake: onMistake,
-  };
   writer.quiz(options);
 };
 

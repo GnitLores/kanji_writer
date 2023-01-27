@@ -12,8 +12,22 @@ const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const writerRef = ref(null);
 
+const onMistake = () => {
+  storeQuiz.addMistake();
+};
+
 const startQuiz = (kanji) => {
-  writerRef.value.startQuiz(kanji);
+  const properties = {
+    showCharacter: false,
+    showOutline: false,
+    showHintAfterMisses: 3,
+  };
+
+  const options = {
+    onMistake: onMistake,
+  };
+
+  writerRef.value.startQuiz(kanji, properties, options);
 };
 
 defineExpose({
