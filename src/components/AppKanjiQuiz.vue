@@ -28,11 +28,11 @@ const startQuiz = (char) => {
   // const char = "斤";
   emptyQuiz();
 
-  const userData = storeKanji.loadKanji(char);
+  const writingData = storeKanji.loadKanji(char);
 
   currentWriter = KanjiWriter.create("character-target-svg", char, {
     charDataLoader: function (char, onComplete) {
-      onComplete(userData);
+      onComplete(writingData);
     },
     showCharacter: false,
     // showOutline: false,
@@ -49,16 +49,10 @@ const emptyQuiz = () => {
   if (div) {
     [].slice.call(div.children).forEach((child) => div.removeChild(child));
   }
-  drawPlaceHolderLines();
+  drawQuizLines();
 };
 
-const drawPlaceHolderLine = (
-  x1 = 0,
-  y1 = 0,
-  x2 = 0,
-  y2 = 0,
-  dashed = false
-) => {
+const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
   const quizBackground = document.getElementById("character-target-svg");
   var newLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
@@ -73,21 +67,21 @@ const drawPlaceHolderLine = (
   quizBackground.append(newLine);
 };
 
-const drawPlaceHolderLines = () => {
+const drawQuizLines = () => {
   const dim = quizdim.value;
   const halfDim = dim / 2;
   // drawPlaceHolderLine(0, 0, dim, dim, true);
   // drawPlaceHolderLine(dim, 0, 0, dim, true);
-  drawPlaceHolderLine(halfDim, 0, halfDim, dim, true);
-  drawPlaceHolderLine(0, halfDim, dim, halfDim, true);
-  drawPlaceHolderLine(0, 0, 0, dim);
-  drawPlaceHolderLine(0, 0, dim, 0);
-  drawPlaceHolderLine(dim, 0, dim, dim);
-  drawPlaceHolderLine(0, dim, dim, dim);
+  drawQuizLine(halfDim, 0, halfDim, dim, true);
+  drawQuizLine(0, halfDim, dim, halfDim, true);
+  drawQuizLine(0, 0, 0, dim);
+  drawQuizLine(0, 0, dim, 0);
+  drawQuizLine(dim, 0, dim, dim);
+  drawQuizLine(0, dim, dim, dim);
 };
 
 onMounted(() => {
-  drawPlaceHolderLines(quizdim.value);
+  drawQuizLines(quizdim.value);
 });
 
 defineExpose({
