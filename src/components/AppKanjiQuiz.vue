@@ -1,5 +1,6 @@
 <template>
-  <div id="writer-div" class="mx-auto p-2">
+  <!-- <div id="writer-div" class="mx-auto p-2"> -->
+  <div class="p-2 inline-block">
     <AppKanjiWriter ref="writerRef" />
     <div class="m-1">
       <button
@@ -33,6 +34,7 @@ const onMistake = () => {
 };
 
 const startQuiz = (kanji) => {
+  // console.log(quizdimPx);
   const properties = {
     showCharacter: false,
     showOutline: false,
@@ -52,7 +54,7 @@ defineExpose({
 </script>
 
 <style scoped>
-#writer-div {
+/* #writer-div {
   max-width: v-bind(quizdimPx);
-}
+} */
 </style>
