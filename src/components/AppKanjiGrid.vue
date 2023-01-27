@@ -5,7 +5,9 @@
         v-for="kanji in kanjiList.list"
         :key="kanji"
         class="inline-block p-0.5"
-        :class="[kanji !== selectedChar ? 'text-sky-400' : 'text-orange-400']"
+        :class="[
+          kanji !== storeQuiz.kanji ? 'text-sky-400' : 'text-orange-400',
+        ]"
         @click.prevent="kanjiClickHandler(kanji)"
       >
         {{ kanji }}
@@ -17,11 +19,10 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
 import { useStoreKanji } from "@/stores/storeKanji";
+import { useStoreQuiz } from "@/stores/storeQuiz";
 
 const storeKanji = useStoreKanji();
-
-let selectedChar = ref("");
-const orange = ref("sky");
+const storeQuiz = useStoreQuiz();
 
 const kanjiList = reactive({
   list: [],
@@ -34,7 +35,7 @@ const loadKanjiList = async () => {
 const emit = defineEmits(["kanji-clicked"]);
 
 const kanjiClickHandler = (kanji) => {
-  selectedChar.value = kanji;
+  storeQuiz.startQuiz(kanji);
   emit("kanji-clicked", kanji);
 };
 
