@@ -46,6 +46,7 @@ const startQuiz = (char) => {
     height: quizdim.value,
     showHintAfterMisses: 3,
     padding: 0,
+    leniency: 1.5,
   });
   const options = {
     onMistake: onMistake,
