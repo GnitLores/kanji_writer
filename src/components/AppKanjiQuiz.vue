@@ -1,15 +1,27 @@
 <template>
-  <!-- <div id="writer-div" class="mx-auto p-2"> -->
   <div class="p-2 inline-block">
+    <div>
+      <h4
+        class="font-medium leading-tight text-center text-2xl mt-0 mb-2 text-sky-400"
+      >
+        {{ storeQuiz.title }}
+      </h4>
+    </div>
     <AppKanjiWriter ref="writerRef" />
-    <div class="m-1">
+    <div class="flex justify-evenly mt-2">
       <button
-        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded ml-2 w-20"
+        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
+        :disabled="!storeQuiz.kanji"
+      >
+        Type
+      </button>
+      <button
+        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14"
       >
         Hint
       </button>
       <button
-        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded ml-2 w-20"
+        class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14"
       >
         Reset
       </button>
@@ -27,14 +39,11 @@ const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const writerRef = ref(null);
 
-const quizdimPx = ref(storeQuiz.quizSize + "px");
-
 const onMistake = () => {
   storeQuiz.addMistake();
 };
 
 const startQuiz = (kanji) => {
-  // console.log(quizdimPx);
   const properties = {
     showCharacter: false,
     showOutline: false,
@@ -53,8 +62,4 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-/* #writer-div {
-  max-width: v-bind(quizdimPx);
-} */
-</style>
+<style scoped></style>

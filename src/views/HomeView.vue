@@ -2,8 +2,6 @@
   <div class="bg-gray-900">
     <div class="flex justify-evenly">
       <AppKanjiQuiz ref="quizRef" />
-      <AppKanjiQuiz ref="quizRef2" />
-      <AppKanjiQuiz ref="quizRef3" />
     </div>
 
     <AppKanjiGrid @kanji-clicked="startQuiz" />
