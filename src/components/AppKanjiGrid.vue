@@ -31,7 +31,6 @@ const loadKanjiList = async () => {
 const emit = defineEmits(["kanji-clicked"]);
 
 const kanjiClickHandler = (kanji) => {
-  storeQuiz.startQuiz(kanji);
   emit("kanji-clicked", kanji);
 };
 

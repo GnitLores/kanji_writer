@@ -20,13 +20,18 @@ export const useStoreQuiz = defineStore("storeQuiz", {
       this.currentStroke = 0;
       this.status = {};
     },
+    resetQuiz() {
+      this.mistakes = 0;
+      this.currentStroke = 0;
+      this.status = {};
+    },
     startQuiz(kanji) {
-      this.initQuiz();
+      this.resetQuiz();
       this.kanji = kanji;
       this.title = "Quiz";
     },
     startLearning(kanji) {
-      this.initQuiz();
+      this.resetQuiz();
       this.kanji = kanji;
       this.title = "Learn";
     },

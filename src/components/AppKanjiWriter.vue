@@ -27,11 +27,9 @@ const startQuiz = (char, properties = {}, options = {}) => {
   // const char = "斤";
   emptyQuiz();
 
-  const writingData = storeKanji.loadKanji(char);
-
   writer = KanjiWriter.create(quizFieldRef.value, char, {
     charDataLoader: function (char, onComplete) {
-      onComplete(writingData);
+      onComplete(storeKanji.writingData);
     },
     width: storeQuiz.quizSize,
     height: storeQuiz.quizSize,

@@ -25,6 +25,7 @@
       <button
         class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
         :disabled="!storeQuiz.quizIsActive"
+        @click.prevent="reset"
       >
         Reset
       </button>
@@ -50,7 +51,15 @@ const giveHint = () => {
   writerRef.value.giveHint();
 };
 
-const startQuiz = (kanji) => {
+const reset = () => {
+  startQuiz();
+};
+
+const startQuiz = async (kanji) => {
+  await storeKanji.loadKanji(kanji);
+  console.log(storeKanji.writingData);
+  storeQuiz.startQuiz(kanji);
+
   const properties = {
     showCharacter: false,
     showOutline: false,
