@@ -20,6 +20,7 @@ let writer = null;
 const quizFieldRef = ref(null);
 
 const giveHint = () => {
+  console.log(storeQuiz.currentStroke);
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 

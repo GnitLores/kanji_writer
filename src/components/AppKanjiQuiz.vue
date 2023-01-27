@@ -52,6 +52,7 @@ const giveHint = () => {
 };
 
 const reset = () => {
+  storeQuiz.resetQuiz();
   startQuiz();
 };
 
