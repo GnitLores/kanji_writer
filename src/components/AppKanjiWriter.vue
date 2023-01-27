@@ -1,15 +1,10 @@
 <template>
-  <div class="bg-gray-900">
-    <div id="writer-div" class="mx-auto p-2">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        :width="quizdim"
-        :height="quizdim"
-        id="character-target-svg"
-      ></svg>
-      <div id="character-target-div"></div>
-    </div>
-  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    :width="storeQuiz.quizSize"
+    :height="storeQuiz.quizSize"
+    ref="quizFieldRef"
+  ></svg>
 </template>
 
 <script setup>
@@ -22,9 +17,7 @@ const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const KanjiWriter = useKanjiWriter();
 let writer = null;
-
-const quizdim = ref(200);
-const quizdimStyle = ref(quizdim.value + "px");
+const quizFieldRef = ref(null);
 
 const startQuiz = (char, properties = {}, options = {}) => {
   // const char = "斤";
@@ -32,12 +25,12 @@ const startQuiz = (char, properties = {}, options = {}) => {
 
   const writingData = storeKanji.loadKanji(char);
 
-  writer = KanjiWriter.create("character-target-svg", char, {
+  writer = KanjiWriter.create(quizFieldRef.value, char, {
     charDataLoader: function (char, onComplete) {
       onComplete(writingData);
     },
-    width: quizdim.value,
-    height: quizdim.value,
+    width: storeQuiz.quizSize,
+    height: storeQuiz.quizSize,
     padding: 0,
     leniency: 1.5,
     ...properties,
@@ -46,15 +39,16 @@ const startQuiz = (char, properties = {}, options = {}) => {
 };
 
 const emptyQuiz = () => {
-  const div = document.querySelector("#character-target-svg");
-  if (div) {
-    [].slice.call(div.children).forEach((child) => div.removeChild(child));
+  if (quizFieldRef.value) {
+    [].slice
+      .call(quizFieldRef.value.children)
+      .forEach((child) => quizFieldRef.value.removeChild(child));
   }
   drawQuizLines();
 };
 
 const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
-  const quizBackground = document.getElementById("character-target-svg");
+  const quizBackground = quizFieldRef.value;
   var newLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
   newLine.setAttribute("x1", x1);
@@ -69,7 +63,7 @@ const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
 };
 
 const drawQuizLines = () => {
-  const dim = quizdim.value;
+  const dim = storeQuiz.quizSize;
   const halfDim = dim / 2;
   // drawPlaceHolderLine(0, 0, dim, dim, true);
   // drawPlaceHolderLine(dim, 0, 0, dim, true);
@@ -82,7 +76,7 @@ const drawQuizLines = () => {
 };
 
 onMounted(() => {
-  drawQuizLines(quizdim.value);
+  drawQuizLines(storeQuiz.quizSize);
 });
 
 defineExpose({
@@ -90,12 +84,4 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-#writer-div {
-  max-width: v-bind(quizdimStyle);
-}
-
-#placeholder-div {
-  min-height: v-bind(quizdimStyle);
-}
-</style>
+<style scoped></style>

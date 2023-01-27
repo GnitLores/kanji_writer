@@ -6,6 +6,7 @@ export const useStoreQuiz = defineStore("storeQuiz", {
     return {
       kanji: "",
       mistakes: 0,
+      quizSize: 200, // pixels
     };
   },
   actions: {

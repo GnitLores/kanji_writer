@@ -1,5 +1,19 @@
 <template>
-  <AppKanjiWriter ref="writerRef" />
+  <div id="writer-div" class="mx-auto p-2">
+    <AppKanjiWriter ref="writerRef" />
+    <div class="m-1">
+      <button
+        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded ml-2 w-20"
+      >
+        Hint
+      </button>
+      <button
+        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded ml-2 w-20"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -11,6 +25,8 @@ import AppKanjiWriter from "@/components/AppKanjiWriter.vue";
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const writerRef = ref(null);
+
+const quizdimPx = ref(storeQuiz.quizSize + "px");
 
 const onMistake = () => {
   storeQuiz.addMistake();
@@ -35,4 +51,8 @@ defineExpose({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+#writer-div {
+  max-width: v-bind(quizdimPx);
+}
+</style>
