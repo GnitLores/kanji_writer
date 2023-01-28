@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
@@ -17,6 +17,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
+// console.log(db);
 // const kanjiCollection = db.collection("kanji");
+const kanjiCollection = collection(db, "kanji");
 
-export { db, auth, storage };
+export { db, auth, storage, kanjiCollection };

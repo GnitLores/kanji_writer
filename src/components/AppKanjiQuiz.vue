@@ -26,7 +26,7 @@
       <button
         class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
         :disabled="!storeQuiz.quizIsActive"
-        @click.prevent="reset"
+        @click.prevent="startQuiz"
       >
         Reset
       </button>
@@ -35,94 +35,58 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
+import { storeToRefs } from "pinia";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 import AppKanjiWriter from "@/components/AppKanjiWriter.vue";
 
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
+const { kanjiData } = storeToRefs(storeKanji);
 const writerRef = ref(null);
 
 const changeQuizType = () => {
   storeQuiz.changeQuizType();
-  reset();
-};
-
-const onMistake = (status) => {
-  storeQuiz.addMistake(status);
+  startQuiz();
 };
 
 const giveHint = () => {
   writerRef.value.giveHint();
 };
 
-const reset = () => {
-  storeQuiz.resetQuiz();
+const startQuiz = () => {
+  storeQuiz.initQuiz(storeKanji.kanji);
   switch (storeQuiz.quizType) {
     case "Quiz":
-      startQuiz();
+      startNormalQuiz();
       break;
     case "Learn":
-      startLearn();
+      startLearningQuiz();
       break;
     case "Review":
-      startReview();
+      startReviewQuiz();
       break;
   }
 };
 
-const prepareQuiz = async (kanji) => {
-  await storeKanji.loadKanji(kanji);
-  storeQuiz.startQuiz(kanji);
+const startNormalQuiz = () => {
+  writerRef.value.startNormalQuiz();
 };
 
-const startQuiz = () => {
-  const properties = {
-    showCharacter: false,
-    showOutline: false,
-    showHintAfterMisses: 3,
-  };
-
-  const options = {
-    onMistake: onMistake,
-  };
-
-  writerRef.value.startQuiz(properties, options);
+const startLearningQuiz = () => {
+  writerRef.value.startLearningQuiz();
 };
 
-const startLearn = () => {
-  const properties = {
-    showCharacter: false,
-    showOutline: true,
-    showHintAfterMisses: 3,
-  };
-
-  const options = {
-    onMistake: onMistake,
-  };
-
-  writerRef.value.startQuiz(properties, options);
+const startReviewQuiz = () => {
+  writerRef.value.startReviewQuiz();
 };
 
-const startReview = () => {
-  const properties = {
-    showCharacter: false,
-    showOutline: false,
-    showHintAfterMisses: 1,
-  };
-
-  const options = {
-    onMistake: onMistake,
-  };
-
-  writerRef.value.startQuiz(properties, options);
-};
-
-defineExpose({
-  prepareQuiz,
-  startQuiz,
+watch(kanjiData, (newVal, oldVal) => {
+  startQuiz();
 });
+
+defineExpose({});
 </script>
 
 <style scoped></style>

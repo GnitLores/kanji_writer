@@ -21,10 +21,11 @@ export const useStoreQuiz = defineStore("storeQuiz", {
     //   this.currentStroke = 0;
     //   this.status = {};
     // },
-    resetQuiz() {
+    initQuiz(kanji) {
       this.mistakes = 0;
       this.currentStroke = 0;
       this.status = {};
+      this.kanji = kanji;
     },
     changeQuizType() {
       switch (this.quizType) {
@@ -38,16 +39,6 @@ export const useStoreQuiz = defineStore("storeQuiz", {
           this.quizType = "Quiz";
           break;
       }
-    },
-    startQuiz(kanji) {
-      this.resetQuiz();
-      this.kanji = kanji;
-      this.title = "Quiz";
-    },
-    startLearning(kanji) {
-      this.resetQuiz();
-      this.kanji = kanji;
-      this.title = "Learn";
     },
     addMistake(status) {
       this.mistakes += 1;

@@ -8,13 +8,15 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
+
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
+
 const KanjiWriter = useKanjiWriter();
 let writer = null;
 const quizFieldRef = ref(null);
@@ -23,10 +25,8 @@ const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 
-const startQuiz = (properties = {}, options = {}) => {
-  emptyQuiz();
-
-  writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
+const createWriter = (writerProps = {}) => {
+  const universalProperties = {
     charDataLoader: function (char, onComplete) {
       onComplete(storeKanji.writingData);
     },
@@ -34,23 +34,87 @@ const startQuiz = (properties = {}, options = {}) => {
     height: storeQuiz.quizSize,
     padding: 0,
     leniency: 1.5,
-    ...properties,
-  });
-  writer.quiz({
-    onCorrectStroke: (status) => {
-      storeQuiz.addStroke(status);
-    },
-    ...options,
+  };
+
+  writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
+    ...universalProperties,
+    ...writerProps,
   });
 };
 
-const emptyQuiz = () => {
+const activateWriterQuiz = (quizOptions = {}) => {
+  const universalOptions = {
+    onCorrectStroke: (status) => {
+      storeQuiz.addStroke(status);
+    },
+  };
+
+  writer.quiz({
+    ...universalOptions,
+    ...quizOptions,
+  });
+};
+
+const startNormalQuiz = () => {
+  const writerProps = {
+    showCharacter: false,
+    showOutline: false,
+    showHintAfterMisses: 3,
+  };
+
+  const quizOptions = {
+    onMistake: onMistake,
+  };
+
+  initQuizField();
+  createWriter(writerProps);
+  activateWriterQuiz(quizOptions);
+};
+
+const startLearningQuiz = () => {
+  const writerProps = {
+    showCharacter: false,
+    showOutline: true,
+    showHintAfterMisses: 3,
+  };
+
+  const quizOptions = {
+    onMistake: onMistake,
+  };
+
+  initQuizField();
+  createWriter(writerProps);
+  activateWriterQuiz(quizOptions);
+};
+
+const startReviewQuiz = () => {
+  const writerProps = {
+    showCharacter: false,
+    showOutline: false,
+    showHintAfterMisses: 1,
+  };
+
+  const quizOptions = {
+    onMistake: onMistake,
+  };
+
+  initQuizField();
+  createWriter(writerProps);
+  activateWriterQuiz(quizOptions);
+};
+
+const initQuizField = () => {
   if (quizFieldRef.value) {
     [].slice
       .call(quizFieldRef.value.children)
       .forEach((child) => quizFieldRef.value.removeChild(child));
   }
   drawQuizLines();
+};
+
+const onMistake = (status) => {
+  console.log(status);
+  storeQuiz.addMistake(status);
 };
 
 const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
@@ -82,11 +146,13 @@ const drawQuizLines = () => {
 };
 
 onMounted(() => {
-  drawQuizLines(storeQuiz.quizSize);
+  initQuizField();
 });
 
 defineExpose({
-  startQuiz,
+  startNormalQuiz,
+  startLearningQuiz,
+  startReviewQuiz,
   giveHint,
 });
 </script>

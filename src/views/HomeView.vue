@@ -4,7 +4,7 @@
       <AppKanjiQuiz ref="quizRef" />
     </div>
 
-    <AppKanjiGrid @kanji-clicked="startQuiz" />
+    <AppKanjiGrid />
   </div>
 </template>
 
@@ -14,11 +14,6 @@ import AppKanjiQuiz from "@/components/AppKanjiQuiz.vue";
 import AppKanjiGrid from "@/components/AppKanjiGrid.vue";
 
 const quizRef = ref(null);
-
-const startQuiz = (kanji) => {
-  quizRef.value.prepareQuiz(kanji);
-  quizRef.value.startQuiz();
-};
 </script>
 
 <style scoped></style>

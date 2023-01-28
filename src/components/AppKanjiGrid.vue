@@ -4,7 +4,7 @@
       v-for="kanji in kanjiList.list"
       :key="kanji"
       class="inline-block p-0.5 cursor-pointer hover:text-orange-400"
-      :class="[kanji !== storeQuiz.kanji ? 'text-sky-400' : 'text-orange-400']"
+      :class="[kanji !== storeKanji.kanji ? 'text-sky-400' : 'text-orange-400']"
       @click.prevent="kanjiClickHandler(kanji)"
     >
       {{ kanji }}
@@ -28,10 +28,8 @@ const loadKanjiList = async () => {
   kanjiList.list = await storeKanji.loadKanjiList();
 };
 
-const emit = defineEmits(["kanji-clicked"]);
-
 const kanjiClickHandler = (kanji) => {
-  emit("kanji-clicked", kanji);
+  storeKanji.loadKanji(kanji);
 };
 
 onMounted(() => {
