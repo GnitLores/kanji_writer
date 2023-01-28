@@ -59,28 +59,7 @@ const cancelQuiz = () => {
   if (!writer) return;
 
   writer.cancelQuiz();
-  removeEventListeners();
-};
-
-const removeEventListeners = () => {
-  quizFieldRef.value.removeEventListener(
-    "mousedown",
-    writer.target.eventMouseDown
-  );
-  quizFieldRef.value.removeEventListener(
-    "touchstart",
-    writer.target.eventTouchStart
-  );
-  quizFieldRef.value.removeEventListener(
-    "mousemove",
-    writer.target.eventMouseMove
-  );
-  quizFieldRef.value.removeEventListener(
-    "touchmove",
-    writer.target.eventTouchMove
-  );
-  document.removeEventListener("mouseup", writer.target.eventMouseUp);
-  document.removeEventListener("touchend", writer.target.eventTouchEnd);
+  writer.target.removeEventListeners();
 };
 
 const startNormalQuiz = () => {

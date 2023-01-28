@@ -2079,6 +2079,15 @@ export function useKanjiWriter() {
         document.addEventListener("touchend", this.eventTouchEnd);
       }
 
+      removeEventListeners = () => {
+        this.node.removeEventListener("mousedown", this.eventMouseDown);
+        this.node.removeEventListener("touchstart", this.eventTouchStart);
+        this.node.removeEventListener("mousemove", this.eventMouseMove);
+        this.node.removeEventListener("touchmove", this.eventTouchMove);
+        document.removeEventListener("mouseup", this.eventMouseUp);
+        document.removeEventListener("touchend", this.eventTouchEnd);
+      };
+
       getBoundingClientRect() {
         return this.node.getBoundingClientRect();
       }
