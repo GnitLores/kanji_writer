@@ -66,6 +66,7 @@ const startNormalQuiz = () => {
     onMistake: onMistake,
   };
 
+  if (writer) writer.cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
@@ -82,6 +83,7 @@ const startLearningQuiz = () => {
     onMistake: onMistake,
   };
 
+  if (writer) writer.cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
@@ -98,6 +100,7 @@ const startReviewQuiz = () => {
     onMistake: onMistake,
   };
 
+  if (writer) writer.cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
