@@ -55,6 +55,34 @@ const activateWriterQuiz = (quizOptions = {}) => {
   });
 };
 
+const cancelQuiz = () => {
+  if (!writer) return;
+
+  writer.cancelQuiz();
+  removeEventListeners();
+};
+
+const removeEventListeners = () => {
+  quizFieldRef.value.removeEventListener(
+    "mousedown",
+    writer.target.eventMouseDown
+  );
+  quizFieldRef.value.removeEventListener(
+    "touchstart",
+    writer.target.eventTouchStart
+  );
+  quizFieldRef.value.removeEventListener(
+    "mousemove",
+    writer.target.eventMouseMove
+  );
+  quizFieldRef.value.removeEventListener(
+    "touchmove",
+    writer.target.eventTouchMove
+  );
+  document.removeEventListener("mouseup", writer.target.eventMouseUp);
+  document.removeEventListener("touchend", writer.target.eventTouchEnd);
+};
+
 const startNormalQuiz = () => {
   const writerProps = {
     showCharacter: false,
@@ -66,7 +94,7 @@ const startNormalQuiz = () => {
     onMistake: onMistake,
   };
 
-  if (writer) writer.cancelQuiz();
+  cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
@@ -83,7 +111,7 @@ const startLearningQuiz = () => {
     onMistake: onMistake,
   };
 
-  if (writer) writer.cancelQuiz();
+  cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
@@ -100,7 +128,7 @@ const startReviewQuiz = () => {
     onMistake: onMistake,
   };
 
-  if (writer) writer.cancelQuiz();
+  cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);

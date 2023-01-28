@@ -2045,28 +2045,38 @@ export function useKanjiWriter() {
         this.node = node;
       }
 
+      // Created properties for the event handlers so that they can be removed when done with the writer.
       addPointerStartListener(callback) {
-        this.node.addEventListener("mousedown", (evt) => {
+        this.eventMouseDown = (evt) => {
           callback(this._eventify(evt, this._getMousePoint));
-        });
-        this.node.addEventListener("touchstart", (evt) => {
+        };
+        this.eventTouchStart = (evt) => {
           callback(this._eventify(evt, this._getTouchPoint));
-        });
+        };
+
+        this.node.addEventListener("mousedown", this.eventMouseDown);
+        this.node.addEventListener("touchstart", this.eventTouchStart);
       }
 
       addPointerMoveListener(callback) {
-        this.node.addEventListener("mousemove", (evt) => {
+        this.eventMouseMove = (evt) => {
           callback(this._eventify(evt, this._getMousePoint));
-        });
-        this.node.addEventListener("touchmove", (evt) => {
+        };
+        this.eventTouchMove = (evt) => {
           callback(this._eventify(evt, this._getTouchPoint));
-        });
+        };
+
+        this.node.addEventListener("mousemove", this.eventMouseMove);
+        this.node.addEventListener("touchmove", this.eventTouchMove);
       }
 
       addPointerEndListener(callback) {
+        this.eventMouseUp = callback;
+        this.eventTouchEnd = callback;
+
         // TODO: find a way to not need global listeners
-        document.addEventListener("mouseup", callback);
-        document.addEventListener("touchend", callback);
+        document.addEventListener("mouseup", this.eventMouseUp);
+        document.addEventListener("touchend", this.eventTouchEnd);
       }
 
       getBoundingClientRect() {
