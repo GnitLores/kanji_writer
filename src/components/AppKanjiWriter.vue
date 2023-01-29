@@ -48,6 +48,9 @@ const createWriter = (writerProps = {}) => {
     showOutline: false,
     showHintAfterMisses: 3,
     strokeHighlightSpeed: 1,
+    // strokeColor: "#38BDF8",
+    strokeColor: "#FFFFFF",
+    outlineColor: "#6B7280",
   };
 
   writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
