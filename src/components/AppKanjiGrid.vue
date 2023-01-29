@@ -3,7 +3,7 @@
     <div
       v-for="kanji in kanjiList.list"
       :key="kanji"
-      class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center"
+      class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
       :class="[
         kanji !== storeKanji.kanji
           ? 'text-sky-400 border-transparent'
