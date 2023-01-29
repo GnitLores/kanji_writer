@@ -14,13 +14,6 @@ export const useStoreQuiz = defineStore("storeQuiz", {
     };
   },
   actions: {
-    // initQuiz() {
-    //   this.title = "Kanji Writer";
-    //   this.kanji = "";
-    //   this.mistakes = 0;
-    //   this.currentStroke = 0;
-    //   this.status = {};
-    // },
     initQuiz(kanji) {
       this.mistakes = 0;
       this.currentStroke = 0;

@@ -125,6 +125,8 @@ onMounted(() => {
 defineExpose({
   startQuiz,
   giveHint,
+  markStrokeMistake,
+  markStrokeCorrect,
 });
 </script>
 

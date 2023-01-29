@@ -77,12 +77,14 @@ const startNormalQuiz = () => {
 
 const startLearningQuiz = () => {
   const writerProps = {
+    showHintAfterMisses: 1,
     showOutline: true,
   };
   const quizOptions = {
-    // onCorrectStroke: () => {
-    //   writerRef.value.giveHint();
-    // },
+    onCorrectStroke: (status) => {
+      writerRef.value.markStrokeCorrect(status);
+      setTimeout(writerRef.value.giveHint, 500);
+    },
   };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
