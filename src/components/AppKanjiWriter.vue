@@ -25,32 +25,44 @@ const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 
+const loadWritingData = (char, onComplete) => {
+  onComplete(storeKanji.writingData);
+};
+
+const markStrokeMistake = (status) => {
+  storeQuiz.addMistake(status);
+};
+
+const markStrokeCorrect = (status) => {
+  storeQuiz.addStroke(status);
+};
+
 const createWriter = (writerProps = {}) => {
-  const universalProperties = {
-    charDataLoader: function (char, onComplete) {
-      onComplete(storeKanji.writingData);
-    },
+  const defaultProperties = {
+    charDataLoader: loadWritingData,
     width: storeQuiz.quizSize,
     height: storeQuiz.quizSize,
     padding: 0,
     leniency: 1.5,
+    showCharacter: false,
+    showOutline: false,
+    showHintAfterMisses: 3,
   };
 
   writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
-    ...universalProperties,
+    ...defaultProperties,
     ...writerProps,
   });
 };
 
 const activateWriterQuiz = (quizOptions = {}) => {
-  const universalOptions = {
-    onCorrectStroke: (status) => {
-      storeQuiz.addStroke(status);
-    },
+  const defaultOptions = {
+    onCorrectStroke: markStrokeCorrect,
+    onMistake: markStrokeMistake,
   };
 
   writer.quiz({
-    ...universalOptions,
+    ...defaultOptions,
     ...quizOptions,
   });
 };

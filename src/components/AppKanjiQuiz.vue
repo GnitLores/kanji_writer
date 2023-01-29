@@ -51,14 +51,6 @@ const changeQuizType = () => {
   startQuiz();
 };
 
-const giveHint = () => {
-  writerRef.value.giveHint();
-};
-
-const onMistake = (status) => {
-  storeQuiz.addMistake(status);
-};
-
 const startQuiz = () => {
   storeQuiz.initQuiz(storeKanji.kanji);
   switch (storeQuiz.quizType) {
@@ -76,27 +68,21 @@ const startQuiz = () => {
 
 const startNormalQuiz = () => {
   const writerProps = {
-    showCharacter: false,
-    showOutline: false,
-    showHintAfterMisses: 3,
+    showHintAfterMisses: false,
   };
-
-  const quizOptions = {
-    onMistake: onMistake,
-  };
+  const quizOptions = {};
 
   writerRef.value.startQuiz(writerProps, quizOptions);
 };
 
 const startLearningQuiz = () => {
   const writerProps = {
-    showCharacter: false,
     showOutline: true,
-    showHintAfterMisses: 3,
   };
-
   const quizOptions = {
-    onMistake: onMistake,
+    // onCorrectStroke: () => {
+    //   writerRef.value.giveHint();
+    // },
   };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
@@ -104,14 +90,9 @@ const startLearningQuiz = () => {
 
 const startReviewQuiz = () => {
   const writerProps = {
-    showCharacter: false,
-    showOutline: false,
     showHintAfterMisses: 1,
   };
-
-  const quizOptions = {
-    onMistake: onMistake,
-  };
+  const quizOptions = {};
 
   writerRef.value.startQuiz(writerProps, quizOptions);
 };
