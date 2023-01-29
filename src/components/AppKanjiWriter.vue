@@ -62,51 +62,7 @@ const cancelQuiz = () => {
   writer.target.removeEventListeners();
 };
 
-const startNormalQuiz = () => {
-  const writerProps = {
-    showCharacter: false,
-    showOutline: false,
-    showHintAfterMisses: 3,
-  };
-
-  const quizOptions = {
-    onMistake: onMistake,
-  };
-
-  cancelQuiz();
-  initQuizField();
-  createWriter(writerProps);
-  activateWriterQuiz(quizOptions);
-};
-
-const startLearningQuiz = () => {
-  const writerProps = {
-    showCharacter: false,
-    showOutline: true,
-    showHintAfterMisses: 3,
-  };
-
-  const quizOptions = {
-    onMistake: onMistake,
-  };
-
-  cancelQuiz();
-  initQuizField();
-  createWriter(writerProps);
-  activateWriterQuiz(quizOptions);
-};
-
-const startReviewQuiz = () => {
-  const writerProps = {
-    showCharacter: false,
-    showOutline: false,
-    showHintAfterMisses: 1,
-  };
-
-  const quizOptions = {
-    onMistake: onMistake,
-  };
-
+const startQuiz = (writerProps, quizOptions) => {
   cancelQuiz();
   initQuizField();
   createWriter(writerProps);
@@ -120,11 +76,6 @@ const initQuizField = () => {
       .forEach((child) => quizFieldRef.value.removeChild(child));
   }
   drawQuizLines();
-};
-
-const onMistake = (status) => {
-  console.log(status);
-  storeQuiz.addMistake(status);
 };
 
 const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
@@ -160,9 +111,7 @@ onMounted(() => {
 });
 
 defineExpose({
-  startNormalQuiz,
-  startLearningQuiz,
-  startReviewQuiz,
+  startQuiz,
   giveHint,
 });
 </script>
