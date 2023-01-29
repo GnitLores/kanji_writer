@@ -46,6 +46,8 @@ const storeQuiz = useStoreQuiz();
 const { kanjiData } = storeToRefs(storeKanji);
 const writerRef = ref(null);
 
+const hintDelay = 500; // ms
+
 const changeQuizType = () => {
   storeQuiz.changeQuizType();
   startQuiz();
@@ -83,21 +85,27 @@ const startLearningQuiz = () => {
   const quizOptions = {
     onCorrectStroke: (status) => {
       writerRef.value.markStrokeCorrect(status);
-      setTimeout(writerRef.value.giveHint, 500);
+      setTimeout(writerRef.value.giveHint, hintDelay);
     },
   };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
-  setTimeout(writerRef.value.giveHint, 500);
+  setTimeout(writerRef.value.giveHint, hintDelay);
 };
 
 const startReviewQuiz = () => {
   const writerProps = {
     showHintAfterMisses: 1,
   };
-  const quizOptions = {};
+  const quizOptions = {
+    onCorrectStroke: (status) => {
+      writerRef.value.markStrokeCorrect(status);
+      setTimeout(writerRef.value.giveHint, hintDelay);
+    },
+  };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
+  setTimeout(writerRef.value.giveHint, hintDelay);
 };
 
 watch(kanjiData, (newVal, oldVal) => {
