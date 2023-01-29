@@ -47,6 +47,7 @@ const createWriter = (writerProps = {}) => {
     showCharacter: false,
     showOutline: false,
     showHintAfterMisses: 3,
+    strokeHighlightSpeed: 1,
   };
 
   writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {

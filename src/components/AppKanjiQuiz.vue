@@ -19,7 +19,7 @@
       <button
         class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
         :disabled="!storeQuiz.quizIsActive || !storeQuiz.strokesRemain"
-        @click.prevent="giveHint"
+        @click.prevent="writerRef.giveHint"
       >
         Hint
       </button>
@@ -88,6 +88,7 @@ const startLearningQuiz = () => {
   };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
+  setTimeout(writerRef.value.giveHint, 500);
 };
 
 const startReviewQuiz = () => {
