@@ -5,9 +5,17 @@ import { db, kanjiCollection } from "@/includes/firebase";
 export const useStoreKanji = defineStore("storeKanji", {
   state: () => {
     return {
+      // Selected kanji data:
       kanjiData: {},
       kanji: "",
       writingData: {},
+      // Kanji list data:
+      kanjiList: [],
+      sortingName: "",
+      nrOfLevels: 0,
+      levelNames: [],
+      levelIndices: [],
+      displayList: [],
     };
   },
   actions: {
@@ -19,11 +27,19 @@ export const useStoreKanji = defineStore("storeKanji", {
       this.writingData = JSON.parse(loadedData.data);
       this.kanjiData = loadedData;
     },
-    async loadKanjiList(list = "kanken") {
-      const docRef = doc(db, "lists", list);
-
+    async loadKanjiList() {
+      const docRef = doc(db, "lists", "kanji");
       const docSnap = await getDoc(docRef);
-      return docSnap.data().list;
+      this.kanjiList = docSnap.data().list;
+      this.displayList = this.kanjiList;
+    },
+    async loadSortingList(listName = "kanken") {
+      const docRef = doc(db, "lists", listName);
+      const docSnap = await getDoc(docRef);
+      this.sortingName = listName;
+      this.nrOfLevels = docSnap.data().nrOfLevels;
+      this.levelNames = docSnap.data().levelNames;
+      this.levelIndices = docSnap.data().levelList;
     },
   },
 });

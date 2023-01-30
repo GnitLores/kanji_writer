@@ -1,7 +1,7 @@
 <template>
   <div class="p-1">
     <div
-      v-for="kanji in kanjiList.list"
+      v-for="kanji in storeKanji.displayList"
       :key="kanji"
       class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
       :class="[
@@ -19,17 +19,11 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
 import { useStoreKanji } from "@/stores/storeKanji";
-import { useStoreQuiz } from "@/stores/storeQuiz";
 
 const storeKanji = useStoreKanji();
-const storeQuiz = useStoreQuiz();
-
-const kanjiList = reactive({
-  list: [],
-});
 
 const loadKanjiList = async () => {
-  kanjiList.list = await storeKanji.loadKanjiList();
+  await storeKanji.loadKanjiList();
 };
 
 const kanjiClickHandler = (kanji) => {
