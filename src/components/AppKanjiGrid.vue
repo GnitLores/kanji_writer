@@ -11,7 +11,7 @@
         />
       </div>
     </div>
-    <div v-for="levelList in storeKanji.displayList">
+    <div v-for="levelList in storeKanji.displayList" :key="levelList.name">
       <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
         {{ levelList.name }}:
       </h3>
