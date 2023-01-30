@@ -1,17 +1,23 @@
 <template>
   <div class="p-1">
-    <div
-      v-for="kanji in storeKanji.displayList"
-      :key="kanji"
-      class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
-      :class="[
-        kanji !== storeKanji.kanji
-          ? 'text-sky-400 border-transparent'
-          : 'text-orange-400 border-orange-400',
-      ]"
-      @click.prevent="kanjiClickHandler(kanji)"
-    >
-      {{ kanji }}
+    <div v-for="levelList in storeKanji.displayList">
+      <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
+        {{ levelList.name }}:
+      </h3>
+      <div
+        v-for="kanji in levelList.kanji"
+        :key="kanji"
+        class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        :class="[
+          kanji !== storeKanji.kanji
+            ? 'text-sky-400 border-transparent'
+            : 'text-orange-400 border-orange-400',
+        ]"
+        @click.prevent="kanjiClickHandler(kanji)"
+      >
+        {{ kanji }}
+      </div>
+      <br />
     </div>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <div class="p-2 inline-block">
     <div>
       <h4
-        class="font-medium leading-tight text-center text-2xl mt-0 mb-2 text-sky-400"
+        class="font-medium leading-tight text-center text-2xl mt-0 mb-2 text-sky-200"
       >
         {{ storeQuiz.quizType }}
       </h4>
