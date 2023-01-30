@@ -50,6 +50,7 @@ const createWriter = (writerProps = {}) => {
     strokeHighlightSpeed: 1,
     // strokeColor: "#38BDF8",
     strokeColor: "#FFFFFF",
+    highlightColor: "#FFFFFF",
     outlineColor: "#6B7280",
     drawingColor: "#38BDF8",
   };
