@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1">
+  <div class="p-1 select-none">
     <div class="flex ml-4">
       <p class="text-sky-200 mr-4">Display:</p>
       <div v-for="level in storeKanji.levelNames" :key="level">
@@ -42,7 +42,6 @@
       >
         {{ kanji }}
       </div>
-      <br />
     </div>
   </div>
 </template>

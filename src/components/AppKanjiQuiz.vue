@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 inline-block">
+  <div class="p-2 inline-block select-none">
     <div>
       <h4
         class="font-medium leading-tight text-center text-2xl mt-0 mb-2 text-sky-200"
