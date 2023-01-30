@@ -81,7 +81,6 @@ const startLearningQuiz = () => {
   const writerProps = {
     showHintAfterMisses: 1,
     showOutline: true,
-    highlightColor: "#FB923C",
   };
   const quizOptions = {
     onCorrectStroke: (status) => {
