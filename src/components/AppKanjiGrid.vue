@@ -1,5 +1,16 @@
 <template>
   <div class="p-1">
+    <div class="flex">
+      <div class="grow"></div>
+      <div class="inline-block mx-8">
+        <label class="text-sky-200">Show levels: </label>
+        <input
+          type="checkbox"
+          @change="storeKanji.setDisplayList"
+          v-model="storeKanji.doDisplayLevels"
+        />
+      </div>
+    </div>
     <div v-for="levelList in storeKanji.displayList">
       <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
         {{ levelList.name }}:

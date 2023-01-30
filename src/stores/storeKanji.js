@@ -16,8 +16,10 @@ export const useStoreKanji = defineStore("storeKanji", {
       levelNames: [],
       levelIndices: [],
       kanjiByLevel: [],
-      displayLevel: -1, // -1: display all levels, -2: display all kanji without levels, -3: display no kanji
+      displayLevels: [],
       displayList: [],
+      // Kanji display options:
+      doDisplayLevels: true,
     };
   },
   actions: {
@@ -50,8 +52,10 @@ export const useStoreKanji = defineStore("storeKanji", {
     sortKanjiByLevel() {
       // Initialize list of level objects:
       this.kanjiByLevel = [];
+      this.displayLevels = [];
       this.levelNames.forEach((name) => {
         this.kanjiByLevel.push({ name, kanji: [] });
+        this.displayLevels.push(true);
       });
 
       // Assign kanji to level objects:
@@ -59,20 +63,18 @@ export const useStoreKanji = defineStore("storeKanji", {
         this.kanjiByLevel[levelIdx].kanji.push(this.kanjiList[KanjiIdx]);
       });
     },
-    setDisplayList(displayLevel = -1) {
-      if (displayLevel === -1) {
-        this.displayList = this.kanjiByLevel; // -1: display all levels
-        return;
-      }
-      if (displayLevel === -2) {
-        this.displayList = [{ name: "All levels", kanji: this.kanjiList }]; // -2: display all kanji without levels
-        return;
-      }
-      if (displayLevel === -3) {
-        this.displayList = []; // -3: display no kanji
-        return;
-      }
-      this.displayList = this.kanjiByLevel[displayLevel];
+    setDisplayList() {
+      const selectedLevels = [];
+      this.displayLevels.forEach((doDisplay, index) => {
+        if (this.doDisplayLevels) {
+          if (doDisplay) selectedLevels.push(this.kanjiByLevel[index]);
+        } else {
+          if (doDisplay) selectedLevels.push(...this.kanjiByLevel[index].kanji);
+        }
+      });
+      this.displayList = this.doDisplayLevels
+        ? selectedLevels
+        : [{ name: "All levels", kanji: selectedLevels }];
     },
   },
 });
