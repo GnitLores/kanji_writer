@@ -1,6 +1,7 @@
 <template>
   <div class="p-1">
-    <div class="flex">
+    <div class="flex ml-4">
+      <p class="text-sky-200 mr-4">Display:</p>
       <div v-for="level in storeKanji.levelNames" :key="level">
         <input
           type="checkbox"
@@ -14,7 +15,8 @@
       </div>
 
       <div class="grow"></div>
-      <div class="inline-block mx-8">
+
+      <div class="mx-8">
         <label class="text-sky-200">By level: </label>
         <input
           type="checkbox"
