@@ -76,7 +76,7 @@
       <div
         v-for="kanji in levelList.kanji"
         :key="kanji.kanji"
-        class="kanji-character inline-block cursor-pointer hover:text-orange-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        class="kanji-character inline-block cursor-pointer hover:text-green-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[kanji.selected ? 'text-orange-400' : '']"
         @click.prevent="kanjiClickHandler(kanji.kanji)"
         @mousedown.prevent="onMouseDown"
