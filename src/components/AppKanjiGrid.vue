@@ -52,8 +52,8 @@ import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
 
-const loadKanjiList = async () => {
-  await storeKanji.loadKanjiList();
+const loadKanjiList = () => {
+  storeKanji.loadKanjiList();
 };
 
 const kanjiClickHandler = (kanji) => {

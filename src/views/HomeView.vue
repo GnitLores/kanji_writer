@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-900">
+  <div>
     <div class="flex justify-evenly">
       <AppKanjiQuiz ref="quizRef" />
     </div>
