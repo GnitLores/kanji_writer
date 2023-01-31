@@ -1,6 +1,43 @@
 <template>
-  <div class="p-1 select-none">
-    <div class="flex ml-4">
+  <div class="select-none">
+    <!--
+    ===============
+    Header
+    ===============
+    -->
+    <div class="flex">
+      <div class="grow"></div>
+      <div class="mr-2">
+        <div
+          v-if="!storeOptions.showDisplayOptions"
+          @click.prevent="
+            storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions
+          "
+        >
+          <span
+            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            <i class="fas fa-angles-down text-sky-200"></i
+          ></span>
+        </div>
+        <div
+          v-else
+          @click.prevent="
+            storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions
+          "
+        >
+          <span
+            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            <i class="fas fa-angles-up text-sky-200"></i
+          ></span>
+        </div>
+      </div>
+    </div>
+    <!--
+    ===============
+    Display Options:
+    ===============
+    -->
+    <div v-if="storeOptions.showDisplayOptions" class="flex ml-4">
       <p class="text-sky-200 mr-4">Display:</p>
       <div v-for="level in storeKanji.levelNames" :key="level">
         <input
@@ -16,7 +53,7 @@
 
       <div class="grow"></div>
 
-      <div class="mx-8">
+      <div class="mx-2">
         <label class="text-sky-200">By level: </label>
         <input
           type="checkbox"
@@ -25,6 +62,11 @@
         />
       </div>
     </div>
+    <!--
+    ===============
+    Kanji Grid:
+    ===============
+    -->
     <div v-for="levelList in storeKanji.displayList" :key="levelList.name">
       <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
         {{ levelList.name }}:

@@ -8,6 +8,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       // Kanji display options:
       doDisplayLevels: true,
       displayLevelNames: [],
+      showDisplayOptions: false,
     };
   },
   actions: {},
