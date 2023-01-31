@@ -4,8 +4,8 @@
       <router-link
         class="text-white font-bold uppercase text-2xl mr-4"
         :to="{ name: 'home' }"
-        >Mojidoori</router-link
-      >
+        >Mojidoori <i class="fas fa-pen-to-square text-sky-400"></i
+      ></router-link>
 
       <div class="flex flex-grow items-center">
         <ul class="flex flex-row mt-2">
