@@ -184,11 +184,11 @@ onMounted(() => {
   loadKanjiList();
 });
 onBeforeUnmount(() => {
-  console.log("before unmount");
+  // console.log("before unmount");
   document.removeEventListener("mouseup", onMouseUp);
 });
 onUnmounted(() => {
-  console.log("unmounted");
+  // console.log("unmounted");
 });
 </script>
 

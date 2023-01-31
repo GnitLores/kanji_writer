@@ -85,7 +85,6 @@ export const useStoreKanji = defineStore("storeKanji", {
         this.kanjiList[KanjiIdx].idxInLevel = idxInLevel;
         idxInLevel += 1;
       });
-      console.log(this.kanjiList);
     },
     setDisplayList() {
       const storeOptions = useStoreOptions();
