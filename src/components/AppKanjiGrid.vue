@@ -56,10 +56,8 @@ const loadKanjiList = () => {
   storeKanji.loadKanjiList();
 };
 
-const emit = defineEmits(["singleKanjiSelected"]);
-
 const kanjiClickHandler = (kanji) => {
-  emit("singleKanjiSelected", kanji);
+  storeKanji.loadKanji(kanji);
 };
 
 onMounted(() => {
