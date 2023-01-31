@@ -6,7 +6,7 @@
         <input
           type="checkbox"
           :value="level"
-          v-model="storeKanji.displayLevelNames"
+          v-model="storeOptions.displayLevelNames"
           @change="storeKanji.setDisplayList"
         />
         <label class="text-sky-200 tracking-wide mr-4 ml-0.5">{{
@@ -21,7 +21,7 @@
         <input
           type="checkbox"
           @change="storeKanji.setDisplayList"
-          v-model="storeKanji.doDisplayLevels"
+          v-model="storeOptions.doDisplayLevels"
         />
       </div>
     </div>
@@ -49,8 +49,10 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
 import { useStoreKanji } from "@/stores/storeKanji";
+import { useStoreOptions } from "@/stores/storeOptions";
 
 const storeKanji = useStoreKanji();
+const storeOptions = useStoreOptions();
 
 const loadKanjiList = () => {
   storeKanji.loadKanjiList();

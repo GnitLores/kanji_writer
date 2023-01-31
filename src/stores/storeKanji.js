@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { doc, getDoc } from "firebase/firestore";
 import { db, kanjiCollection } from "@/includes/firebase";
+import { useStoreOptions } from "@/stores/storeOptions";
 
 export const useStoreKanji = defineStore("storeKanji", {
   state: () => {
@@ -16,10 +17,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       levelNames: [],
       levelIndices: [],
       kanjiByLevel: [],
-      displayLevelNames: [],
       displayList: [],
-      // Kanji display options:
-      doDisplayLevels: true,
     };
   },
   actions: {
@@ -46,6 +44,10 @@ export const useStoreKanji = defineStore("storeKanji", {
       this.levelNames = docSnap.data().levelNames;
       this.levelIndices = docSnap.data().levelList;
 
+      // Initialize list of levelnames to display (checkboxes are bound to this list)
+      const storeOptions = useStoreOptions();
+      storeOptions.displayLevelNames = [...this.levelNames];
+
       this.sortKanjiByLevel();
       this.setDisplayList();
     },
@@ -56,26 +58,25 @@ export const useStoreKanji = defineStore("storeKanji", {
         this.kanjiByLevel.push({ name, kanji: [] });
       });
 
-      // Initialize list of levelnames to display (checkboxes are bound to this list)
-      this.displayLevelNames = [...this.levelNames];
-
       // Assign kanji to level objects:
       this.levelIndices.forEach((levelIdx, KanjiIdx) => {
         this.kanjiByLevel[levelIdx].kanji.push(this.kanjiList[KanjiIdx]);
       });
     },
     setDisplayList() {
+      const storeOptions = useStoreOptions();
+
       const selectedLevels = [];
       this.levelNames.forEach((name, index) => {
-        if (this.doDisplayLevels) {
-          if (this.displayLevelNames.includes(name))
+        if (storeOptions.doDisplayLevels) {
+          if (storeOptions.displayLevelNames.includes(name))
             selectedLevels.push(this.kanjiByLevel[index]);
         } else {
-          if (this.displayLevelNames.includes(name))
+          if (storeOptions.displayLevelNames.includes(name))
             selectedLevels.push(...this.kanjiByLevel[index].kanji);
         }
       });
-      this.displayList = this.doDisplayLevels
+      this.displayList = storeOptions.doDisplayLevels
         ? selectedLevels
         : [{ name: "All Selected Levels", kanji: selectedLevels }];
     },
