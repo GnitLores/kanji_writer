@@ -75,14 +75,12 @@
       </h3>
       <div
         v-for="kanji in levelList.kanji"
+        ref="charsRef"
         :key="kanji"
-        class="inline-block cursor-pointer hover:text-orange-400 border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
-        :class="[
-          kanji !== storeKanji.kanji
-            ? 'text-sky-400 border-transparent'
-            : 'text-orange-400 border-orange-400',
-        ]"
+        class="kanji-character inline-block cursor-pointer hover:text-orange-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         @click.prevent="kanjiClickHandler(kanji)"
+        @mousedown.prevent="onMouseDown"
+        @mouseenter.prevent="onMouseEnter"
       >
         {{ kanji }}
       </div>
@@ -90,13 +88,93 @@
   </div>
 </template>
 
+<!-- :class="[
+          kanji !== storeKanji.kanji
+            ? 'text-sky-400 border-transparent'
+            : 'text-orange-400 border-orange-400',
+        ]" -->
+
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import {
+  ref,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  onUnmounted,
+  computed,
+} from "vue";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
 
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
+
+const charsRef = ref(null);
+
+let isDragging = false;
+let isRemoving = false;
+let startDragIdx = -1;
+let minDragIdx = -1;
+let maxDragIdx = -1;
+
+const getMouseIndex = (event) => {
+  const kanji = event.target.__vnode.key;
+  return storeKanji.indexMap.get(kanji);
+};
+const addrangeToSelection = (min, max) => {
+  const toggleVal = isRemoving ? false : true;
+  for (let i = min; i < max; i++) {
+    if (charsRef.value[i])
+      charsRef.value[i].classList.toggle("text-orange-400", toggleVal);
+  }
+};
+const removerangeFromSelection = (min, max) => {
+  const toggleVal = isRemoving ? true : false;
+  for (let i = min; i < max; i++) {
+    if (charsRef.value[i])
+      charsRef.value[i].classList.toggle("text-orange-400", toggleVal);
+  }
+};
+const onMouseDown = (event) => {
+  isDragging = true;
+  if (event.target.classList.contains("text-orange-400")) isRemoving = true;
+  startDragIdx = getMouseIndex(event);
+  minDragIdx = startDragIdx;
+  maxDragIdx = startDragIdx;
+};
+const onMouseEnter = (event) => {
+  if (!isDragging) return;
+  const stopDragIdx = getMouseIndex(event);
+  const newMinDragIdx = Math.min(startDragIdx, stopDragIdx);
+  const newMaxDragIdx = Math.max(startDragIdx, stopDragIdx);
+  if (newMinDragIdx < minDragIdx)
+    addrangeToSelection(newMinDragIdx, minDragIdx + 1);
+  if (newMinDragIdx > minDragIdx)
+    removerangeFromSelection(minDragIdx, newMinDragIdx);
+  if (newMaxDragIdx > maxDragIdx)
+    addrangeToSelection(maxDragIdx, newMaxDragIdx + 1);
+  if (newMaxDragIdx < maxDragIdx)
+    removerangeFromSelection(newMaxDragIdx, maxDragIdx);
+
+  minDragIdx = newMinDragIdx;
+  maxDragIdx = newMaxDragIdx;
+};
+const onMouseUp = (event) => {
+  if (!isDragging || !event.target.classList.contains("kanji-character")) {
+    isDragging = false;
+    isRemoving = false;
+    startDragIdx = -1;
+    minDragIdx = -1;
+    maxDragIdx = -1;
+    return;
+  }
+  isDragging = false;
+  isRemoving = false;
+  startDragIdx = -1;
+  minDragIdx = -1;
+  maxDragIdx = -1;
+};
+document.addEventListener("mouseup", onMouseUp);
 
 const loadKanjiList = () => {
   storeKanji.loadKanjiList();
@@ -110,6 +188,19 @@ const kanjiClickHandler = (kanji) => {
 
 onMounted(() => {
   loadKanjiList();
+});
+onBeforeUnmount(() => {
+  console.log("before unmount");
+  document.removeEventListener("mouseup", onMouseUp);
+  charsRef.value.forEach((r) => {
+    if (r) {
+      r.removeEventListener("mousedown", onMouseDown);
+      r.removeEventListener("mouseenter", onMouseEnter);
+    }
+  });
+});
+onUnmounted(() => {
+  console.log("unmounted");
 });
 </script>
 

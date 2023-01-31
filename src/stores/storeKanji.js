@@ -12,6 +12,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       writingData: {},
       // Kanji list data:
       kanjiList: [],
+      indexMap: null,
       sortingName: "",
       nrOfLevels: 0,
       levelNames: [],
@@ -34,7 +35,16 @@ export const useStoreKanji = defineStore("storeKanji", {
       const docSnap = await getDoc(docRef);
       this.kanjiList = docSnap.data().list;
 
-      await this.loadSortingList();
+      // Map each kanji to its index
+      const nKanji = this.kanjiList.length;
+      const indices = [...Array(nKanji).keys(nKanji)];
+      const map = new Map();
+      for (let i = 0; i < nKanji; i++) {
+        map.set(this.kanjiList[i], indices[i]);
+      }
+      this.indexMap = map;
+
+      this.loadSortingList();
     },
     async loadSortingList(listName = "kanken") {
       const docRef = doc(db, "lists", listName);
