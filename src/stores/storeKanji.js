@@ -33,14 +33,17 @@ export const useStoreKanji = defineStore("storeKanji", {
     async loadKanjiList() {
       const docRef = doc(db, "lists", "kanji");
       const docSnap = await getDoc(docRef);
-      this.kanjiList = docSnap.data().list;
+      this.kanjiList = [];
+      docSnap.data().list.forEach((kanji, idx) => {
+        this.kanjiList.push({ kanji, idx, selected: false });
+      });
 
       // Map each kanji to its index
       const nKanji = this.kanjiList.length;
       const indices = [...Array(nKanji).keys(nKanji)];
       const map = new Map();
       for (let i = 0; i < nKanji; i++) {
-        map.set(this.kanjiList[i], indices[i]);
+        map.set(this.kanjiList[i].kanji, indices[i]);
       }
       this.indexMap = map;
 
@@ -69,9 +72,20 @@ export const useStoreKanji = defineStore("storeKanji", {
       });
 
       // Assign kanji to level objects:
+      let idxInLevel = 0;
+      let currentLevel = 0;
       this.levelIndices.forEach((levelIdx, KanjiIdx) => {
         this.kanjiByLevel[levelIdx].kanji.push(this.kanjiList[KanjiIdx]);
+        this.kanjiList[KanjiIdx].level = levelIdx;
+
+        if (levelIdx !== currentLevel) {
+          currentLevel += 1;
+          idxInLevel = 0;
+        }
+        this.kanjiList[KanjiIdx].idxInLevel = idxInLevel;
+        idxInLevel += 1;
       });
+      console.log(this.kanjiList);
     },
     setDisplayList() {
       const storeOptions = useStoreOptions();

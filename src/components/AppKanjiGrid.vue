@@ -75,24 +75,18 @@
       </h3>
       <div
         v-for="kanji in levelList.kanji"
-        ref="charsRef"
-        :key="kanji"
+        :key="kanji.kanji"
         class="kanji-character inline-block cursor-pointer hover:text-orange-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
-        @click.prevent="kanjiClickHandler(kanji)"
+        :class="[kanji.selected ? 'text-orange-400' : '']"
+        @click.prevent="kanjiClickHandler(kanji.kanji)"
         @mousedown.prevent="onMouseDown"
         @mouseenter.prevent="onMouseEnter"
       >
-        {{ kanji }}
+        {{ kanji.kanji }}
       </div>
     </div>
   </div>
 </template>
-
-<!-- :class="[
-          kanji !== storeKanji.kanji
-            ? 'text-sky-400 border-transparent'
-            : 'text-orange-400 border-orange-400',
-        ]" -->
 
 <script setup>
 import {
@@ -109,8 +103,6 @@ import { useStoreOptions } from "@/stores/storeOptions";
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 
-const charsRef = ref(null);
-
 let isDragging = false;
 let isRemoving = false;
 let startDragIdx = -1;
@@ -124,15 +116,17 @@ const getMouseIndex = (event) => {
 const addrangeToSelection = (min, max) => {
   const toggleVal = isRemoving ? false : true;
   for (let i = min; i < max; i++) {
-    if (charsRef.value[i])
-      charsRef.value[i].classList.toggle("text-orange-400", toggleVal);
+    const level = storeKanji.kanjiList[i].level;
+    const idxInLevel = storeKanji.kanjiList[i].idxInLevel;
+    storeKanji.displayList[level].kanji[idxInLevel].selected = toggleVal;
   }
 };
 const removerangeFromSelection = (min, max) => {
   const toggleVal = isRemoving ? true : false;
   for (let i = min; i < max; i++) {
-    if (charsRef.value[i])
-      charsRef.value[i].classList.toggle("text-orange-400", toggleVal);
+    const level = storeKanji.kanjiList[i].level;
+    const idxInLevel = storeKanji.kanjiList[i].idxInLevel;
+    storeKanji.displayList[level].kanji[idxInLevel].selected = toggleVal;
   }
 };
 const onMouseDown = (event) => {
@@ -192,12 +186,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   console.log("before unmount");
   document.removeEventListener("mouseup", onMouseUp);
-  charsRef.value.forEach((r) => {
-    if (r) {
-      r.removeEventListener("mousedown", onMouseDown);
-      r.removeEventListener("mouseenter", onMouseEnter);
-    }
-  });
 });
 onUnmounted(() => {
   console.log("unmounted");
