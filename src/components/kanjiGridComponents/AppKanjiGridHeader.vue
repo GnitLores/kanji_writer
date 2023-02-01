@@ -1,0 +1,98 @@
+<template>
+  <div class="select-none">
+    <!--
+    ===============
+    Header
+    ===============
+    -->
+    <div class="flex">
+      <div class="grow"></div>
+      <div class="mr-2">
+        <div
+          v-if="!storeOptions.showDisplayOptions"
+          @click.prevent="
+            storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions
+          "
+        >
+          <span
+            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            <i class="fas fa-angles-down text-sky-200"></i
+          ></span>
+        </div>
+        <div
+          v-else
+          @click.prevent="
+            storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions
+          "
+        >
+          <span
+            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            <i class="fas fa-angles-up text-sky-200"></i
+          ></span>
+        </div>
+      </div>
+    </div>
+    <!--
+    ===============
+    Display Options:
+    ===============
+    -->
+    <transition name="slide">
+      <div v-show="storeOptions.showDisplayOptions" class="flex ml-4">
+        <p class="text-sky-200 mr-4">Display:</p>
+        <div v-for="level in storeList.levelNames" :key="level">
+          <input
+            type="checkbox"
+            :value="level"
+            v-model="storeOptions.displayLevelNames"
+            @change="storeList.setDisplayList"
+          />
+          <label class="text-sky-200 tracking-wide mr-4 ml-0.5">{{
+            level
+          }}</label>
+        </div>
+
+        <div class="grow"></div>
+
+        <div class="mx-2">
+          <label class="text-sky-200">By level: </label>
+          <input
+            type="checkbox"
+            @change="storeList.setDisplayList"
+            v-model="storeOptions.doDisplayLevels"
+          />
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script setup>
+import {
+  ref,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  onUnmounted,
+  computed,
+} from "vue";
+import { useStoreList } from "@/stores/storeList";
+import { useStoreOptions } from "@/stores/storeOptions";
+
+const storeList = useStoreList();
+const storeOptions = useStoreOptions();
+</script>
+
+<style scoped>
+.slide-enter-active {
+  transition: all 0.3s;
+}
+.slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter-from, .slide-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-1rem);
+  opacity: 0;
+}
+</style>
