@@ -9,6 +9,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       doDisplayLevels: true,
       displayLevelNames: [],
       showDisplayOptions: false,
+      doDisplayDescending: true,
     };
   },
   actions: {},

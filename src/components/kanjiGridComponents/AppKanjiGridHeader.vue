@@ -15,7 +15,7 @@
           "
         >
           <span
-            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            ><p class="text-sky-200 inline-block mr-2 font-bold">Options</p>
             <i class="fas fa-angles-down text-sky-200"></i
           ></span>
         </div>
@@ -26,7 +26,9 @@
           "
         >
           <span
-            ><p class="text-sky-200 inline-block mr-2">Options</p>
+            ><p class="text-sky-200 inline-block mr-2 font-bold underline">
+              Options
+            </p>
             <i class="fas fa-angles-up text-sky-200"></i
           ></span>
         </div>
@@ -39,7 +41,7 @@
     -->
     <transition name="slide">
       <div v-show="storeOptions.showDisplayOptions" class="flex ml-4">
-        <p class="text-sky-200 mr-4">Display:</p>
+        <p class="text-sky-200 mr-4 font-bold">Display Levels:</p>
         <div v-for="level in storeList.levelNames" :key="level">
           <input
             type="checkbox"
@@ -47,7 +49,7 @@
             v-model="storeOptions.displayLevelNames"
             @change="storeList.setDisplayList"
           />
-          <label class="text-sky-200 tracking-wide mr-4 ml-0.5">{{
+          <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
           }}</label>
         </div>
@@ -55,7 +57,14 @@
         <div class="grow"></div>
 
         <div class="mx-2">
-          <label class="text-sky-200">By level: </label>
+          <label class="text-sky-200 font-bold">Descending: </label>
+          <input
+            class="mr-4"
+            type="checkbox"
+            @change="storeList.setDisplayList"
+            v-model="storeOptions.doDisplayDescending"
+          />
+          <label class="text-sky-200 font-bold">By level: </label>
           <input
             type="checkbox"
             @change="storeList.setDisplayList"

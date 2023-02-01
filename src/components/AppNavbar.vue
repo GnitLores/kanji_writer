@@ -8,7 +8,7 @@
       ></router-link>
 
       <div class="flex flex-grow items-center">
-        <ul class="flex flex-row mt-2">
+        <ul class="flex flex-row mt-2 font-bold">
           <li>
             <router-link class="text-white px-3" :to="{ name: 'learn' }"
               >Learn</router-link
