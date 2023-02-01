@@ -6,9 +6,14 @@
       v-show="levelList.doDisplay"
       :key="levelList.name"
     >
-      <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
-        {{ levelList.name }}:
-      </h3>
+      <div class="flex justify-evenly">
+        <h3
+          @click.prevent="storeList.toggleLevelSelection(levelList.kanji)"
+          class="inline-block text-sky-200 cursor-pointer hover:text-green-400 text-center mb-1 mt-2 font-bold tracking-wide"
+        >
+          {{ levelList.name }}:
+        </h3>
+      </div>
       <div
         v-for="kanji in levelList.kanji"
         :key="kanji.kanji"

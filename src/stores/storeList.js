@@ -178,5 +178,19 @@ export const useStoreList = defineStore("storeList", {
         });
       });
     },
+    toggleLevelSelection(kanjiList) {
+      let nSelected = 0;
+      kanjiList.forEach((kanji) => {
+        if (!kanji.selected) {
+          kanji.selected = true;
+          nSelected += 1;
+        }
+      });
+      if (nSelected === 0) {
+        kanjiList.forEach((kanji) => {
+          kanji.selected = false;
+        });
+      }
+    },
   },
 });
