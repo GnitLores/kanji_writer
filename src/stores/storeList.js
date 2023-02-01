@@ -73,9 +73,9 @@ export const useStoreList = defineStore("storeList", {
         const target = { kanji: source.kanji, mainIdx: mainIdx };
         this.kanjiByLevel[levelIdx].kanji.push(target);
       });
-      this.setDisplayList();
+      this.updateDisplayList();
     },
-    setDisplayList() {
+    updateDisplayList() {
       const storeOptions = useStoreOptions();
 
       // Create deep copy of kanji sorted by levels:

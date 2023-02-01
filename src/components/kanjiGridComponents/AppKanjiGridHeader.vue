@@ -61,13 +61,13 @@
           <input
             class="mr-4"
             type="checkbox"
-            @change="storeList.setDisplayList"
+            @change="storeList.updateDisplayList"
             v-model="storeOptions.reverseOrder"
           />
           <label class="text-sky-200 font-bold">By level: </label>
           <input
             type="checkbox"
-            @change="storeList.setDisplayList"
+            @change="storeList.updateDisplayList"
             v-model="storeOptions.doDisplayLevels"
           />
         </div>
