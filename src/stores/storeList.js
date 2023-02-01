@@ -103,9 +103,13 @@ export const useStoreList = defineStore("storeList", {
       }
     },
     setDisplayListByLevels(data, displaylevels) {
-      // Toggle display of each level:
+      // Toggle display of each level and mark the level that is displayed first:
+      let displayedLevelFound = false;
       data.forEach((level) => {
         level.doDisplay = displaylevels.includes(level.name);
+        level.firstDisplayedLevel =
+          !displayedLevelFound && level.doDisplay ? true : false;
+        if (level.firstDisplayedLevel) displayedLevelFound = true;
       });
 
       // Map kanji to level and index in level of displayed list:
@@ -131,13 +135,21 @@ export const useStoreList = defineStore("storeList", {
       // Map kanji to level and index in level of displayed list:
       const map = new Map();
       for (let i = 0; i < collapsedList.length; i++) {
-        map.set(collapsedList[i].kanji, { levelIdx: 0, idxInLevel: i });
+        map.set(collapsedList[i].kanji, {
+          levelIdx: 0,
+          idxInLevel: i,
+        });
       }
       this.displayMap = map;
 
       // Assign to display list to update display:
       this.displayList = [
-        { kanji: collapsedList, name: "All displayed levels", doDisplay: true },
+        {
+          kanji: collapsedList,
+          name: "All displayed levels",
+          doDisplay: true,
+          firstDisplayedLevel: true,
+        },
       ];
     },
     getDisplayedKanji(char) {

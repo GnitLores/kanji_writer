@@ -5,24 +5,23 @@
     Header
     ===============
     -->
-    <div class="flex m-2">
-      <div class="grow">
+    <div class="flex my-1">
+      <div class="selection-bar grow mx-2">
         <div
           v-for="levelList in storeList.displayList"
           v-show="levelList.doDisplay"
           :key="levelList.name"
-          class="inline-block text-sky-200 bg-gray-900 text-center border-solid border-2 -mr-1 border-sky-700 text-xs h-full font-bold"
+          class="inline-block text-sky-200 bg-gray-900 text-center border-solid border-r-2 border-y-2 border-sky-700 text-xs h-full pt-0.5 font-bold"
+          :class="[levelList.firstDisplayedLevel ? 'border-l-2' : '']"
           :style="{
-            width: `${
-              (levelList.kanji.length / storeList.kanjiList.length) * 100
-            }%`,
+            width: `${100 * (1 / storeList.displayList.length)}%`,
           }"
         >
           {{ levelList.name }}
         </div>
       </div>
 
-      <div class="mx-2">
+      <div class="mr-2">
         <div
           v-if="!storeOptions.showDisplayOptions"
           @click.prevent="
@@ -105,6 +104,12 @@ import { useStoreOptions } from "@/stores/storeOptions";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
+
+// const firstDisplayLevelName = computed(() => {
+//   for (let x of storeKanji) {
+//     text += x;
+//   }
+// });
 </script>
 
 <style scoped>
