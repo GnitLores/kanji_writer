@@ -137,7 +137,7 @@ export const useStoreList = defineStore("storeList", {
 
       // Assign to display list to update display:
       this.displayList = [
-        { kanji: collapsedList, name: "All selected levels", doDisplay: true },
+        { kanji: collapsedList, name: "All displayed levels", doDisplay: true },
       ];
     },
     getDisplayedKanji(char) {
