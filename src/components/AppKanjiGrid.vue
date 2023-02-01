@@ -56,12 +56,10 @@ const getMouseIndex = (event) => {
   const kanji = event.target.__vnode.key;
   return storeList.indexMap.get(kanji);
 };
-// TODO: make dragging selection more efficient by only adding and removing changes indices.
+// TODO: make dragging selection more efficient by only adding and removing changed indices instead of iterating over all indices.
 const setDraggingSelection = (min, max) => {
   for (let i = 0; i < storeList.kanjiList.length; i++) {
-    const indices = storeList.displayMap.get(storeList.kanjiList[i].kanji);
-    const kanji =
-      storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel];
+    const kanji = storeList.getDisplayedKanjiByIndex(i);
     if (i < min || i > max) {
       kanji.selectedWhileDragging = false;
       kanji.unselectedWhileDragging = false;

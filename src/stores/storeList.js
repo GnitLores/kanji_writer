@@ -55,8 +55,6 @@ export const useStoreList = defineStore("storeList", {
       this.sortKanjiByLevel();
     },
     sortKanjiByLevel() {
-      const storeOptions = useStoreOptions();
-
       // Initialize list of level objects:
       this.kanjiByLevel = [];
       this.levelNames.forEach((name) => {
@@ -133,7 +131,7 @@ export const useStoreList = defineStore("storeList", {
       // Map kanji to level and index in level of displayed list:
       const map = new Map();
       for (let i = 0; i < collapsedList.length; i++) {
-        map.set(collapsedList[i].kanji, { level: 1, idxInLevel: i });
+        map.set(collapsedList[i].kanji, { levelIdx: 0, idxInLevel: i });
       }
       this.displayMap = map;
 
@@ -141,6 +139,15 @@ export const useStoreList = defineStore("storeList", {
       this.displayList = [
         { kanji: collapsedList, name: "All selected levels", doDisplay: true },
       ];
+    },
+    getDisplayedKanji(char) {
+      // Get desiplay list kanji object by char
+      const indices = this.displayMap.get(char);
+      return this.displayList[indices.levelIdx].kanji[indices.idxInLevel];
+    },
+    getDisplayedKanjiByIndex(idx) {
+      // Get desiplay list kanji object by index
+      return this.getDisplayedKanji(this.kanjiList[idx].kanji);
     },
   },
 });
