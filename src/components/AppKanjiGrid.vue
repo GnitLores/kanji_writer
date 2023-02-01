@@ -13,7 +13,12 @@
         v-for="kanji in levelList.kanji"
         :key="kanji.kanji"
         class="kanji-character inline-block cursor-pointer hover:text-green-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
-        :class="[kanji.selected ? 'text-orange-400' : '']"
+        :class="[
+          (kanji.selected && !kanji.unselectedWhileDragging) ||
+          (!kanji.selected && kanji.selectedWhileDragging)
+            ? 'text-orange-400'
+            : '',
+        ]"
         @click.prevent="kanjiClickHandler(kanji.kanji)"
         @mousedown.prevent="onMouseDown"
         @mouseenter.prevent="onMouseEnter"
@@ -36,6 +41,7 @@ import {
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
+import { connectStorageEmulator } from "@firebase/storage";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
@@ -50,20 +56,24 @@ const getMouseIndex = (event) => {
   const kanji = event.target.__vnode.key;
   return storeList.indexMap.get(kanji);
 };
-const addrangeToSelection = (min, max) => {
-  const toggleVal = isRemoving ? false : true;
-  for (let i = min; i < max; i++) {
+// TODO: make dragging selection more efficient by only adding and removing changes indices.
+const setDraggingSelection = (min, max) => {
+  for (let i = 0; i < storeList.kanjiList.length; i++) {
     const indices = storeList.displayMap.get(storeList.kanjiList[i].kanji);
-    storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel].selected =
-      toggleVal;
-  }
-};
-const removerangeFromSelection = (min, max) => {
-  const toggleVal = isRemoving ? true : false;
-  for (let i = min; i < max; i++) {
-    const indices = storeList.displayMap.get(storeList.kanjiList[i].kanji);
-    storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel].selected =
-      toggleVal;
+    const kanji =
+      storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel];
+    if (i < min || i > max) {
+      kanji.selectedWhileDragging = false;
+      kanji.unselectedWhileDragging = false;
+      continue;
+    }
+    if (isRemoving) {
+      kanji.selectedWhileDragging = false;
+      kanji.unselectedWhileDragging = true;
+    } else {
+      kanji.selectedWhileDragging = true;
+      kanji.unselectedWhileDragging = false;
+    }
   }
 };
 const onMouseDown = (event) => {
@@ -76,34 +86,26 @@ const onMouseDown = (event) => {
 const onMouseEnter = (event) => {
   if (!isDragging) return;
   const stopDragIdx = getMouseIndex(event);
-  const newMinDragIdx = Math.min(startDragIdx, stopDragIdx);
-  const newMaxDragIdx = Math.max(startDragIdx, stopDragIdx);
-  if (newMinDragIdx < minDragIdx)
-    addrangeToSelection(newMinDragIdx, minDragIdx + 1);
-  if (newMinDragIdx > minDragIdx)
-    removerangeFromSelection(minDragIdx, newMinDragIdx);
-  if (newMaxDragIdx > maxDragIdx)
-    addrangeToSelection(maxDragIdx, newMaxDragIdx + 1);
-  if (newMaxDragIdx < maxDragIdx)
-    removerangeFromSelection(newMaxDragIdx, maxDragIdx);
-
-  minDragIdx = newMinDragIdx;
-  maxDragIdx = newMaxDragIdx;
+  minDragIdx = Math.min(startDragIdx, stopDragIdx);
+  maxDragIdx = Math.max(startDragIdx, stopDragIdx);
+  setDraggingSelection(minDragIdx, maxDragIdx);
 };
 const onMouseUp = (event) => {
-  if (!isDragging || !event.target.classList.contains("kanji-character")) {
-    isDragging = false;
-    isRemoving = false;
-    startDragIdx = -1;
-    minDragIdx = -1;
-    maxDragIdx = -1;
-    return;
-  }
   isDragging = false;
   isRemoving = false;
   startDragIdx = -1;
   minDragIdx = -1;
   maxDragIdx = -1;
+
+  storeList.displayList.forEach((level) => {
+    level.kanji.forEach((kanji) => {
+      kanji.selected =
+        (kanji.selected && !kanji.unselectedWhileDragging) ||
+        (!kanji.selected && kanji.selectedWhileDragging);
+      kanji.selectedWhileDragging = false;
+      kanji.unSelectedWhileDragging = false;
+    });
+  });
 };
 document.addEventListener("mouseup", onMouseUp);
 

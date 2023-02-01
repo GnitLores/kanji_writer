@@ -26,7 +26,6 @@ export const useStoreList = defineStore("storeList", {
         this.kanjiList.push({
           kanji,
           idx,
-          selected: false,
         });
       });
 
@@ -70,7 +69,11 @@ export const useStoreList = defineStore("storeList", {
       this.levelIndices.forEach((levelIdx, mainIdx) => {
         // clone:
         const source = this.kanjiList[mainIdx];
-        const target = { kanji: source.kanji, mainIdx: mainIdx };
+        const target = {
+          kanji: source.kanji,
+          mainIdx: mainIdx,
+          selected: false,
+        };
         this.kanjiByLevel[levelIdx].kanji.push(target);
       });
       this.updateDisplayList();
@@ -80,6 +83,13 @@ export const useStoreList = defineStore("storeList", {
 
       // Create deep copy of kanji sorted by levels:
       const data = JSON.parse(JSON.stringify(this.kanjiByLevel));
+
+      data.forEach((level) => {
+        level.kanji.forEach((kanji) => {
+          kanji.selectedWhileDragging = false;
+          kanji.unSelectedWhileDragging = false;
+        });
+      });
 
       // Reverse display list if ascending order:
       if (storeOptions.reverseOrder) {
