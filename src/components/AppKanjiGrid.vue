@@ -53,17 +53,17 @@ const getMouseIndex = (event) => {
 const addrangeToSelection = (min, max) => {
   const toggleVal = isRemoving ? false : true;
   for (let i = min; i < max; i++) {
-    const level = storeList.kanjiList[i].level;
-    const idxInLevel = storeList.kanjiList[i].idxInLevel;
-    storeList.displayList[level].kanji[idxInLevel].selected = toggleVal;
+    const indices = storeList.displayMap.get(storeList.kanjiList[i].kanji);
+    storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel].selected =
+      toggleVal;
   }
 };
 const removerangeFromSelection = (min, max) => {
   const toggleVal = isRemoving ? true : false;
   for (let i = min; i < max; i++) {
-    const level = storeList.kanjiList[i].level;
-    const idxInLevel = storeList.kanjiList[i].idxInLevel;
-    storeList.displayList[level].kanji[idxInLevel].selected = toggleVal;
+    const indices = storeList.displayMap.get(storeList.kanjiList[i].kanji);
+    storeList.displayList[indices.levelIdx].kanji[indices.idxInLevel].selected =
+      toggleVal;
   }
 };
 const onMouseDown = (event) => {
