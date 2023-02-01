@@ -47,7 +47,7 @@
             type="checkbox"
             :value="level"
             v-model="storeOptions.displayLevelNames"
-            @change="storeList.setDisplayList"
+            @change="storeList.updateDisplayList"
           />
           <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level

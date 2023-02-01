@@ -1,7 +1,11 @@
 <template>
   <AppKanjiGridHeader />
   <div class="select-none">
-    <div v-for="levelList in storeList.displayList" :key="levelList.name">
+    <div
+      v-for="levelList in storeList.displayList"
+      v-show="levelList.doDisplay"
+      :key="levelList.name"
+    >
       <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
         {{ levelList.name }}:
       </h3>
