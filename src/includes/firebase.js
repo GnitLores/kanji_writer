@@ -20,5 +20,6 @@ const storage = getStorage(app);
 // console.log(db);
 // const kanjiCollection = db.collection("kanji");
 const kanjiCollection = collection(db, "kanji");
+const listCollection = collection(db, "lists");
 
-export { db, auth, storage, kanjiCollection };
+export { db, auth, storage, kanjiCollection, listCollection };

@@ -40,12 +40,12 @@
     <transition name="slide">
       <div v-show="storeOptions.showDisplayOptions" class="flex ml-4">
         <p class="text-sky-200 mr-4">Display:</p>
-        <div v-for="level in storeKanji.levelNames" :key="level">
+        <div v-for="level in storeList.levelNames" :key="level">
           <input
             type="checkbox"
             :value="level"
             v-model="storeOptions.displayLevelNames"
-            @change="storeKanji.setDisplayList"
+            @change="storeList.setDisplayList"
           />
           <label class="text-sky-200 tracking-wide mr-4 ml-0.5">{{
             level
@@ -58,7 +58,7 @@
           <label class="text-sky-200">By level: </label>
           <input
             type="checkbox"
-            @change="storeKanji.setDisplayList"
+            @change="storeList.setDisplayList"
             v-model="storeOptions.doDisplayLevels"
           />
         </div>
@@ -69,7 +69,7 @@
     Kanji Grid:
     ===============
     -->
-    <div v-for="levelList in storeKanji.displayList" :key="levelList.name">
+    <div v-for="levelList in storeList.displayList" :key="levelList.name">
       <h3 class="text-sky-200 text-center mb-1 mt-2 font-bold tracking-wide">
         {{ levelList.name }}:
       </h3>
@@ -97,10 +97,10 @@ import {
   onUnmounted,
   computed,
 } from "vue";
-import { useStoreKanji } from "@/stores/storeKanji";
+import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 
-const storeKanji = useStoreKanji();
+const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
 let isDragging = false;
@@ -111,22 +111,22 @@ let maxDragIdx = -1;
 
 const getMouseIndex = (event) => {
   const kanji = event.target.__vnode.key;
-  return storeKanji.indexMap.get(kanji);
+  return storeList.indexMap.get(kanji);
 };
 const addrangeToSelection = (min, max) => {
   const toggleVal = isRemoving ? false : true;
   for (let i = min; i < max; i++) {
-    const level = storeKanji.kanjiList[i].level;
-    const idxInLevel = storeKanji.kanjiList[i].idxInLevel;
-    storeKanji.displayList[level].kanji[idxInLevel].selected = toggleVal;
+    const level = storeList.kanjiList[i].level;
+    const idxInLevel = storeList.kanjiList[i].idxInLevel;
+    storeList.displayList[level].kanji[idxInLevel].selected = toggleVal;
   }
 };
 const removerangeFromSelection = (min, max) => {
   const toggleVal = isRemoving ? true : false;
   for (let i = min; i < max; i++) {
-    const level = storeKanji.kanjiList[i].level;
-    const idxInLevel = storeKanji.kanjiList[i].idxInLevel;
-    storeKanji.displayList[level].kanji[idxInLevel].selected = toggleVal;
+    const level = storeList.kanjiList[i].level;
+    const idxInLevel = storeList.kanjiList[i].idxInLevel;
+    storeList.displayList[level].kanji[idxInLevel].selected = toggleVal;
   }
 };
 const onMouseDown = (event) => {
@@ -171,7 +171,7 @@ const onMouseUp = (event) => {
 document.addEventListener("mouseup", onMouseUp);
 
 const loadKanjiList = () => {
-  storeKanji.loadKanjiList();
+  storeList.loadKanjiList();
 };
 
 const emit = defineEmits(["singleKanjiSelected"]);
