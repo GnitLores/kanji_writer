@@ -57,12 +57,12 @@
         <div class="grow"></div>
 
         <div class="mx-2">
-          <label class="text-sky-200 font-bold">Descending: </label>
+          <label class="text-sky-200 font-bold">Reverse: </label>
           <input
             class="mr-4"
             type="checkbox"
             @change="storeList.setDisplayList"
-            v-model="storeOptions.doDisplayDescending"
+            v-model="storeOptions.reverseOrder"
           />
           <label class="text-sky-200 font-bold">By level: </label>
           <input

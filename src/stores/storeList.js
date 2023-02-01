@@ -14,6 +14,7 @@ export const useStoreList = defineStore("storeList", {
       levelIndices: [],
       kanjiByLevel: [],
       displayList: [],
+      displayMap: [],
     };
   },
   actions: {
@@ -22,7 +23,11 @@ export const useStoreList = defineStore("storeList", {
       const docSnap = await getDoc(docRef);
       this.kanjiList = [];
       docSnap.data().list.forEach((kanji, idx) => {
-        this.kanjiList.push({ kanji, idx, selected: false });
+        this.kanjiList.push({
+          kanji,
+          idx,
+          selected: false,
+        });
       });
 
       // Map each kanji to its index
@@ -49,46 +54,83 @@ export const useStoreList = defineStore("storeList", {
       storeOptions.displayLevelNames = [...this.levelNames];
 
       this.sortKanjiByLevel();
-      this.setDisplayList();
     },
     sortKanjiByLevel() {
+      const storeOptions = useStoreOptions();
+
       // Initialize list of level objects:
       this.kanjiByLevel = [];
       this.levelNames.forEach((name) => {
-        this.kanjiByLevel.push({ name, kanji: [] });
+        this.kanjiByLevel.push({
+          name,
+          kanji: [],
+        });
       });
 
-      // Assign kanji to level objects:
-      let idxInLevel = 0;
-      let currentLevel = 0;
-      this.levelIndices.forEach((levelIdx, KanjiIdx) => {
-        this.kanjiByLevel[levelIdx].kanji.push(this.kanjiList[KanjiIdx]);
-        this.kanjiList[KanjiIdx].level = levelIdx;
-
-        if (levelIdx !== currentLevel) {
-          currentLevel += 1;
-          idxInLevel = 0;
-        }
-        this.kanjiList[KanjiIdx].idxInLevel = idxInLevel;
-        idxInLevel += 1;
+      this.levelIndices.forEach((levelIdx, mainIdx) => {
+        // clone:
+        const source = this.kanjiList[mainIdx];
+        const target = { kanji: source.kanji, mainIdx: mainIdx };
+        this.kanjiByLevel[levelIdx].kanji.push(target);
       });
+      this.setDisplayList();
     },
     setDisplayList() {
       const storeOptions = useStoreOptions();
 
-      const selectedLevels = [];
-      this.levelNames.forEach((name, index) => {
-        if (storeOptions.doDisplayLevels) {
-          if (storeOptions.displayLevelNames.includes(name))
-            selectedLevels.push(this.kanjiByLevel[index]);
-        } else {
-          if (storeOptions.displayLevelNames.includes(name))
-            selectedLevels.push(...this.kanjiByLevel[index].kanji);
-        }
+      // Create deep copy of kanji sorted by levels:
+      const data = JSON.parse(JSON.stringify(this.kanjiByLevel));
+
+      // Reverse display list if ascending order:
+      if (storeOptions.reverseOrder) {
+        data.reverse();
+        for (const level of data) level.kanji.reverse();
+      }
+
+      // Handle processing that differs if levels are not displayed
+      if (storeOptions.doDisplayLevels) {
+        this.setDisplayListByLevels(data, storeOptions.displayLevelNames);
+      } else {
+        this.setDisplayListNoLevels(data, storeOptions.displayLevelNames);
+      }
+    },
+    setDisplayListByLevels(data, displaylevels) {
+      // Toggle display of each level:
+      data.forEach((level) => {
+        level.doDisplay = displaylevels.includes(level.name);
       });
-      this.displayList = storeOptions.doDisplayLevels
-        ? selectedLevels
-        : [{ name: "All Selected Levels", kanji: selectedLevels }];
+
+      // Map kanji to level and index in level of displayed list:
+      const map = new Map();
+      data.forEach((level, levelIdx) => {
+        level.kanji.forEach((kanji, idxInLevel) => {
+          map.set(kanji.kanji, { levelIdx, idxInLevel });
+        });
+      });
+      this.displayMap = map;
+
+      // Assign to display list to update display:
+      this.displayList = data;
+    },
+    setDisplayListNoLevels(data, displaylevels) {
+      // Collapse kanji list while excluding hidden levels:
+      const collapsedList = [];
+      this.levelNames.forEach((name, index) => {
+        if (displaylevels.includes(name))
+          collapsedList.push(...data[index].kanji);
+      });
+
+      // Map kanji to level and index in level of displayed list:
+      const map = new Map();
+      for (let i = 0; i < collapsedList.length; i++) {
+        map.set(collapsedList[i].kanji, { level: 1, idxInLevel: i });
+      }
+      this.displayMap = map;
+
+      // Assign to display list to update display:
+      this.displayList = [
+        { kanji: collapsedList, name: "All selected levels" },
+      ];
     },
   },
 });
