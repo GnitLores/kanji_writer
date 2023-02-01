@@ -11,13 +11,25 @@
           v-for="levelList in storeList.displayList"
           v-show="levelList.doDisplay"
           :key="levelList.name"
-          class="inline-block text-sky-200 bg-gray-900 text-center border-solid border-r-2 border-y-2 border-sky-700 text-xs h-full pt-0.5 font-bold"
+          class="inline-block relative bg-gray-900 border-solid border-r-2 border-y-2 border-sky-700 h-full"
           :class="[levelList.firstDisplayedLevel ? 'border-l-2' : '']"
           :style="{
             width: `${100 * (1 / storeList.displayList.length)}%`,
           }"
+          @click.prevent="storeList.addAllUpToLevel(levelList.name)"
         >
-          {{ levelList.name }}
+          <span
+            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400"
+            >{{ levelList.name }}</span
+          >
+          <div
+            class="bg-sky-700 w-1/2 h-full opacity-70 z-0"
+            :style="{
+              width: `${
+                100 * (levelList.nrOfSelected / levelList.kanji.length)
+              }%`,
+            }"
+          ></div>
         </div>
       </div>
 

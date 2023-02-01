@@ -101,6 +101,7 @@ export const useStoreList = defineStore("storeList", {
       } else {
         this.setDisplayListNoLevels(data, storeOptions.displayLevelNames);
       }
+      this.updateSelectionStats();
     },
     setDisplayListByLevels(data, displaylevels) {
       // Toggle display of each level and mark the level that is displayed first:
@@ -186,9 +187,10 @@ export const useStoreList = defineStore("storeList", {
             (kanji.selected && !kanji.unselectedWhileDragging) ||
             (!kanji.selected && kanji.selectedWhileDragging);
           kanji.selectedWhileDragging = false;
-          kanji.unSelectedWhileDragging = false;
+          kanji.unselectedWhileDragging = false;
         });
       });
+      this.updateSelectionStats();
     },
     toggleLevelSelection(kanjiList) {
       let nSelected = 0;
@@ -203,6 +205,35 @@ export const useStoreList = defineStore("storeList", {
           kanji.selected = false;
         });
       }
+      this.updateSelectionStats();
+    },
+    updateSelectionStats() {
+      this.displayList.forEach((level) => {
+        let nSelected = 0;
+        level.kanji.forEach((kanji) => {
+          nSelected += kanji.selected;
+        });
+        level.nrOfSelected = nSelected;
+      });
+    },
+    addAllUpToLevel(levelName) {
+      // this.displayList.forEach((level) => {
+      //   level.kanji.forEach((kanji) => {
+      //     kanji.selected = true;
+      //   });
+      //   if (level.name === levelName) return;
+      // });
+      let levelFound = false;
+      this.displayList.forEach((level, levelIdx) => {
+        level.kanji.forEach((kanji, kanjiIdx) => {
+          // this.displayList[levelIdx].kanji[kanjiIdx].selected = !levelFound;
+          kanji.selected = !levelFound;
+          kanji.selectedWhileDragging = false;
+          kanji.unSelectedWhileDragging = false;
+        });
+        if (!levelFound) levelFound = level.name === levelName;
+      });
+      this.updateSelectionStats();
     },
   },
 });
