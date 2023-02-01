@@ -56,24 +56,6 @@ const getMouseIndex = (event) => {
   const kanji = event.target.__vnode.key;
   return storeList.indexMap.get(kanji);
 };
-// TODO: make dragging selection more efficient by only adding and removing changed indices instead of iterating over all indices.
-const setDraggingSelection = (min, max) => {
-  for (let i = 0; i < storeList.kanjiList.length; i++) {
-    const kanji = storeList.getDisplayedKanjiByIndex(i);
-    if (i < min || i > max) {
-      kanji.selectedWhileDragging = false;
-      kanji.unselectedWhileDragging = false;
-      continue;
-    }
-    if (isRemoving) {
-      kanji.selectedWhileDragging = false;
-      kanji.unselectedWhileDragging = true;
-    } else {
-      kanji.selectedWhileDragging = true;
-      kanji.unselectedWhileDragging = false;
-    }
-  }
-};
 const onMouseDown = (event) => {
   isDragging = true;
   if (event.target.classList.contains("text-orange-400")) isRemoving = true;
@@ -86,7 +68,7 @@ const onMouseEnter = (event) => {
   const stopDragIdx = getMouseIndex(event);
   minDragIdx = Math.min(startDragIdx, stopDragIdx);
   maxDragIdx = Math.max(startDragIdx, stopDragIdx);
-  setDraggingSelection(minDragIdx, maxDragIdx);
+  storeList.updateDraggingSelection(minDragIdx, maxDragIdx, isRemoving);
 };
 const onMouseUp = (event) => {
   isDragging = false;
@@ -95,15 +77,7 @@ const onMouseUp = (event) => {
   minDragIdx = -1;
   maxDragIdx = -1;
 
-  storeList.displayList.forEach((level) => {
-    level.kanji.forEach((kanji) => {
-      kanji.selected =
-        (kanji.selected && !kanji.unselectedWhileDragging) ||
-        (!kanji.selected && kanji.selectedWhileDragging);
-      kanji.selectedWhileDragging = false;
-      kanji.unSelectedWhileDragging = false;
-    });
-  });
+  storeList.applyDraggingSelection();
 };
 document.addEventListener("mouseup", onMouseUp);
 

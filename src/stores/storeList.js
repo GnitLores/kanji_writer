@@ -149,5 +149,34 @@ export const useStoreList = defineStore("storeList", {
       // Get desiplay list kanji object by index
       return this.getDisplayedKanji(this.kanjiList[idx].kanji);
     },
+    // TODO: make dragging selection more efficient by only adding and removing changed indices instead of iterating over all indices.
+    updateDraggingSelection(min, max, isRemoving) {
+      for (let i = 0; i < this.kanjiList.length; i++) {
+        const kanji = this.getDisplayedKanjiByIndex(i);
+        if (i < min || i > max) {
+          kanji.selectedWhileDragging = false;
+          kanji.unselectedWhileDragging = false;
+          continue;
+        }
+        if (isRemoving) {
+          kanji.selectedWhileDragging = false;
+          kanji.unselectedWhileDragging = true;
+        } else {
+          kanji.selectedWhileDragging = true;
+          kanji.unselectedWhileDragging = false;
+        }
+      }
+    },
+    applyDraggingSelection() {
+      this.displayList.forEach((level) => {
+        level.kanji.forEach((kanji) => {
+          kanji.selected =
+            (kanji.selected && !kanji.unselectedWhileDragging) ||
+            (!kanji.selected && kanji.selectedWhileDragging);
+          kanji.selectedWhileDragging = false;
+          kanji.unSelectedWhileDragging = false;
+        });
+      });
+    },
   },
 });
