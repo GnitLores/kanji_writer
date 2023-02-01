@@ -181,14 +181,14 @@ const kanjiClickHandler = (kanji) => {
 };
 
 onMounted(() => {
-  loadKanjiList();
+  // console.log("on mounted");
 });
 onBeforeUnmount(() => {
   // console.log("before unmount");
   document.removeEventListener("mouseup", onMouseUp);
 });
 onUnmounted(() => {
-  // console.log("unmounted");
+  // console.log("on unmounted");
 });
 </script>
 
