@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { doc, getDoc } from "firebase/firestore";
-import { db, kanjiCollection } from "@/includes/firebase";
+import { listCollection } from "@/includes/firebase";
 import { useStoreOptions } from "@/stores/storeOptions";
 
 export const useStoreList = defineStore("storeList", {
@@ -18,7 +18,7 @@ export const useStoreList = defineStore("storeList", {
   },
   actions: {
     async loadKanjiList() {
-      const docRef = doc(db, "lists", "kanji");
+      const docRef = doc(listCollection, "kanji");
       const docSnap = await getDoc(docRef);
       this.kanjiList = [];
       docSnap.data().list.forEach((kanji, idx) => {
@@ -37,7 +37,7 @@ export const useStoreList = defineStore("storeList", {
       this.loadSortingList();
     },
     async loadSortingList(listName = "kanken") {
-      const docRef = doc(db, "lists", listName);
+      const docRef = doc(listCollection, listName);
       const docSnap = await getDoc(docRef);
       this.sortingName = listName;
       this.nrOfLevels = docSnap.data().nrOfLevels;

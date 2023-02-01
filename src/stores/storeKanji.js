@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { doc, getDoc } from "firebase/firestore";
-import { db, kanjiCollection } from "@/includes/firebase";
+import { kanjiCollection } from "@/includes/firebase";
 
 export const useStoreKanji = defineStore("storeKanji", {
   state: () => {
@@ -12,7 +12,7 @@ export const useStoreKanji = defineStore("storeKanji", {
   },
   actions: {
     async loadKanji(char) {
-      const docRef = doc(db, "kanji", char);
+      const docRef = doc(kanjiCollection, char);
       const snapshot = await getDoc(docRef);
       const loadedData = snapshot.data();
       this.kanji = loadedData.kanji;
