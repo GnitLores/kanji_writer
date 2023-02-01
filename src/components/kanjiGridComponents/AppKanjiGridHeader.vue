@@ -5,9 +5,24 @@
     Header
     ===============
     -->
-    <div class="flex">
-      <div class="grow"></div>
-      <div class="mr-2">
+    <div class="flex m-2">
+      <div class="grow">
+        <div
+          v-for="levelList in storeList.displayList"
+          v-show="levelList.doDisplay"
+          :key="levelList.name"
+          class="inline-block text-sky-200 bg-gray-900 text-center border-solid border-2 -mr-1 border-sky-700 text-xs h-full font-bold"
+          :style="{
+            width: `${
+              (levelList.kanji.length / storeList.kanjiList.length) * 100
+            }%`,
+          }"
+        >
+          {{ levelList.name }}
+        </div>
+      </div>
+
+      <div class="mx-2">
         <div
           v-if="!storeOptions.showDisplayOptions"
           @click.prevent="
