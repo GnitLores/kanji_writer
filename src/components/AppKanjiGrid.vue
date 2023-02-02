@@ -111,7 +111,7 @@ const setDisplayListByLevels = (data) => {
 const setDisplayListNoLevels = (data) => {
   // Collapse kanji list while excluding hidden levels:
   const collapsedList = [];
-  levelNames.forEach((name, index) => {
+  storeList.levelNames.forEach((name, index) => {
     if (storeOptions.isLevelDisplayed(name))
       collapsedList.push(...data[index].kanji);
   });
