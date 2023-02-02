@@ -136,6 +136,18 @@ const setDisplayListNoLevels = (data) => {
   ];
 };
 
+const getDisplayedKanji = (char) => {
+  // Get desiplay list kanji object by char
+  const indices = displayMap.get(char);
+  return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
+};
+
+const getDisplayedKanjiByIndex = (idx) => {
+  // Get desiplay list kanji object by index
+  return getDisplayedKanji(storeList.kanjiList[idx].kanji);
+};
+
+// Watch stores and update displaylist:
 const { kanjiByLevel } = storeToRefs(storeList);
 watch(kanjiByLevel, updateDisplayList);
 
@@ -164,7 +176,13 @@ const getMouseIndex = (event) => {
   return storeList.indexMap.get(kanji);
 };
 
-const onKanjiClicked = (event) => {};
+const onKanjiClicked = (event) => {
+  const kanji = getDisplayedKanji(event.target.__vnode.key);
+  kanji.selected = !kanji.selected;
+  kanji.selected
+    ? addKanjiToStats(kanji.kanji)
+    : removeKanjiFromStats(kanji.kanji);
+};
 
 const onKanjiMouseDown = (event) => {
   isDragging = true;
@@ -191,17 +209,6 @@ const onMouseUp = (event) => {
   maxDragIdx = -1;
 
   applyDraggingSelection();
-};
-
-const getDisplayedKanji = (char) => {
-  // Get desiplay list kanji object by char
-  const indices = displayMap.get(char);
-  return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
-};
-
-const getDisplayedKanjiByIndex = (idx) => {
-  // Get desiplay list kanji object by index
-  return getDisplayedKanji(storeList.kanjiList[idx].kanji);
 };
 
 // TODO: make dragging selection more efficient by only adding and removing changed indices instead of iterating over all indices.
@@ -313,6 +320,26 @@ const updateSelectionStats = () => {
   stats.nDisplayedLevels = nDisplayedLevels;
   stats.firstDisplayedLevel = nameOfFirstDisplayedLevel;
   selectionStats.value = stats;
+};
+
+const getKanjiStatLevel = (char) => {
+  const indices = displayMap.get(char);
+  return selectionStats.value.levels[indices.levelIdx];
+};
+
+const changeLevelStatsByAmount = (level, amount) => {
+  if (level.doDisplay) {
+    level.nSelected += amount;
+    selectionStats.value.nSelected += amount;
+  }
+};
+
+const addKanjiToStats = (char) => {
+  changeLevelStatsByAmount(getKanjiStatLevel(char), 1);
+};
+
+const removeKanjiFromStats = (char) => {
+  changeLevelStatsByAmount(getKanjiStatLevel(char), -1);
 };
 
 /*
