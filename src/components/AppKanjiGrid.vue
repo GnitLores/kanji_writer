@@ -21,12 +21,12 @@
         :class="[
           (kanji.selected && !kanji.unselectedWhileDragging) ||
           (!kanji.selected && kanji.selectedWhileDragging)
-            ? 'text-orange-400'
+            ? 'drag-selected text-orange-400'
             : '',
         ]"
-        @click.prevent="kanjiClickHandler(kanji.kanji)"
-        @mousedown.prevent="onMouseDown"
-        @mouseenter.prevent="onMouseEnter"
+        @click.prevent="onKanjiClicked"
+        @mousedown.prevent="onKanjiMouseDown"
+        @mouseenter.prevent="onKanjiMouseEnter"
       >
         {{ kanji.kanji }}
       </div>
@@ -44,12 +44,11 @@ import {
   computed,
 } from "vue";
 import { useStoreList } from "@/stores/storeList";
-import { useStoreOptions } from "@/stores/storeOptions";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
-import { connectStorageEmulator } from "@firebase/storage";
 
 const storeList = useStoreList();
-const storeOptions = useStoreOptions();
+
+const emit = defineEmits(["kanjiRangeSelected"]);
 
 let isDragging = false;
 let isRemoving = false;
@@ -61,14 +60,15 @@ const getMouseIndex = (event) => {
   const kanji = event.target.__vnode.key;
   return storeList.indexMap.get(kanji);
 };
-const onMouseDown = (event) => {
+const onKanjiClicked = (event) => {};
+const onKanjiMouseDown = (event) => {
   isDragging = true;
-  if (event.target.classList.contains("text-orange-400")) isRemoving = true;
+  if (event.target.classList.contains("drag-selected")) isRemoving = true;
   startDragIdx = getMouseIndex(event);
   minDragIdx = startDragIdx;
   maxDragIdx = startDragIdx;
 };
-const onMouseEnter = (event) => {
+const onKanjiMouseEnter = (event) => {
   if (!isDragging) return;
   const stopDragIdx = getMouseIndex(event);
   minDragIdx = Math.min(startDragIdx, stopDragIdx);
@@ -82,15 +82,9 @@ const onMouseUp = (event) => {
   minDragIdx = -1;
   maxDragIdx = -1;
 
-  storeList.applyDraggingSelection();
+  emit("kanjiRangeSelected");
 };
 document.addEventListener("mouseup", onMouseUp);
-
-const emit = defineEmits(["singleKanjiSelected"]);
-
-const kanjiClickHandler = (kanji) => {
-  emit("singleKanjiSelected", kanji);
-};
 
 onMounted(() => {
   // console.log("on mounted");
