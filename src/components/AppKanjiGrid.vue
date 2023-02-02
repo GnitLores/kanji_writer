@@ -82,9 +82,9 @@ const updateDisplayList = () => {
 
   // Handle processing that differs if levels are not displayed
   if (storeOptions.doDisplayLevels) {
-    setDisplayListByLevels(data, storeOptions.displayLevelNames);
+    setDisplayListByLevels(data);
   } else {
-    setDisplayListNoLevels(data, storeOptions.displayLevelNames);
+    setDisplayListNoLevels(data);
   }
   updateSelectionStats();
 };
@@ -137,13 +137,17 @@ const setDisplayListNoLevels = (data) => {
 };
 
 const getDisplayedKanji = (char) => {
-  // Get desiplay list kanji object by char
+  // Get display list kanji object by char
   const indices = displayMap.get(char);
-  return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
+  if (indices) {
+    return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
+  } else {
+    return null;
+  }
 };
 
 const getDisplayedKanjiByIndex = (idx) => {
-  // Get desiplay list kanji object by index
+  // Get display list kanji object by index
   return getDisplayedKanji(storeList.kanjiList[idx].kanji);
 };
 
@@ -151,10 +155,10 @@ const getDisplayedKanjiByIndex = (idx) => {
 const { kanjiByLevel } = storeToRefs(storeList);
 watch(kanjiByLevel, updateDisplayList);
 
-const { doDisplayLevels, displayLevelNames, reverseOrder } =
+const { doDisplayLevels, ignoredLevels, reverseOrder } =
   storeToRefs(storeOptions);
 watch(doDisplayLevels, updateDisplayList);
-watch(displayLevelNames, updateDisplayList);
+watch(ignoredLevels, updateDisplayList);
 watch(reverseOrder, updateDisplayList);
 
 /*
@@ -215,6 +219,7 @@ const onMouseUp = (event) => {
 const updateDraggingSelection = (min, max, isRemoving) => {
   for (let i = 0; i < storeList.kanjiList.length; i++) {
     const kanji = getDisplayedKanjiByIndex(i);
+    if (!kanji) continue; // kanji was in ignored level
     if (i < min || i > max) {
       kanji.selectedWhileDragging = false;
       kanji.unselectedWhileDragging = false;

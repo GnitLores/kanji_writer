@@ -7,14 +7,14 @@ export const useStoreOptions = defineStore("storeOptions", {
     return {
       // Kanji display options:
       doDisplayLevels: true,
-      displayLevelNames: [],
+      ignoredLevels: [],
       showDisplayOptions: false,
       reverseOrder: false,
     };
   },
   actions: {
     isLevelDisplayed(name) {
-      return this.displayLevelNames.includes(name);
+      return !this.ignoredLevels.includes(name);
     },
   },
 });

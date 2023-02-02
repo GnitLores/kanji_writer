@@ -46,10 +46,6 @@ export const useStoreList = defineStore("storeList", {
       this.levelNames = docSnap.data().levelNames;
       this.levelIndices = docSnap.data().levelList;
 
-      // Initialize list of levelnames to display (checkboxes are bound to this list)
-      const storeOptions = useStoreOptions();
-      storeOptions.displayLevelNames = [...this.levelNames];
-
       this.sortKanjiByLevel();
     },
     sortKanjiByLevel() {

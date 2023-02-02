@@ -74,7 +74,7 @@
           <input
             type="checkbox"
             :value="level"
-            v-model="storeOptions.displayLevelNames"
+            v-model="storeOptions.ignoredLevels"
           />
           <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
