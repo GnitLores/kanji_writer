@@ -64,6 +64,8 @@ const displayList = ref([]);
 let displayMap = [];
 
 const updateDisplayList = () => {
+  const selections = getAllSelectedKanji();
+
   // Create deep copy of kanji sorted by levels:
   const data = JSON.parse(JSON.stringify(storeList.kanjiByLevel));
 
@@ -86,7 +88,27 @@ const updateDisplayList = () => {
   } else {
     setDisplayListNoLevels(data);
   }
+  applyKanjiSelections(selections);
   updateSelectionStats();
+};
+
+const getAllSelectedKanji = () => {
+  // Store all selections before updating displaylist
+  const selectedKanji = [];
+  displayList.value.forEach((level) => {
+    level.kanji.forEach((kanji) => {
+      if (kanji.selected) selectedKanji.push(kanji.kanji);
+    });
+  });
+  return selectedKanji;
+};
+
+const applyKanjiSelections = (selectedKanji) => {
+  // Reapply selections after updating displaylist, ignoring ignored levels.
+  selectedKanji.forEach((char) => {
+    const kanji = getDisplayedKanji(char);
+    if (kanji) kanji.selected = true;
+  });
 };
 
 const setDisplayListByLevels = (data) => {
@@ -130,24 +152,22 @@ const setDisplayListNoLevels = (data) => {
   displayList.value = [
     {
       kanji: collapsedList,
-      name: "All displayed levels",
+      name: "All levels",
       doDisplay: true,
     },
   ];
 };
 
 const getDisplayedKanji = (char) => {
-  // Get display list kanji object by char
+  // Get display list kanji object by char. Returns null for kanji in ignored levels.
   const indices = displayMap.get(char);
-  if (indices) {
-    return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
-  } else {
-    return null;
-  }
+  if (!indices) return null;
+  if (!displayList.value[indices.levelIdx].doDisplay) return null;
+  return displayList.value[indices.levelIdx].kanji[indices.idxInLevel];
 };
 
 const getDisplayedKanjiByIndex = (idx) => {
-  // Get display list kanji object by index
+  // Get display list kanji object by index. Returns null for kanji in ignored levels.
   return getDisplayedKanji(storeList.kanjiList[idx].kanji);
 };
 
@@ -354,6 +374,7 @@ Lifecycle:
 */
 
 onMounted(() => {
+  storeList.sortKanjiByLevel(); // list is updated by watching kanji sorted by level
   document.addEventListener("mouseup", onMouseUp);
 });
 onBeforeUnmount(() => {

@@ -69,7 +69,7 @@
     -->
     <transition name="slide">
       <div v-show="storeOptions.showDisplayOptions" class="flex ml-4">
-        <p class="text-sky-200 mr-4 font-bold">Display Levels:</p>
+        <p class="text-sky-200 mr-4 font-bold">Ignore:</p>
         <div v-for="level in storeList.levelNames" :key="level">
           <input
             type="checkbox"
