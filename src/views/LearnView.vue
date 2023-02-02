@@ -21,7 +21,7 @@ const storeOptions = useStoreOptions();
 const storeList = useStoreList();
 
 const onKanjiRangeSelected = () => {
-  storeList.applyDraggingSelection();
+  // storeList.applyDraggingSelection();
 };
 </script>
 

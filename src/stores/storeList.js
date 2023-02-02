@@ -13,8 +13,6 @@ export const useStoreList = defineStore("storeList", {
       levelNames: [],
       levelIndices: [],
       kanjiByLevel: [],
-      displayList: [],
-      displayMap: [],
     };
   },
   actions: {
@@ -56,9 +54,9 @@ export const useStoreList = defineStore("storeList", {
     },
     sortKanjiByLevel() {
       // Initialize list of level objects:
-      this.kanjiByLevel = [];
+      const data = [];
       this.levelNames.forEach((name) => {
-        this.kanjiByLevel.push({
+        data.push({
           name,
           kanji: [],
         });
@@ -72,161 +70,10 @@ export const useStoreList = defineStore("storeList", {
           mainIdx: mainIdx,
           selected: false,
         };
-        this.kanjiByLevel[levelIdx].kanji.push(target);
-      });
-      this.updateDisplayList();
-    },
-    updateDisplayList() {
-      const storeOptions = useStoreOptions();
-
-      // Create deep copy of kanji sorted by levels:
-      const data = JSON.parse(JSON.stringify(this.kanjiByLevel));
-
-      data.forEach((level) => {
-        level.kanji.forEach((kanji) => {
-          kanji.selectedWhileDragging = false;
-          kanji.unSelectedWhileDragging = false;
-        });
+        data[levelIdx].kanji.push(target);
       });
 
-      // Reverse display list if ascending order:
-      if (storeOptions.reverseOrder) {
-        data.reverse();
-        for (const level of data) level.kanji.reverse();
-      }
-
-      // Handle processing that differs if levels are not displayed
-      if (storeOptions.doDisplayLevels) {
-        this.setDisplayListByLevels(data, storeOptions.displayLevelNames);
-      } else {
-        this.setDisplayListNoLevels(data, storeOptions.displayLevelNames);
-      }
-      this.updateSelectionStats();
-    },
-    setDisplayListByLevels(data, displaylevels) {
-      // Toggle display of each level and mark the level that is displayed first:
-      let displayedLevelFound = false;
-      data.forEach((level) => {
-        level.doDisplay = displaylevels.includes(level.name);
-        level.firstDisplayedLevel =
-          !displayedLevelFound && level.doDisplay ? true : false;
-        if (level.firstDisplayedLevel) displayedLevelFound = true;
-      });
-
-      // Map kanji to level and index in level of displayed list:
-      const map = new Map();
-      data.forEach((level, levelIdx) => {
-        level.kanji.forEach((kanji, idxInLevel) => {
-          map.set(kanji.kanji, { levelIdx, idxInLevel });
-        });
-      });
-      this.displayMap = map;
-
-      // Assign to display list to update display:
-      this.displayList = data;
-    },
-    setDisplayListNoLevels(data, displaylevels) {
-      // Collapse kanji list while excluding hidden levels:
-      const collapsedList = [];
-      this.levelNames.forEach((name, index) => {
-        if (displaylevels.includes(name))
-          collapsedList.push(...data[index].kanji);
-      });
-
-      // Map kanji to level and index in level of displayed list:
-      const map = new Map();
-      for (let i = 0; i < collapsedList.length; i++) {
-        map.set(collapsedList[i].kanji, {
-          levelIdx: 0,
-          idxInLevel: i,
-        });
-      }
-      this.displayMap = map;
-
-      // Assign to display list to update display:
-      this.displayList = [
-        {
-          kanji: collapsedList,
-          name: "All displayed levels",
-          doDisplay: true,
-          firstDisplayedLevel: true,
-        },
-      ];
-    },
-    getDisplayedKanji(char) {
-      // Get desiplay list kanji object by char
-      const indices = this.displayMap.get(char);
-      return this.displayList[indices.levelIdx].kanji[indices.idxInLevel];
-    },
-    getDisplayedKanjiByIndex(idx) {
-      // Get desiplay list kanji object by index
-      return this.getDisplayedKanji(this.kanjiList[idx].kanji);
-    },
-    // TODO: make dragging selection more efficient by only adding and removing changed indices instead of iterating over all indices.
-    updateDraggingSelection(min, max, isRemoving) {
-      for (let i = 0; i < this.kanjiList.length; i++) {
-        const kanji = this.getDisplayedKanjiByIndex(i);
-        if (i < min || i > max) {
-          kanji.selectedWhileDragging = false;
-          kanji.unselectedWhileDragging = false;
-          continue;
-        }
-        if (isRemoving) {
-          kanji.selectedWhileDragging = false;
-          kanji.unselectedWhileDragging = true;
-        } else {
-          kanji.selectedWhileDragging = true;
-          kanji.unselectedWhileDragging = false;
-        }
-      }
-    },
-    applyDraggingSelection() {
-      this.displayList.forEach((level) => {
-        level.kanji.forEach((kanji) => {
-          kanji.selected =
-            (kanji.selected && !kanji.unselectedWhileDragging) ||
-            (!kanji.selected && kanji.selectedWhileDragging);
-          kanji.selectedWhileDragging = false;
-          kanji.unselectedWhileDragging = false;
-        });
-      });
-      this.updateSelectionStats();
-    },
-    toggleLevelSelection(kanjiList) {
-      let nSelected = 0;
-      kanjiList.forEach((kanji) => {
-        if (!kanji.selected) {
-          kanji.selected = true;
-          nSelected += 1;
-        }
-      });
-      if (nSelected === 0) {
-        kanjiList.forEach((kanji) => {
-          kanji.selected = false;
-        });
-      }
-      this.updateSelectionStats();
-    },
-    updateSelectionStats() {
-      this.displayList.forEach((level) => {
-        let nSelected = 0;
-        level.kanji.forEach((kanji) => {
-          nSelected += kanji.selected;
-        });
-        level.nrOfSelected = nSelected;
-      });
-    },
-    addAllUpToLevel(levelName) {
-      let levelFound = false;
-      this.displayList.forEach((level) => {
-        level.kanji.forEach((kanji) => {
-          kanji.selected = !levelFound;
-          kanji.selectedWhileDragging = false;
-          kanji.unSelectedWhileDragging = false;
-        });
-        if (!levelFound) levelFound = level.name === levelName;
-      });
-      this.updateSelectionStats();
+      this.kanjiByLevel = data;
     },
   },
 });

@@ -12,5 +12,9 @@ export const useStoreOptions = defineStore("storeOptions", {
       reverseOrder: false,
     };
   },
-  actions: {},
+  actions: {
+    isLevelDisplayed(name) {
+      return this.displayLevelNames.includes(name);
+    },
+  },
 });

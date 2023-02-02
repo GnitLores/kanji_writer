@@ -8,26 +8,28 @@
     <div class="flex my-1">
       <div class="selection-bar grow mx-2">
         <div
-          v-for="levelList in storeList.displayList"
-          v-show="levelList.doDisplay"
-          :key="levelList.name"
+          v-for="level in selectionStats.levels"
+          v-show="level.doDisplay"
+          :key="level.name"
           class="inline-block relative bg-gray-900 border-solid border-r-2 border-y-2 border-sky-700 h-full"
-          :class="[levelList.firstDisplayedLevel ? 'border-l-2' : '']"
+          :class="[
+            level.name === selectionStats.firstDisplayedLevel
+              ? 'border-l-2'
+              : '',
+          ]"
           :style="{
-            width: `${100 * (1 / storeList.displayList.length)}%`,
+            width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
           }"
-          @click.prevent="storeList.addAllUpToLevel(levelList.name)"
+          @click.prevent="emit('levelClicked', level.name)"
         >
           <span
             class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400"
-            >{{ levelList.name }}</span
+            >{{ level.name }}</span
           >
           <div
             class="bg-sky-700 w-1/2 h-full opacity-70 z-0"
             :style="{
-              width: `${
-                100 * (levelList.nrOfSelected / levelList.kanji.length)
-              }%`,
+              width: `${100 * (level.nSelected / level.nKanji)}%`,
             }"
           ></div>
         </div>
@@ -73,7 +75,6 @@
             type="checkbox"
             :value="level"
             v-model="storeOptions.displayLevelNames"
-            @change="storeList.updateDisplayList"
           />
           <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
@@ -87,15 +88,10 @@
           <input
             class="mr-4"
             type="checkbox"
-            @change="storeList.updateDisplayList"
             v-model="storeOptions.reverseOrder"
           />
           <label class="text-sky-200 font-bold">By level: </label>
-          <input
-            type="checkbox"
-            @change="storeList.updateDisplayList"
-            v-model="storeOptions.doDisplayLevels"
-          />
+          <input type="checkbox" v-model="storeOptions.doDisplayLevels" />
         </div>
       </div>
     </transition>
@@ -110,6 +106,7 @@ import {
   onBeforeUnmount,
   onUnmounted,
   computed,
+  defineProps,
 } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -117,11 +114,14 @@ import { useStoreOptions } from "@/stores/storeOptions";
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
-// const firstDisplayLevelName = computed(() => {
-//   for (let x of storeKanji) {
-//     text += x;
-//   }
-// });
+const props = defineProps({
+  selectionStats: {
+    type: Object,
+    default: true,
+  },
+});
+
+const emit = defineEmits(["levelClicked"]);
 </script>
 
 <style scoped>
