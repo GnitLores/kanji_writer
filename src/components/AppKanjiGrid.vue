@@ -1,4 +1,17 @@
 <template>
+  <VueSimpleContextMenu
+    element-id="level-title-context"
+    :options="levelTitleContextOptions"
+    ref="levelTitleContextRef"
+    @option-clicked="levelTitleContextOptionClicked"
+  />
+  <VueSimpleContextMenu
+    element-id="kanji-context"
+    :options="kanjiContextOptions"
+    ref="kanjiContextRef"
+    @option-clicked="kanjiContextOptionClicked"
+  />
+
   <AppKanjiGridHeader
     @levelClicked="selectAllUpToLevel"
     :selectionStats="selectionStats"
@@ -12,6 +25,7 @@
       <div class="flex justify-evenly">
         <h3
           @click.prevent="toggleLevelSelection(levelList.kanji)"
+          @contextmenu.prevent.stop="onLevelTitleContext($event, item)"
           class="inline-block text-sky-200 cursor-pointer hover:text-green-400 text-center mb-1 mt-2 font-bold tracking-wide"
         >
           {{ levelList.name }}:
@@ -30,6 +44,7 @@
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"
         @mouseenter.prevent="onKanjiMouseEnter"
+        @contextmenu.prevent.stop="onKanjiContext($event, item)"
       >
         {{ kanji.kanji }}
       </div>
@@ -51,9 +66,45 @@ import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
+import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
+
+/*
+===============
+Context Menus:
+===============
+*/
+const levelTitleContextOptions = [
+  { name: "option1", class: "myClass" },
+  { name: "option2", class: "myClass" },
+  { name: "", class: "myClass", type: "divider" },
+  { name: "option3", class: "myClass" },
+];
+const levelTitleContextRef = ref(null);
+const onLevelTitleContext = (event, item) => {
+  if (kanjiContextRef.value) kanjiContextRef.value.hideContextMenu();
+  levelTitleContextRef.value.showMenu(event, item);
+};
+const levelTitleContextOptionClicked = (event) => {
+  window.alert(JSON.stringify(event));
+};
+
+const kanjiContextOptions = [
+  { name: "kanji option1", class: "myClass" },
+  { name: "kanji option2", class: "myClass" },
+  { name: "", class: "myClass", type: "divider" },
+  { name: "kanji option3", class: "myClass" },
+];
+const kanjiContextRef = ref(null);
+const onKanjiContext = (event, item) => {
+  if (levelTitleContextRef.value) levelTitleContextRef.value.hideContextMenu();
+  kanjiContextRef.value.showMenu(event, item);
+};
+const kanjiContextOptionClicked = (event) => {
+  window.alert(JSON.stringify(event));
+};
 
 /*
 ===============
