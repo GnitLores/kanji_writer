@@ -225,13 +225,15 @@ const updateDraggingSelection = (min, max, isRemoving) => {
 
 const applyDraggingSelection = () => {
   displayList.value.forEach((level) => {
-    level.kanji.forEach((kanji) => {
-      kanji.selected =
-        (kanji.selected && !kanji.unselectedWhileDragging) ||
-        (!kanji.selected && kanji.selectedWhileDragging);
-      kanji.selectedWhileDragging = false;
-      kanji.unselectedWhileDragging = false;
-    });
+    if (level.doDisplay) {
+      level.kanji.forEach((kanji) => {
+        kanji.selected =
+          (kanji.selected && !kanji.unselectedWhileDragging) ||
+          (!kanji.selected && kanji.selectedWhileDragging);
+        kanji.selectedWhileDragging = false;
+        kanji.unselectedWhileDragging = false;
+      });
+    }
   });
   updateSelectionStats();
 };
@@ -255,12 +257,14 @@ const toggleLevelSelection = (kanjiList) => {
 const selectAllUpToLevel = (levelName) => {
   let levelFound = false;
   displayList.value.forEach((level) => {
-    level.kanji.forEach((kanji) => {
-      kanji.selected = !levelFound;
-      kanji.selectedWhileDragging = false;
-      kanji.unSelectedWhileDragging = false;
-    });
-    if (!levelFound) levelFound = level.name === levelName;
+    if (level.doDisplay) {
+      level.kanji.forEach((kanji) => {
+        kanji.selected = !levelFound;
+        kanji.selectedWhileDragging = false;
+        kanji.unSelectedWhileDragging = false;
+      });
+      if (!levelFound) levelFound = level.name === levelName;
+    }
   });
   updateSelectionStats();
 };
