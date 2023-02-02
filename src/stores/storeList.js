@@ -217,16 +217,9 @@ export const useStoreList = defineStore("storeList", {
       });
     },
     addAllUpToLevel(levelName) {
-      // this.displayList.forEach((level) => {
-      //   level.kanji.forEach((kanji) => {
-      //     kanji.selected = true;
-      //   });
-      //   if (level.name === levelName) return;
-      // });
       let levelFound = false;
-      this.displayList.forEach((level, levelIdx) => {
-        level.kanji.forEach((kanji, kanjiIdx) => {
-          // this.displayList[levelIdx].kanji[kanjiIdx].selected = !levelFound;
+      this.displayList.forEach((level) => {
+        level.kanji.forEach((kanji) => {
           kanji.selected = !levelFound;
           kanji.selectedWhileDragging = false;
           kanji.unSelectedWhileDragging = false;
