@@ -3,7 +3,7 @@
     @levelClicked="selectAllUpToLevel"
     :selectionStats="selectionStats"
   />
-  <div class="select-none">
+  <div v-if="!storeOptions.allLevelsIgnored()" class="select-none">
     <div
       v-for="levelList in displayList"
       v-show="levelList.doDisplay"

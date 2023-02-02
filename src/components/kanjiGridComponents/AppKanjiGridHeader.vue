@@ -9,7 +9,7 @@
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats.levels"
-          v-show="level.doDisplay"
+          v-show="level.doDisplay && !storeOptions.allLevelsIgnored()"
           :key="level.name"
           class="inline-block relative bg-gray-900 border-solid border-r-2 border-y-2 border-sky-700 h-full"
           :class="[
