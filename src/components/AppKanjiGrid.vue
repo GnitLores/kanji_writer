@@ -19,7 +19,9 @@
       <div class="flex justify-evenly">
         <h3
           @click.prevent="toggleLevelSelection(level.kanji)"
-          @contextmenu.prevent.stop="onLevelTitleContext($event, item)"
+          @contextmenu.prevent.stop="
+            onLevelTitleContext($event, level.levelIdx)
+          "
           class="inline-block text-sky-200 cursor-pointer hover:text-green-400 text-center mb-1 mt-2 font-bold tracking-wide"
         >
           {{ level.name }}:
@@ -76,6 +78,7 @@ const {
   applyDraggingSelection,
   toggleLevelSelection,
   selectAllUpToLevel,
+  selectAllFromLevel,
   toggleKanjiSelection,
 } = useDisplayData();
 
@@ -103,13 +106,31 @@ const {
 } = useContextMenu();
 
 const levelTitleContextOptions = [
-  { name: "option1", class: "myClass" },
-  { name: "option2", class: "myClass" },
-  { name: "", class: "myClass", type: "divider" },
-  { name: "option3", class: "myClass" },
+  { name: "Select up to", class: "select-up-to" },
+  { name: "Deselect up to", class: "deselect-up-to" },
+  { type: "divider" },
+  { name: "Select from", class: "select-from" },
+  { name: "Deselect from", class: "deselect-from" },
 ];
 const levelTitleContextOptionClicked = (event) => {
-  window.alert(JSON.stringify(event));
+  const levelIdx = event.item;
+  const selection = event.option.class;
+  switch (selection) {
+    case "select-up-to":
+      selectAllUpToLevel(levelIdx, true, false);
+      break;
+    case "deselect-up-to":
+      selectAllUpToLevel(levelIdx, false, false);
+      break;
+    case "select-from":
+      selectAllFromLevel(levelIdx, true, false);
+      break;
+    case "deselect-from":
+      selectAllFromLevel(levelIdx, false, false);
+      break;
+    default:
+      console.log("Invalid selection");
+  }
 };
 
 const kanjiContextOptions = [
