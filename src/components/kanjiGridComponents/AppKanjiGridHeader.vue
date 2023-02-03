@@ -1,4 +1,11 @@
 <template>
+  <VueSimpleContextMenu
+    element-id="header-bar-context"
+    :options="headerBarContextOptions"
+    ref="headerBarContextRef"
+    @option-clicked="headerBarContextOptionClicked"
+  />
+
   <div class="select-none">
     <!--
     ===============
@@ -9,13 +16,14 @@
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats.levels"
-          v-show="true || !storeOptions.allLevelsIgnored()"
+          v-show="!storeOptions.allLevelsIgnored()"
           :key="level.name"
           class="inline-block relative bg-gray-900 border-solid first:border-l-2 border-r-2 border-y-2 border-sky-700 h-full"
           :style="{
             width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
           }"
           @click.prevent="selectAllUpToLevel(level.levelIdx)"
+          @contextmenu.prevent.stop="onHeaderBarContext($event, level.levelIdx)"
         >
           <span
             class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400"
@@ -100,18 +108,61 @@ import {
 } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
+import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
+import { useContextMenu } from "@/use/useContextMenu";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
-const { selectionStats, selectAllUpToLevel } = useDisplayData();
+const { selectionStats, selectLevel, selectAllUpToLevel, selectAllFromLevel } =
+  useDisplayData();
 
 const toggleDisplayOptions = () => {
   storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions;
 };
-
-const emit = defineEmits(["levelClicked"]);
+/*
+===============
+Context Menus:
+===============
+*/
+const { onHeaderBarContext, headerBarContextRef } = useContextMenu();
+const headerBarContextOptions = [
+  { name: "Select level", class: "select-level" },
+  { name: "Deselect level", class: "deselect-level" },
+  { type: "divider" },
+  { name: "Select up to", class: "select-up-to" },
+  { name: "Deselect up to", class: "deselect-up-to" },
+  { type: "divider" },
+  { name: "Select from", class: "select-from" },
+  { name: "Deselect from", class: "deselect-from" },
+];
+const headerBarContextOptionClicked = (event) => {
+  const levelIdx = event.item;
+  const selection = event.option.class;
+  switch (selection) {
+    case "select-level":
+      selectLevel(levelIdx, true);
+      break;
+    case "deselect-level":
+      selectLevel(levelIdx, false);
+      break;
+    case "select-up-to":
+      selectAllUpToLevel(levelIdx, true, false);
+      break;
+    case "deselect-up-to":
+      selectAllUpToLevel(levelIdx, false, false);
+      break;
+    case "select-from":
+      selectAllFromLevel(levelIdx, true, false);
+      break;
+    case "deselect-from":
+      selectAllFromLevel(levelIdx, false, false);
+      break;
+    default:
+      console.log("Invalid selection");
+  }
+};
 </script>
 
 <style scoped>

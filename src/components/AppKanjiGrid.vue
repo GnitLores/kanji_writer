@@ -62,6 +62,7 @@ import { useStoreList } from "@/stores/storeList";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
+import { useContextMenu } from "@/use/useContextMenu";
 
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
@@ -93,17 +94,20 @@ watch(reverseOrder, updateDisplayData);
 Context Menus:
 ===============
 */
+const {
+  onLevelTitleContext,
+  levelTitleContextRef,
+
+  onKanjiContext,
+  kanjiContextRef,
+} = useContextMenu();
+
 const levelTitleContextOptions = [
   { name: "option1", class: "myClass" },
   { name: "option2", class: "myClass" },
   { name: "", class: "myClass", type: "divider" },
   { name: "option3", class: "myClass" },
 ];
-const levelTitleContextRef = ref(null);
-const onLevelTitleContext = (event, item) => {
-  if (kanjiContextRef.value) kanjiContextRef.value.hideContextMenu();
-  levelTitleContextRef.value.showMenu(event, item);
-};
 const levelTitleContextOptionClicked = (event) => {
   window.alert(JSON.stringify(event));
 };
@@ -114,11 +118,7 @@ const kanjiContextOptions = [
   { name: "", class: "myClass", type: "divider" },
   { name: "kanji option3", class: "myClass" },
 ];
-const kanjiContextRef = ref(null);
-const onKanjiContext = (event, item) => {
-  if (levelTitleContextRef.value) levelTitleContextRef.value.hideContextMenu();
-  kanjiContextRef.value.showMenu(event, item);
-};
+
 const kanjiContextOptionClicked = (event) => {
   window.alert(JSON.stringify(event));
 };

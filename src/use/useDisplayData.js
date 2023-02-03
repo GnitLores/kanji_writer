@@ -220,6 +220,13 @@ Selection Stats
     updateSelectionStats();
   };
 
+  const selectLevel = (levelIdx, toggle = true) => {
+    applyToAll((kanji) => {
+      if (kanji.levelIdx === levelIdx) kanji.selected = toggle;
+    });
+    updateSelectionStats();
+  };
+
   const toggleLevelSelection = (kanjiList) => {
     let nSelected = 0;
     kanjiList.forEach((kanji) => {
@@ -236,11 +243,32 @@ Selection Stats
     updateSelectionStats();
   };
 
-  const selectAllUpToLevel = (levelIdx) => {
+  const selectAllUpToLevel = (
+    levelIdx, // cutoff
+    toggle = true, // value to set
+    enforceOutsideRange = true // enforce opposite value outside range
+  ) => {
     applyToAll((kanji) => {
-      kanji.selected = kanji.levelIdx <= levelIdx;
-      kanji.selectedWhileDragging = false;
-      kanji.unSelectedWhileDragging = false;
+      if (kanji.levelIdx <= levelIdx) {
+        kanji.selected = toggle;
+      } else {
+        if (enforceOutsideRange) kanji.selected = !toggle;
+      }
+    });
+    updateSelectionStats();
+  };
+
+  const selectAllFromLevel = (
+    levelIdx, // cutoff
+    toggle = true, // value to set
+    enforceOutsideRange = true // enforce opposite value outside range
+  ) => {
+    applyToAll((kanji) => {
+      if (kanji.levelIdx >= levelIdx) {
+        kanji.selected = toggle;
+      } else {
+        if (enforceOutsideRange) kanji.selected = !toggle;
+      }
     });
     updateSelectionStats();
   };
@@ -265,8 +293,10 @@ Selection Stats
     getDisplayedKanjiByCount,
     updateDraggingSelection,
     applyDraggingSelection,
+    selectLevel,
     toggleLevelSelection,
     selectAllUpToLevel,
+    selectAllFromLevel,
     toggleKanjiSelection,
   };
 }
