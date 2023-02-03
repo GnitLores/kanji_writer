@@ -115,7 +115,7 @@ import { useContextMenu } from "@/use/useContextMenu";
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
-const { selectionStats, selectLevel, selectAllUpToLevel, selectAllFromLevel } =
+const { selectionStats, selectAllUpToLevel, selectAllFromLevel } =
   useDisplayData();
 
 const toggleDisplayOptions = () => {
@@ -126,43 +126,12 @@ const toggleDisplayOptions = () => {
 Context Menus:
 ===============
 */
-const { onHeaderBarContext, headerBarContextRef } = useContextMenu();
-const headerBarContextOptions = [
-  { name: "Select level", class: "select-level" },
-  { name: "Deselect level", class: "deselect-level" },
-  { type: "divider" },
-  { name: "Select up to", class: "select-up-to" },
-  { name: "Deselect up to", class: "deselect-up-to" },
-  { type: "divider" },
-  { name: "Select from", class: "select-from" },
-  { name: "Deselect from", class: "deselect-from" },
-];
-const headerBarContextOptionClicked = (event) => {
-  const levelIdx = event.item;
-  const selection = event.option.class;
-  switch (selection) {
-    case "select-level":
-      selectLevel(levelIdx, true);
-      break;
-    case "deselect-level":
-      selectLevel(levelIdx, false);
-      break;
-    case "select-up-to":
-      selectAllUpToLevel(levelIdx, true, false);
-      break;
-    case "deselect-up-to":
-      selectAllUpToLevel(levelIdx, false, false);
-      break;
-    case "select-from":
-      selectAllFromLevel(levelIdx, true, false);
-      break;
-    case "deselect-from":
-      selectAllFromLevel(levelIdx, false, false);
-      break;
-    default:
-      console.log("Invalid selection");
-  }
-};
+const {
+  headerBarContextOptions,
+  headerBarContextOptionClicked,
+  onHeaderBarContext,
+  headerBarContextRef,
+} = useContextMenu();
 </script>
 
 <style scoped>

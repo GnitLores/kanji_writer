@@ -77,10 +77,6 @@ const {
   updateDraggingSelection,
   applyDraggingSelection,
   toggleLevelSelection,
-  selectAllUpToLevel,
-  selectAllFromLevel,
-  selectAllUpToKanji,
-  selectAllFromKanji,
   toggleKanjiSelection,
 } = useDisplayData();
 
@@ -100,74 +96,16 @@ Context Menus:
 ===============
 */
 const {
+  levelTitleContextOptions,
+  levelTitleContextOptionClicked,
   onLevelTitleContext,
   levelTitleContextRef,
 
+  kanjiContextOptions,
+  kanjiContextOptionClicked,
   onKanjiContext,
   kanjiContextRef,
 } = useContextMenu();
-
-const levelTitleContextOptions = [
-  { name: "Select up to", class: "select-up-to" },
-  { name: "Deselect up to", class: "deselect-up-to" },
-  { type: "divider" },
-  { name: "Select from", class: "select-from" },
-  { name: "Deselect from", class: "deselect-from" },
-];
-const levelTitleContextOptionClicked = (event) => {
-  const levelIdx = event.item;
-  const selection = event.option.class;
-  switch (selection) {
-    case "select-up-to":
-      selectAllUpToLevel(levelIdx, true, false);
-      break;
-    case "deselect-up-to":
-      selectAllUpToLevel(levelIdx, false, false);
-      break;
-    case "select-from":
-      selectAllFromLevel(levelIdx, true, false);
-      break;
-    case "deselect-from":
-      selectAllFromLevel(levelIdx, false, false);
-      break;
-    default:
-      console.log("Invalid selection");
-  }
-};
-
-const kanjiContextOptions = [
-  { name: "Display details", class: "display-details" },
-  { type: "divider" },
-  { name: "Select up to", class: "select-up-to" },
-  { name: "Deselect up to", class: "deselect-up-to" },
-  { type: "divider" },
-  { name: "Select from", class: "select-from" },
-  { name: "Deselect from", class: "deselect-from" },
-];
-
-const kanjiContextOptionClicked = (event) => {
-  const levelIdx = event.item;
-  const selection = event.option.class;
-  switch (selection) {
-    case "display-details":
-      console.log("todo");
-      break;
-    case "select-up-to":
-      selectAllUpToKanji(levelIdx, true, false);
-      break;
-    case "deselect-up-to":
-      selectAllUpToKanji(levelIdx, false, false);
-      break;
-    case "select-from":
-      selectAllFromKanji(levelIdx, true, false);
-      break;
-    case "deselect-from":
-      selectAllFromKanji(levelIdx, false, false);
-      break;
-    default:
-      console.log("Invalid selection");
-  }
-};
 
 /*
 ===============
