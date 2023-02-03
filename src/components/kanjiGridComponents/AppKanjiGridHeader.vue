@@ -104,7 +104,6 @@ import {
   onBeforeUnmount,
   onUnmounted,
   computed,
-  defineProps,
 } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
