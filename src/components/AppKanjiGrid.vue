@@ -40,7 +40,7 @@
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"
         @mouseenter.prevent="onKanjiMouseEnter"
-        @contextmenu.prevent.stop="onKanjiContext($event, item)"
+        @contextmenu.prevent.stop="onKanjiContext($event, kanji.char)"
       >
         {{ kanji.char }}
       </div>
@@ -79,6 +79,8 @@ const {
   toggleLevelSelection,
   selectAllUpToLevel,
   selectAllFromLevel,
+  selectAllUpToKanji,
+  selectAllFromKanji,
   toggleKanjiSelection,
 } = useDisplayData();
 
@@ -134,14 +136,37 @@ const levelTitleContextOptionClicked = (event) => {
 };
 
 const kanjiContextOptions = [
-  { name: "kanji option1", class: "myClass" },
-  { name: "kanji option2", class: "myClass" },
-  { name: "", class: "myClass", type: "divider" },
-  { name: "kanji option3", class: "myClass" },
+  { name: "Display details", class: "display-details" },
+  { type: "divider" },
+  { name: "Select up to", class: "select-up-to" },
+  { name: "Deselect up to", class: "deselect-up-to" },
+  { type: "divider" },
+  { name: "Select from", class: "select-from" },
+  { name: "Deselect from", class: "deselect-from" },
 ];
 
 const kanjiContextOptionClicked = (event) => {
-  window.alert(JSON.stringify(event));
+  const levelIdx = event.item;
+  const selection = event.option.class;
+  switch (selection) {
+    case "display-details":
+      console.log("todo");
+      break;
+    case "select-up-to":
+      selectAllUpToKanji(levelIdx, true, false);
+      break;
+    case "deselect-up-to":
+      selectAllUpToKanji(levelIdx, false, false);
+      break;
+    case "select-from":
+      selectAllFromKanji(levelIdx, true, false);
+      break;
+    case "deselect-from":
+      selectAllFromKanji(levelIdx, false, false);
+      break;
+    default:
+      console.log("Invalid selection");
+  }
 };
 
 /*

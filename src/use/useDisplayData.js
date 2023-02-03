@@ -273,6 +273,38 @@ Selection Stats
     updateSelectionStats();
   };
 
+  const selectAllUpToKanji = (
+    char, // cutoff
+    toggle = true, // value to set
+    enforceOutsideRange = true // enforce opposite value outside range
+  ) => {
+    const cnt = getDisplayedKanjiByChar(char).cnt;
+    applyToAll((kanji) => {
+      if (kanji.cnt <= cnt) {
+        kanji.selected = toggle;
+      } else {
+        if (enforceOutsideRange) kanji.selected = !toggle;
+      }
+    });
+    updateSelectionStats();
+  };
+
+  const selectAllFromKanji = (
+    char, // cutoff
+    toggle = true, // value to set
+    enforceOutsideRange = true // enforce opposite value outside range
+  ) => {
+    const cnt = getDisplayedKanjiByChar(char).cnt;
+    applyToAll((kanji) => {
+      if (kanji.cnt >= cnt) {
+        kanji.selected = toggle;
+      } else {
+        if (enforceOutsideRange) kanji.selected = !toggle;
+      }
+    });
+    updateSelectionStats();
+  };
+
   const toggleKanjiSelection = (char) => {
     const kanjiRef = getDisplayedKanjiByChar(char);
     const kanji =
@@ -297,6 +329,8 @@ Selection Stats
     toggleLevelSelection,
     selectAllUpToLevel,
     selectAllFromLevel,
+    selectAllUpToKanji,
+    selectAllFromKanji,
     toggleKanjiSelection,
   };
 }
