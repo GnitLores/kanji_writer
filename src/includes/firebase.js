@@ -17,8 +17,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-// console.log(db);
-// const kanjiCollection = db.collection("kanji");
 const kanjiCollection = collection(db, "kanji");
 const listCollection = collection(db, "lists");
 

@@ -9,18 +9,13 @@
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats.levels"
-          v-show="level.doDisplay && !storeOptions.allLevelsIgnored()"
+          v-show="true || !storeOptions.allLevelsIgnored()"
           :key="level.name"
-          class="inline-block relative bg-gray-900 border-solid border-r-2 border-y-2 border-sky-700 h-full"
-          :class="[
-            level.name === selectionStats.firstDisplayedLevel
-              ? 'border-l-2'
-              : '',
-          ]"
+          class="inline-block relative bg-gray-900 border-solid first:border-l-2 border-r-2 border-y-2 border-sky-700 h-full"
           :style="{
             width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
           }"
-          @click.prevent="emit('levelClicked', level.name)"
+          @click.prevent="selectAllUpToLevel(level.levelIdx)"
         >
           <span
             class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400"
@@ -47,12 +42,7 @@
             <i class="fas fa-angles-down text-sky-200"></i
           ></span>
         </div>
-        <div
-          v-else
-          @click.prevent="
-            storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions
-          "
-        >
+        <div v-else @click.prevent="toggleDisplayOptions">
           <span
             ><p class="text-sky-200 inline-block mr-2 font-bold underline">
               Options
@@ -110,16 +100,16 @@ import {
 } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useDisplayData } from "@/use/useDisplayData";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
-const props = defineProps({
-  selectionStats: {
-    type: Object,
-    default: true,
-  },
-});
+const { selectionStats, selectAllUpToLevel } = useDisplayData();
+
+const toggleDisplayOptions = () => {
+  storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions;
+};
 
 const emit = defineEmits(["levelClicked"]);
 </script>
