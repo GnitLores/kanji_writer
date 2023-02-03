@@ -4,8 +4,8 @@ import { useStoreList } from "@/stores/storeList";
 
 const displayData = ref([]);
 const selectionStats = ref({});
-let displayMap = new Map();
-let displayList = [];
+let displayMap = ref(new Map());
+let displayList = ref([]);
 
 export function useDisplayData() {
   const storeOptions = useStoreOptions();
@@ -93,8 +93,8 @@ export function useDisplayData() {
       });
       level.levelIdx = levelIdx;
     });
-    displayMap = map;
-    displayList = list;
+    displayMap.value = map;
+    displayList.value = list;
   };
 
   const getSelections = () => {
@@ -118,11 +118,11 @@ export function useDisplayData() {
   };
 
   const getDisplayedKanjiByChar = (char) => {
-    return displayMap.get(char);
+    return displayMap.value.get(char);
   };
 
   const getDisplayedKanjiByCount = (cnt) => {
-    return displayList[cnt];
+    return displayList.value[cnt];
   };
 
   /*
@@ -158,7 +158,7 @@ Selection Stats
   };
 
   const getKanjiStatLevel = (char) => {
-    const indices = displayMap.get(char);
+    const indices = displayMap.value.get(char);
     return selectionStats.value.levels[indices.levelIdx];
   };
 
@@ -175,162 +175,16 @@ Selection Stats
     changeLevelStatsByAmount(getKanjiStatLevel(char), -1);
   };
 
-  /*
-  ===============
-  Dragging selection:
-  ===============
-  */
-
-  const applyToAll = (fun) => {
-    // Apply function to all kanji in such a way that reactivity is ensured.
-    for (const kanjiRef of displayList) {
-      // Accessing the display data indexed like this is necessary to ensure reactivity updates.
-      const kanji =
-        displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
-      fun(kanji);
-    }
-  };
-
-  // TODO: this seems to perform fine, but it would be more efficient to only add and remove changed indices instead of iterating over all indices.
-  const updateDraggingSelection = (min, max, isRemoving) => {
-    applyToAll((kanji) => {
-      if (kanji.cnt < min || kanji.cnt > max) {
-        kanji.selectedWhileDragging = false;
-        kanji.unselectedWhileDragging = false;
-        return;
-      }
-      if (isRemoving) {
-        kanji.selectedWhileDragging = false;
-        kanji.unselectedWhileDragging = true;
-      } else {
-        kanji.selectedWhileDragging = true;
-        kanji.unselectedWhileDragging = false;
-      }
-    });
-  };
-
-  const applyDraggingSelection = () => {
-    applyToAll((kanji) => {
-      kanji.selected =
-        (kanji.selected && !kanji.unselectedWhileDragging) ||
-        (!kanji.selected && kanji.selectedWhileDragging);
-      kanji.selectedWhileDragging = false;
-      kanji.unselectedWhileDragging = false;
-    });
-    updateSelectionStats();
-  };
-
-  const selectLevel = (levelIdx, toggle = true) => {
-    applyToAll((kanji) => {
-      if (kanji.levelIdx === levelIdx) kanji.selected = toggle;
-    });
-    updateSelectionStats();
-  };
-
-  const toggleLevelSelection = (kanjiList) => {
-    let nSelected = 0;
-    kanjiList.forEach((kanji) => {
-      if (!kanji.selected) {
-        kanji.selected = true;
-        nSelected += 1;
-      }
-    });
-    if (nSelected === 0) {
-      kanjiList.forEach((kanji) => {
-        kanji.selected = false;
-      });
-    }
-    updateSelectionStats();
-  };
-
-  const selectAllUpToLevel = (
-    levelIdx, // cutoff
-    toggle = true, // value to set
-    enforceOutsideRange = true // enforce opposite value outside range
-  ) => {
-    applyToAll((kanji) => {
-      if (kanji.levelIdx <= levelIdx) {
-        kanji.selected = toggle;
-      } else {
-        if (enforceOutsideRange) kanji.selected = !toggle;
-      }
-    });
-    updateSelectionStats();
-  };
-
-  const selectAllFromLevel = (
-    levelIdx, // cutoff
-    toggle = true, // value to set
-    enforceOutsideRange = true // enforce opposite value outside range
-  ) => {
-    applyToAll((kanji) => {
-      if (kanji.levelIdx >= levelIdx) {
-        kanji.selected = toggle;
-      } else {
-        if (enforceOutsideRange) kanji.selected = !toggle;
-      }
-    });
-    updateSelectionStats();
-  };
-
-  const selectAllUpToKanji = (
-    char, // cutoff
-    toggle = true, // value to set
-    enforceOutsideRange = true // enforce opposite value outside range
-  ) => {
-    const cnt = getDisplayedKanjiByChar(char).cnt;
-    applyToAll((kanji) => {
-      if (kanji.cnt <= cnt) {
-        kanji.selected = toggle;
-      } else {
-        if (enforceOutsideRange) kanji.selected = !toggle;
-      }
-    });
-    updateSelectionStats();
-  };
-
-  const selectAllFromKanji = (
-    char, // cutoff
-    toggle = true, // value to set
-    enforceOutsideRange = true // enforce opposite value outside range
-  ) => {
-    const cnt = getDisplayedKanjiByChar(char).cnt;
-    applyToAll((kanji) => {
-      if (kanji.cnt >= cnt) {
-        kanji.selected = toggle;
-      } else {
-        if (enforceOutsideRange) kanji.selected = !toggle;
-      }
-    });
-    updateSelectionStats();
-  };
-
-  const toggleKanjiSelection = (char) => {
-    const kanjiRef = getDisplayedKanjiByChar(char);
-    const kanji =
-      displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
-    kanji.selected = !kanji.selected;
-    if (kanji.selected) {
-      addKanjiToStats(kanji.char);
-    } else {
-      removeKanjiFromStats(kanji.char);
-    }
-  };
-
   return {
     displayData,
     selectionStats,
+    displayList,
+    displayMap,
     updateDisplayData,
     getDisplayedKanjiByChar,
     getDisplayedKanjiByCount,
-    updateDraggingSelection,
-    applyDraggingSelection,
-    selectLevel,
-    toggleLevelSelection,
-    selectAllUpToLevel,
-    selectAllFromLevel,
-    selectAllUpToKanji,
-    selectAllFromKanji,
-    toggleKanjiSelection,
+    updateSelectionStats,
+    addKanjiToStats,
+    removeKanjiFromStats,
   };
 }

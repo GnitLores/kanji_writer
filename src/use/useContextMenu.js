@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { useDisplayData } from "@/use/useDisplayData";
+import { useSelection } from "@/use/useSelection";
 
 const levelTitleContextRef = ref(null);
 const kanjiContextRef = ref(null);
@@ -22,7 +22,7 @@ export function useContextMenu() {
     selectAllFromLevel,
     selectAllUpToKanji,
     selectAllFromKanji,
-  } = useDisplayData();
+  } = useSelection();
 
   /*
   ===============

@@ -109,13 +109,14 @@ import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
+import { useSelection } from "@/use/useSelection";
 import { useContextMenu } from "@/use/useContextMenu";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
-const { selectionStats, selectAllUpToLevel, selectAllFromLevel } =
-  useDisplayData();
+const { selectionStats } = useDisplayData();
+const { selectAllUpToLevel } = useSelection();
 
 const toggleDisplayOptions = () => {
   storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions;

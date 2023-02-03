@@ -64,6 +64,7 @@ import { useStoreList } from "@/stores/storeList";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
+import { useSelection } from "@/use/useSelection";
 import { useContextMenu } from "@/use/useContextMenu";
 
 const storeOptions = useStoreOptions();
@@ -74,11 +75,13 @@ const {
   updateDisplayData,
   getDisplayedKanjiByChar,
   getDisplayedKanjiByCount,
+} = useDisplayData();
+const {
   updateDraggingSelection,
   applyDraggingSelection,
   toggleLevelSelection,
   toggleKanjiSelection,
-} = useDisplayData();
+} = useSelection();
 
 // Watch stores and update display data:
 const { kanjiByLevel } = storeToRefs(storeList);
