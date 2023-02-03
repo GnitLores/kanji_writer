@@ -88,7 +88,7 @@ export function useDisplayData() {
         kanji.cnt = cnt;
         kanji.levelIdx = levelIdx;
         kanji.idxInLevel = idxInLevel;
-        map.set(kanji.kanji, kanji);
+        map.set(kanji.char, kanji);
         list.push(kanji);
         cnt += 1;
       });
@@ -103,7 +103,7 @@ export function useDisplayData() {
     const selectedKanji = [];
     displayData.value.forEach((level) => {
       level.kanji.forEach((kanji) => {
-        if (kanji.selected) selectedKanji.push(kanji.kanji);
+        if (kanji.selected) selectedKanji.push(kanji.char);
       });
     });
     return selectedKanji;
@@ -254,9 +254,9 @@ Selection Stats
       displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
     kanji.selected = !kanji.selected;
     if (kanji.selected) {
-      addKanjiToStats(kanji.kanji);
+      addKanjiToStats(kanji.char);
     } else {
-      removeKanjiFromStats(kanji.kanji);
+      removeKanjiFromStats(kanji.char);
     }
   };
 

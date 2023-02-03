@@ -20,9 +20,9 @@ export const useStoreList = defineStore("storeList", {
       const docRef = doc(listCollection, "kanji");
       const docSnap = await getDoc(docRef);
       this.kanjiList = [];
-      docSnap.data().list.forEach((kanji, idx) => {
+      docSnap.data().list.forEach((char, idx) => {
         this.kanjiList.push({
-          kanji,
+          char,
           idx,
         });
       });
@@ -32,7 +32,7 @@ export const useStoreList = defineStore("storeList", {
       const indices = [...Array(nKanji).keys(nKanji)];
       const map = new Map();
       for (let i = 0; i < nKanji; i++) {
-        map.set(this.kanjiList[i].kanji, indices[i]);
+        map.set(this.kanjiList[i].char, indices[i]);
       }
       this.indexMap = map;
 
@@ -62,7 +62,7 @@ export const useStoreList = defineStore("storeList", {
         // clone:
         const source = this.kanjiList[mainIdx];
         const target = {
-          kanji: source.kanji,
+          char: source.char,
           mainIdx: mainIdx,
           selected: false,
         };

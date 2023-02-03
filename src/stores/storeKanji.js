@@ -6,7 +6,7 @@ export const useStoreKanji = defineStore("storeKanji", {
   state: () => {
     return {
       kanjiData: {},
-      kanji: "",
+      char: "",
       writingData: {},
     };
   },
@@ -15,7 +15,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       const docRef = doc(kanjiCollection, char);
       const snapshot = await getDoc(docRef);
       const loadedData = snapshot.data();
-      this.kanji = loadedData.kanji;
+      this.char = loadedData.kanji;
       this.writingData = JSON.parse(loadedData.data);
       this.kanjiData = loadedData;
     },

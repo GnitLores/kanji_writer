@@ -27,7 +27,7 @@
       </div>
       <div
         v-for="kanji in level.kanji"
-        :key="kanji.kanji"
+        :key="kanji.char"
         class="kanji-character inline-block cursor-pointer hover:text-green-400 text-sky-400 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
           (kanji.selected && !kanji.unselectedWhileDragging) ||
@@ -40,7 +40,7 @@
         @mouseenter.prevent="onKanjiMouseEnter"
         @contextmenu.prevent.stop="onKanjiContext($event, item)"
       >
-        {{ kanji.kanji }}
+        {{ kanji.char }}
       </div>
     </div>
   </div>
