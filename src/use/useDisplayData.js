@@ -31,7 +31,6 @@ export function useDisplayData() {
     mapDisplayedKanji(data);
     displayData.value = data;
     applySelections(selections);
-    console.log(displayData.value);
   };
 
   const createDataDeepCopy = () => {
@@ -182,17 +181,23 @@ Selection Stats
   ===============
   */
 
-  // TODO: this seems to perform fine, but it would be more efficient to only add and remove changed indices instead of iterating over all indices.
-  const updateDraggingSelection = (min, max, isRemoving) => {
+  const applyToAll = (fun) => {
+    // Apply function to all kanji in such a way that reactivity is ensured.
     for (const kanjiRef of displayList) {
-      // Accessing the display data like this is necessary to ensure reactivity updates
+      // Accessing the display data indexed like this is necessary to ensure reactivity updates.
       const kanji =
         displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
+      fun(kanji);
+    }
+  };
 
-      if (kanjiRef.cnt < min || kanjiRef.cnt > max) {
+  // TODO: this seems to perform fine, but it would be more efficient to only add and remove changed indices instead of iterating over all indices.
+  const updateDraggingSelection = (min, max, isRemoving) => {
+    applyToAll((kanji) => {
+      if (kanji.cnt < min || kanji.cnt > max) {
         kanji.selectedWhileDragging = false;
         kanji.unselectedWhileDragging = false;
-        continue;
+        return;
       }
       if (isRemoving) {
         kanji.selectedWhileDragging = false;
@@ -201,21 +206,17 @@ Selection Stats
         kanji.selectedWhileDragging = true;
         kanji.unselectedWhileDragging = false;
       }
-    }
+    });
   };
 
   const applyDraggingSelection = () => {
-    // Accessing the display data like this is necessary to ensure reactivity updates
-    for (const kanjiRef of displayList) {
-      const kanji =
-        displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
-
+    applyToAll((kanji) => {
       kanji.selected =
         (kanji.selected && !kanji.unselectedWhileDragging) ||
         (!kanji.selected && kanji.selectedWhileDragging);
       kanji.selectedWhileDragging = false;
       kanji.unselectedWhileDragging = false;
-    }
+    });
     updateSelectionStats();
   };
 
@@ -236,15 +237,11 @@ Selection Stats
   };
 
   const selectAllUpToLevel = (levelIdx) => {
-    for (const kanjiRef of displayList) {
-      // Accessing the display data like this is necessary to ensure reactivity updates
-      const kanji =
-        displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
-
+    applyToAll((kanji) => {
       kanji.selected = kanji.levelIdx <= levelIdx;
       kanji.selectedWhileDragging = false;
       kanji.unSelectedWhileDragging = false;
-    }
+    });
     updateSelectionStats();
   };
 
