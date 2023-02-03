@@ -1,15 +1,17 @@
 import { ref, watch } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
+import { useSelectionStats } from "@/use/useSelectionStats";
 
 const displayData = ref([]);
-const selectionStats = ref({});
 let displayMap = ref(new Map());
 let displayList = ref([]);
 
 export function useDisplayData() {
   const storeOptions = useStoreOptions();
   const storeList = useStoreList();
+
+  const { updateSelectionStats } = useSelectionStats();
 
   /*
   ===============
@@ -114,7 +116,7 @@ export function useDisplayData() {
       const kanji = getDisplayedKanjiByChar(char);
       if (kanji) kanji.selected = true;
     });
-    updateSelectionStats();
+    updateSelectionStats(displayData);
   };
 
   const getDisplayedKanjiByChar = (char) => {
@@ -125,66 +127,12 @@ export function useDisplayData() {
     return displayList.value[cnt];
   };
 
-  /*
-===============
-Selection Stats
-===============
-*/
-
-  const updateSelectionStats = () => {
-    let nSelectedTotal = 0;
-    const stats = { levels: [] };
-    displayData.value.forEach((level) => {
-      // Per level stats:
-      let nSelected = 0;
-      level.kanji.forEach((kanji) => {
-        nSelected += kanji.selected;
-      });
-      stats.levels.push({
-        name: level.name,
-        nKanji: level.kanji.length,
-        nSelected: nSelected,
-        levelIdx: level.levelIdx,
-      });
-
-      // Total stats:
-      nSelectedTotal += nSelected;
-    });
-
-    stats.nKanji = displayData.value.nKanji;
-    stats.nSelected = nSelectedTotal;
-    stats.nDisplayedLevels = displayData.value.length;
-    selectionStats.value = stats;
-  };
-
-  const getKanjiStatLevel = (char) => {
-    const indices = displayMap.value.get(char);
-    return selectionStats.value.levels[indices.levelIdx];
-  };
-
-  const changeLevelStatsByAmount = (level, amount) => {
-    level.nSelected += amount;
-    selectionStats.value.nSelected += amount;
-  };
-
-  const addKanjiToStats = (char) => {
-    changeLevelStatsByAmount(getKanjiStatLevel(char), 1);
-  };
-
-  const removeKanjiFromStats = (char) => {
-    changeLevelStatsByAmount(getKanjiStatLevel(char), -1);
-  };
-
   return {
     displayData,
-    selectionStats,
     displayList,
     displayMap,
     updateDisplayData,
     getDisplayedKanjiByChar,
     getDisplayedKanjiByCount,
-    updateSelectionStats,
-    addKanjiToStats,
-    removeKanjiFromStats,
   };
 }

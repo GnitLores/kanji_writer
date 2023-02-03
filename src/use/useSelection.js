@@ -1,13 +1,12 @@
 import { useDisplayData } from "@/use/useDisplayData";
+import { useSelectionStats } from "@/use/useSelectionStats";
 
 export function useSelection() {
-  const {
-    displayData,
-    updateSelectionStats,
-    displayList,
-    getDisplayedKanjiByChar,
-    addKanjiToStats,
-  } = useDisplayData();
+  const { displayData, displayList, getDisplayedKanjiByChar } =
+    useDisplayData();
+
+  const { updateSelectionStats, addKanjiToStats, removeKanjiFromStats } =
+    useSelectionStats();
 
   /*
   ===============
@@ -24,6 +23,10 @@ export function useSelection() {
 
       fun(kanji);
     }
+  };
+
+  const refreshStats = () => {
+    updateSelectionStats(displayData);
   };
 
   // TODO: this seems to perform fine, but it would be more efficient to only add and remove changed indices instead of iterating over all indices.
@@ -52,14 +55,14 @@ export function useSelection() {
       kanji.selectedWhileDragging = false;
       kanji.unselectedWhileDragging = false;
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const selectLevel = (levelIdx, toggle = true) => {
     applyToAll((kanji) => {
       if (kanji.levelIdx === levelIdx) kanji.selected = toggle;
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const toggleLevelSelection = (kanjiList) => {
@@ -75,7 +78,7 @@ export function useSelection() {
         kanji.selected = false;
       });
     }
-    updateSelectionStats();
+    refreshStats();
   };
 
   const selectAllUpToLevel = (
@@ -90,7 +93,7 @@ export function useSelection() {
         if (enforceOutsideRange) kanji.selected = !toggle;
       }
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const selectAllFromLevel = (
@@ -105,7 +108,7 @@ export function useSelection() {
         if (enforceOutsideRange) kanji.selected = !toggle;
       }
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const selectAllUpToKanji = (
@@ -121,7 +124,7 @@ export function useSelection() {
         if (enforceOutsideRange) kanji.selected = !toggle;
       }
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const selectAllFromKanji = (
@@ -137,7 +140,7 @@ export function useSelection() {
         if (enforceOutsideRange) kanji.selected = !toggle;
       }
     });
-    updateSelectionStats();
+    refreshStats();
   };
 
   const toggleKanjiSelection = (char) => {
@@ -146,9 +149,9 @@ export function useSelection() {
       displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
     kanji.selected = !kanji.selected;
     if (kanji.selected) {
-      addKanjiToStats(kanji.char);
+      addKanjiToStats(kanji);
     } else {
-      removeKanjiFromStats(kanji.char);
+      removeKanjiFromStats(kanji);
     }
   };
 
