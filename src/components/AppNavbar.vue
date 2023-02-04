@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-slate-700 select-none">
+  <header class="select-none bg-darkmode-500 border-b border-gray-600">
     <nav class="container mx-auto flex justify-start items-center py-2">
       <router-link
         class="text-white tracking-wider font-bold capitalize text-2xl mr-4 min-w-fit"

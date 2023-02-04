@@ -25,7 +25,7 @@
           @contextmenu.prevent.stop="
             onLevelTitleContext($event, level.levelIdx)
           "
-          class="inline-block text-sky-300 cursor-pointer hover:text-white text-center mb-1 mt-2 font-bold tracking-wide"
+          class="inline-block text-sky-200 cursor-pointer hover:text-white text-center mb-1 mt-2 font-bold tracking-wide"
         >
           {{ level.name }}:
         </h3>
@@ -33,12 +33,12 @@
       <div
         v-for="kanji in level.kanji"
         :key="kanji.char"
-        class="kanji-character inline-block cursor-pointer hover:text-white text-sky-200 border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        class="kanji-character inline-block cursor-pointer hover:text-white text-white border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
           (kanji.selected && !kanji.unselectedWhileDragging) ||
           (!kanji.selected && kanji.selectedWhileDragging)
-            ? 'drag-selected text-orange-400'
-            : '',
+            ? 'drag-selected text-darkmode-50 text-opacity-100'
+            : 'text-opacity-80',
         ]"
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"

@@ -14,7 +14,7 @@
     -->
     <div class="flex my-1">
       <button
-        class="bg-transparent hover:bg-blue-500 text-sky-100 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
+        class="bg-darkmode-500 hover:bg-blue-500 text-sky-100 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
         :disabled="selectionStats.nSelected == 0"
         @click.prevent="selectAll(false)"
       >
@@ -25,7 +25,7 @@
           v-for="level in selectionStats.levels"
           v-show="!storeOptions.allLevelsIgnored()"
           :key="level.name"
-          class="inline-block relative bg-slate-900 border-solid first:border-l-2 border-r-2 border-y-2 border-slate-500 h-full"
+          class="inline-block relative bg-darkmode-500 border-solid first:border-l-2 border-r-2 border-y-2 border-gray-600 h-full"
           :style="{
             width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
           }"
@@ -33,11 +33,11 @@
           @contextmenu.prevent.stop="onHeaderBarContext($event, level.levelIdx)"
         >
           <span
-            class="absolute text-center w-full pt-0.5 text-sky-300 text-xs font-bold z-10 cursor-pointer hover:text-white truncate hover:text-clip"
+            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-white truncate hover:text-clip"
             >{{ level.name }}</span
           >
           <div
-            class="bg-sky-700 w-1/2 h-full opacity-70 z-0"
+            class="bg-sky-700 bg-opacity-70 w-1/2 h-full opacity-70 z-0"
             :style="{
               width: `${100 * (level.nSelected / level.nKanji)}%`,
             }"
@@ -85,7 +85,7 @@
             :value="level"
             v-model="storeOptions.ignoredLevels"
           />
-          <label class="text-sky-300 tracking-wide mr-4 ml-0.5 font-bold">{{
+          <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
           }}</label>
         </div>
