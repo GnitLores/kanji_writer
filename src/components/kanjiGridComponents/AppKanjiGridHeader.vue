@@ -14,8 +14,8 @@
     -->
     <div class="flex my-1">
       <button
-        class="bg-transparent hover:bg-blue-500 text-sky-200 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
-        :disabled="false"
+        class="bg-transparent hover:bg-blue-500 text-sky-100 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
+        :disabled="selectionStats.nSelected == 0"
         @click.prevent="selectAll(false)"
       >
         None
@@ -25,7 +25,7 @@
           v-for="level in selectionStats.levels"
           v-show="!storeOptions.allLevelsIgnored()"
           :key="level.name"
-          class="inline-block relative bg-gray-900 border-solid first:border-l-2 border-r-2 border-y-2 border-sky-700 h-full"
+          class="inline-block relative bg-slate-900 border-solid first:border-l-2 border-r-2 border-y-2 border-slate-500 h-full"
           :style="{
             width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
           }"
@@ -33,7 +33,7 @@
           @contextmenu.prevent.stop="onHeaderBarContext($event, level.levelIdx)"
         >
           <span
-            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400 truncate hover:text-clip"
+            class="absolute text-center w-full pt-0.5 text-sky-300 text-xs font-bold z-10 cursor-pointer hover:text-white truncate hover:text-clip"
             >{{ level.name }}</span
           >
           <div
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="mr-2">
+      <div class="mr-2 cursor-pointer">
         <div
           v-if="!storeOptions.showDisplayOptions"
           @click.prevent="
@@ -53,16 +53,16 @@
           "
         >
           <span
-            ><p class="text-sky-200 inline-block mr-2 font-bold">Options</p>
-            <i class="fas fa-angles-down text-sky-200"></i
+            ><p class="text-sky-100 inline-block mr-2 font-bold">Options</p>
+            <i class="fas fa-angles-down text-sky-100"></i
           ></span>
         </div>
         <div v-else @click.prevent="toggleDisplayOptions">
           <span
-            ><p class="text-sky-200 inline-block font-bold underline">
+            ><p class="text-sky-100 inline-block mr-2 font-bold underline">
               Options
             </p>
-            <i class="fas fa-angles-up text-sky-200"></i
+            <i class="fas fa-angles-up text-sky-100"></i
           ></span>
         </div>
       </div>
@@ -74,7 +74,7 @@
     -->
     <transition name="slide">
       <div v-show="storeOptions.showDisplayOptions" class="flex">
-        <p class="text-sky-200 mr-4 font-bold">Ignore:</p>
+        <p class="text-sky-100 mr-4 font-bold">Ignore:</p>
         <div
           class="truncate hover:text-clip"
           v-for="level in storeList.levelNames"
@@ -85,7 +85,7 @@
             :value="level"
             v-model="storeOptions.ignoredLevels"
           />
-          <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
+          <label class="text-sky-300 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
           }}</label>
         </div>
@@ -99,11 +99,11 @@
               type="checkbox"
               v-model="storeOptions.reverseOrder"
             />
-            <label class="text-sky-200 font-bold ml-1">Reverse</label>
+            <label class="text-sky-100 font-bold ml-1">Reverse</label>
           </div>
           <div class="inline-block ml-2">
             <input type="checkbox" v-model="storeOptions.doDisplayLevels" />
-            <label class="text-sky-200 font-bold ml-1">By level</label>
+            <label class="text-sky-100 font-bold ml-1">By level</label>
           </div>
         </div>
       </div>
