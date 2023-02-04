@@ -29,14 +29,12 @@ export function useSelection() {
     updateSelectionStats(displayData);
   };
 
-  // TODO: this seems to perform fine, but it would be more efficient to only add and remove changed indices instead of iterating over all indices.
-  const updateDraggingSelection = (min, max, isRemoving) => {
-    applyToAll((kanji) => {
-      if (kanji.cnt < min || kanji.cnt > max) {
-        kanji.selectedWhileDragging = false;
-        kanji.unselectedWhileDragging = false;
-        return;
-      }
+  const addRangeToDrag = (min, max, isRemoving) => {
+    // Used when expanding dragging selection
+    for (let cnt = min; cnt <= max; cnt++) {
+      const kanjiRef = displayList.value[cnt];
+      const kanji =
+        displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
       if (isRemoving) {
         kanji.selectedWhileDragging = false;
         kanji.unselectedWhileDragging = true;
@@ -44,7 +42,17 @@ export function useSelection() {
         kanji.selectedWhileDragging = true;
         kanji.unselectedWhileDragging = false;
       }
-    });
+    }
+  };
+  const removeRangeFromDrag = (min, max) => {
+    // Used when contracting dragging selection
+    for (let cnt = min; cnt <= max; cnt++) {
+      const kanjiRef = displayList.value[cnt];
+      const kanji =
+        displayData.value[kanjiRef.levelIdx].kanji[kanjiRef.idxInLevel];
+      kanji.selectedWhileDragging = false;
+      kanji.unselectedWhileDragging = false;
+    }
   };
 
   const applyDraggingSelection = () => {
@@ -163,7 +171,8 @@ export function useSelection() {
   };
 
   return {
-    updateDraggingSelection,
+    addRangeToDrag,
+    removeRangeFromDrag,
     applyDraggingSelection,
     selectLevel,
     toggleLevelSelection,

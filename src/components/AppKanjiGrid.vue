@@ -114,7 +114,8 @@ Kanji selection
 */
 
 const {
-  updateDraggingSelection,
+  addRangeToDrag,
+  removeRangeFromDrag,
   applyDraggingSelection,
   toggleLevelSelection,
   toggleKanjiSelection,
@@ -125,8 +126,8 @@ const emit = defineEmits(["kanjiRangeSelected"]);
 let isDragging = false;
 let isRemoving = false;
 let startDragCnt = -1;
-let minDragCnt = -1;
-let maxDragCnt = -1;
+let minCnt = -1;
+let maxCnt = -1;
 
 const getMouseChar = (event) => event.target.__vnode.key;
 
@@ -142,16 +143,43 @@ const onKanjiMouseDown = (event) => {
   isDragging = true;
   if (event.target.classList.contains("drag-selected")) isRemoving = true;
   startDragCnt = getMouseKanji(event).cnt;
-  minDragCnt = startDragCnt;
-  maxDragCnt = startDragCnt;
+  minCnt = startDragCnt;
+  maxCnt = startDragCnt;
 };
 
 const onKanjiMouseEnter = (event) => {
   if (!isDragging) return;
-  const stopDragCnt = getMouseKanji(event).cnt;
-  minDragCnt = Math.min(startDragCnt, stopDragCnt);
-  maxDragCnt = Math.max(startDragCnt, stopDragCnt);
-  updateDraggingSelection(minDragCnt, maxDragCnt, isRemoving);
+  const cnt = getMouseKanji(event).cnt;
+
+  // If there is a current selection and the mouse is moved outside any char to a char on the opposite side of the first clicked char, the direction of the selection has been flipped.
+  // Undo the existing selection before continuing.
+  if (maxCnt == startDragCnt && cnt > startDragCnt) {
+    // Direction was flipped from decreasing to increasing
+    removeRangeFromDrag(minCnt, startDragCnt);
+    minCnt = startDragCnt;
+  } else if (minCnt == startDragCnt && cnt < startDragCnt) {
+    // Direction was flipped from increasing to decreasing
+    removeRangeFromDrag(startDragCnt, maxCnt);
+    maxCnt = startDragCnt;
+  }
+
+  if (cnt < minCnt) {
+    // The selection is expanded in decreasing direction
+    addRangeToDrag(cnt, minCnt, isRemoving);
+    minCnt = cnt;
+  } else if (cnt > maxCnt) {
+    // The selection is expanded in increasing direction
+    addRangeToDrag(maxCnt, cnt, isRemoving);
+    maxCnt = cnt;
+  } else if (cnt < startDragCnt) {
+    // An existing selection in decreasing direction is contracted
+    removeRangeFromDrag(minCnt, cnt);
+    minCnt = cnt;
+  } else if (cnt > startDragCnt) {
+    // An existing selection in increasing direction is contracted
+    removeRangeFromDrag(cnt, maxCnt);
+    maxCnt = cnt;
+  }
 };
 
 const onMouseUp = (event) => {
@@ -159,8 +187,8 @@ const onMouseUp = (event) => {
   isDragging = false;
   isRemoving = false;
   startDragCnt = -1;
-  minDragCnt = -1;
-  maxDragCnt = -1;
+  minCnt = -1;
+  maxCnt = -1;
 
   applyDraggingSelection();
 };
