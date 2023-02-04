@@ -155,6 +155,13 @@ export function useSelection() {
     }
   };
 
+  const selectAll = (toggle = true) => {
+    applyToAll((kanji) => {
+      kanji.selected = toggle;
+    });
+    refreshStats();
+  };
+
   return {
     updateDraggingSelection,
     applyDraggingSelection,
@@ -165,5 +172,6 @@ export function useSelection() {
     selectAllUpToKanji,
     selectAllFromKanji,
     toggleKanjiSelection,
+    selectAll,
   };
 }

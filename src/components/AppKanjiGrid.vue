@@ -14,7 +14,10 @@
 
   <AppKanjiGridHeader />
 
-  <div v-if="!storeOptions.allLevelsIgnored()" class="select-none">
+  <div
+    v-if="!storeOptions.allLevelsIgnored()"
+    class="container mx-auto select-none"
+  >
     <div v-for="level in displayData" :key="level.name">
       <div class="flex justify-evenly">
         <h3
@@ -76,12 +79,6 @@ const {
   getDisplayedKanjiByChar,
   getDisplayedKanjiByCount,
 } = useDisplayData();
-const {
-  updateDraggingSelection,
-  applyDraggingSelection,
-  toggleLevelSelection,
-  toggleKanjiSelection,
-} = useSelection();
 
 // Watch stores and update display data:
 const { kanjiByLevel } = storeToRefs(storeList);
@@ -115,6 +112,13 @@ const {
 Kanji selection
 ===============
 */
+
+const {
+  updateDraggingSelection,
+  applyDraggingSelection,
+  toggleLevelSelection,
+  toggleKanjiSelection,
+} = useSelection();
 
 const emit = defineEmits(["kanjiRangeSelected"]);
 

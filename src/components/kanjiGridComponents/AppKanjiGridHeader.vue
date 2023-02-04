@@ -6,13 +6,20 @@
     @option-clicked="headerBarContextOptionClicked"
   />
 
-  <div class="select-none">
+  <div class="container mx-auto select-none">
     <!--
     ===============
     Header
     ===============
     -->
     <div class="flex my-1">
+      <button
+        class="bg-transparent hover:bg-blue-500 text-sky-200 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
+        :disabled="false"
+        @click.prevent="selectAll(false)"
+      >
+        None
+      </button>
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats.levels"
@@ -26,7 +33,7 @@
           @contextmenu.prevent.stop="onHeaderBarContext($event, level.levelIdx)"
         >
           <span
-            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400"
+            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-green-400 truncate hover:text-clip"
             >{{ level.name }}</span
           >
           <div
@@ -52,7 +59,7 @@
         </div>
         <div v-else @click.prevent="toggleDisplayOptions">
           <span
-            ><p class="text-sky-200 inline-block mr-2 font-bold underline">
+            ><p class="text-sky-200 inline-block font-bold underline">
               Options
             </p>
             <i class="fas fa-angles-up text-sky-200"></i
@@ -66,9 +73,13 @@
     ===============
     -->
     <transition name="slide">
-      <div v-show="storeOptions.showDisplayOptions" class="flex ml-4">
+      <div v-show="storeOptions.showDisplayOptions" class="flex">
         <p class="text-sky-200 mr-4 font-bold">Ignore:</p>
-        <div v-for="level in storeList.levelNames" :key="level">
+        <div
+          class="truncate hover:text-clip"
+          v-for="level in storeList.levelNames"
+          :key="level"
+        >
           <input
             type="checkbox"
             :value="level"
@@ -81,15 +92,19 @@
 
         <div class="grow"></div>
 
-        <div class="mx-2">
-          <label class="text-sky-200 font-bold">Reverse: </label>
-          <input
-            class="mr-4"
-            type="checkbox"
-            v-model="storeOptions.reverseOrder"
-          />
-          <label class="text-sky-200 font-bold">By level: </label>
-          <input type="checkbox" v-model="storeOptions.doDisplayLevels" />
+        <div class="">
+          <div class="inline-block ml-2">
+            <input
+              class=""
+              type="checkbox"
+              v-model="storeOptions.reverseOrder"
+            />
+            <label class="text-sky-200 font-bold ml-1">Reverse</label>
+          </div>
+          <div class="inline-block ml-2">
+            <input type="checkbox" v-model="storeOptions.doDisplayLevels" />
+            <label class="text-sky-200 font-bold ml-1">By level</label>
+          </div>
         </div>
       </div>
     </transition>
@@ -116,7 +131,7 @@ const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
 const { selectionStats } = useSelectionStats();
-const { selectAllUpToLevel } = useSelection();
+const { selectAllUpToLevel, selectAll } = useSelection();
 
 const toggleDisplayOptions = () => {
   storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions;
