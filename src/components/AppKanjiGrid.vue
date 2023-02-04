@@ -1,6 +1,4 @@
 <template>
-  <KanjiDetailsModal />
-
   <VueSimpleContextMenu
     element-id="level-title-context"
     :options="levelTitleContextOptions"
@@ -68,7 +66,6 @@ import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
-import KanjiDetailsModal from "./modals/KanjiDetailsModal.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";
 import { useContextMenu } from "@/use/useContextMenu";

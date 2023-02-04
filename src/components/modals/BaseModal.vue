@@ -1,11 +1,4 @@
-<script setup>
-defineProps({
-  show: Boolean,
-});
-</script>
-
 <template>
-  <!-- Render inside our `<div id="modals"></div>` in index.html -->
   <Teleport to="#modals">
     <!-- Show / hide the modal -->
     <div v-if="show" class="">
@@ -21,3 +14,9 @@ defineProps({
     </div>
   </Teleport>
 </template>
+
+<script setup>
+defineProps({
+  show: Boolean,
+});
+</script>
