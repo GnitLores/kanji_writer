@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { useStoreKanji } from "@/stores/storeKanji";
 import { useSelection } from "@/use/useSelection";
 
 const levelTitleContextRef = ref(null);
@@ -6,6 +7,8 @@ const kanjiContextRef = ref(null);
 const headerBarContextRef = ref(null);
 
 export function useContextMenu() {
+  const storeKanji = useStoreKanji();
+
   // This composable gives a central reference to all context menus, so all other menus can be close when opening a context menu without having to use a complicated control flow. Options and selection callbacks are handled in the components.
   const refs = [levelTitleContextRef, kanjiContextRef, headerBarContextRef];
 
@@ -76,23 +79,23 @@ export function useContextMenu() {
     { name: "Deselect from", class: "deselect-from" },
   ];
   const kanjiContextOptionClicked = (event) => {
-    const levelIdx = event.item;
+    const char = event.item;
     const selection = event.option.class;
     switch (selection) {
       case "display-details":
-        console.log("todo");
+        storeKanji.displayKanjiDetailsModal(char);
         break;
       case "select-up-to":
-        selectAllUpToKanji(levelIdx, true, false);
+        selectAllUpToKanji(char, true, false);
         break;
       case "deselect-up-to":
-        selectAllUpToKanji(levelIdx, false, false);
+        selectAllUpToKanji(char, false, false);
         break;
       case "select-from":
-        selectAllFromKanji(levelIdx, true, false);
+        selectAllFromKanji(char, true, false);
         break;
       case "deselect-from":
-        selectAllFromKanji(levelIdx, false, false);
+        selectAllFromKanji(char, false, false);
         break;
       default:
         console.log("Invalid selection");

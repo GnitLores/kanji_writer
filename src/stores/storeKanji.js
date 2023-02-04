@@ -8,6 +8,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       kanjiData: {},
       char: "",
       writingData: {},
+      showModal: false,
     };
   },
   actions: {
@@ -18,6 +19,10 @@ export const useStoreKanji = defineStore("storeKanji", {
       this.char = loadedData.kanji;
       this.writingData = JSON.parse(loadedData.data);
       this.kanjiData = loadedData;
+    },
+    displayKanjiDetailsModal(char) {
+      this.loadKanji(char);
+      this.showModal = true;
     },
   },
 });
