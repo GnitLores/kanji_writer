@@ -2,13 +2,13 @@
   <header class="bg-slate-700 select-none">
     <nav class="container mx-auto flex justify-start items-center py-2">
       <router-link
-        class="text-white font-bold uppercase text-2xl mr-4 min-w-fit"
+        class="text-white tracking-wider font-bold capitalize text-2xl mr-4 min-w-fit"
         :to="{ name: 'home' }"
         >Mojidoori <i class="fas fa-pen-to-square text-sky-400"></i
       ></router-link>
 
       <div class="flex flex-grow items-center">
-        <ul class="flex flex-row mt-2 font-bold space-x-3">
+        <ul class="flex flex-row mt-2 tracking-wide font-bold space-x-3">
           <li>
             <router-link class="text-white" :to="{ name: 'learn' }"
               >Learn</router-link
