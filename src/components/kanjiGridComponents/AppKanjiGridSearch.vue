@@ -6,6 +6,7 @@
         v-model="input"
         placeholder="Enter text with kanji..."
         class="w-96 bg-darkmode-100 border border-black rounded pl-7"
+        v-autofocus
       />
       <i
         class="fa-solid fa-magnifying-glass absolute top-1.5 left-1.5 text-black"
@@ -26,6 +27,7 @@
 import { ref } from "vue";
 import { useSearch } from "@/use/useSearch";
 import AppButton from "@/components/AppButton.vue";
+import { vAutofocus } from "@/directives/vAutofocus";
 
 const { input, clearSearch } = useSearch();
 </script>
