@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         darkmode: {
           50: "#FB923C", // selected highlight
-          100: "#f2e8e5", // free
+          100: "#f2e8e5", // search bar background
           200: "#d8d4cf", // free
           300: "#B2ACA2", // free
           400: "#d2bab0", // free

@@ -6,13 +6,12 @@
       placeholder="Enter text with kanji..."
       class="w-96 bg-darkmode-100 border border-black rounded"
     />
-    <button
-      class="bg-darkmode-500 hover:bg-blue-500 text-sky-100 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-10 ml-2 disabled:opacity-50"
+    <AppButton
       :disabled="input === ''"
-      @click.prevent="clearSearch()"
-    >
-      Clear
-    </button>
+      :text="'Clear'"
+      class="ml-2 w-10"
+      @clicked="clearSearch()"
+    />
   </div>
   <div v-if="false" class="search-error"><p>No results found!</p></div>
 </template>
@@ -20,6 +19,7 @@
 <script setup>
 import { ref } from "vue";
 import { useSearch } from "@/use/useSearch";
+import AppButton from "@/components/AppButton.vue";
 
 const { input, clearSearch } = useSearch();
 </script>

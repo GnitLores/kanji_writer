@@ -13,13 +13,12 @@
     ===============
     -->
     <div class="flex my-1">
-      <button
-        class="bg-darkmode-500 hover:bg-blue-500 text-sky-100 text-xs font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50"
+      <AppButton
         :disabled="selectionStats.nSelected == 0"
-        @click.prevent="selectAll(false)"
-      >
-        None
-      </button>
+        :text="'None'"
+        class=""
+        @clicked="selectAll(false)"
+      />
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats.levels"
@@ -123,6 +122,7 @@ import {
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
+import AppButton from "@/components/AppButton.vue";
 import { useSelectionStats } from "@/use/useSelectionStats";
 import { useSelection } from "@/use/useSelection";
 import { useContextMenu } from "@/use/useContextMenu";
