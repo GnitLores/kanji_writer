@@ -24,12 +24,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSearch } from "@/use/useSearch";
 import AppButton from "@/components/AppButton.vue";
 import { vAutofocus } from "@/directives/vAutofocus";
 
-const { input, clearSearch } = useSearch();
+const { input, clearSearch, onInputChange } = useSearch();
+
+watch(input, onInputChange);
 </script>
 
 <style scoped></style>

@@ -6,6 +6,8 @@ import { useSelectionStats } from "@/use/useSelectionStats";
 const displayData = ref([]);
 let displayMap = ref(new Map());
 let displayList = ref([]);
+let isSearching = ref(false);
+let searchBackgroundData = ref([]); // Displaydata stored while searching
 
 export function useDisplayData() {
   const storeOptions = useStoreOptions();
