@@ -13,7 +13,7 @@
   />
 
   <AppKanjiGridHeader />
-
+  <AppKanjiGridSearch />
   <div
     v-if="!storeOptions.allLevelsIgnored()"
     class="container mx-auto select-none"
@@ -65,6 +65,7 @@ import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
+import AppKanjiGridSearch from "@/components/kanjiGridComponents/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";

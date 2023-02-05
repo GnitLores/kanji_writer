@@ -6,7 +6,7 @@
     @option-clicked="headerBarContextOptionClicked"
   />
 
-  <div class="container mx-auto select-none">
+  <div class="container mx-auto select-none my-2">
     <!--
     ===============
     Header
