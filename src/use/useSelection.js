@@ -58,6 +58,7 @@ export function useSelection() {
     // Used when expanding dragging selection
     for (let cnt = min; cnt <= max; cnt++) {
       const kanji = displayList.value[cnt];
+
       if (isUnselecting) {
         selectedWhileDragging.value[kanji.mainIdx] = false;
         unselectedWhileDragging.value[kanji.mainIdx] = true;

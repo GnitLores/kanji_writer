@@ -1,11 +1,12 @@
 import { ref, watch } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
-import { useSelectionStats } from "@/use/useSelectionStats";
 
 const displayData = ref([]);
 let displayMap = ref(new Map());
 let displayList = ref([]);
+let backgroundData = ref([]); // Displaydata stored while searching
+let backgroundMap = ref(new Map());
 
 export function useDisplayData() {
   const storeOptions = useStoreOptions();
@@ -21,6 +22,9 @@ export function useDisplayData() {
     // When data is finalized, map all displayed kanji to indices.
     mapDisplayedKanji(data);
     displayData.value = data;
+
+    backgroundData.value = displayData.value;
+    backgroundMap.value = displayMap.value;
   };
 
   const createDataDeepCopy = () => {
@@ -88,6 +92,8 @@ export function useDisplayData() {
     displayData,
     displayList,
     displayMap,
+    backgroundData,
+    backgroundMap,
     updateDisplayData,
     getDisplayedKanjiByChar,
     getDisplayedKanjiByCount,

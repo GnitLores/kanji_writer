@@ -12,11 +12,16 @@
         class="fa-solid fa-magnifying-glass absolute top-1.5 left-1.5 text-black"
       ></i>
     </div>
-
+    <AppButton
+      :disabled="input === ''"
+      :text="'Search'"
+      class="ml-2 w-12"
+      @clicked="startSearch()"
+    />
     <AppButton
       :disabled="input === ''"
       :text="'Clear'"
-      class="ml-2 w-10"
+      class="ml-2 w-12"
       @clicked="clearSearch()"
     />
   </div>
@@ -29,9 +34,11 @@ import { useSearch } from "@/use/useSearch";
 import AppButton from "@/components/AppButton.vue";
 import { vAutofocus } from "@/directives/vAutofocus";
 
-const { input, clearSearch, onInputChange } = useSearch();
+const { input, startSearch, clearSearch } = useSearch();
 
-watch(input, onInputChange);
+watch(input, () => {
+  if (input.value === "") clearSearch();
+});
 </script>
 
 <style scoped></style>

@@ -36,7 +36,7 @@
           (selected[kanji.mainIdx] &&
             !unselectedWhileDragging[kanji.mainIdx]) ||
           (!selected[kanji.mainIdx] && selectedWhileDragging[kanji.mainIdx])
-            ? 'drag-selected text-darkmode-50 text-opacity-100'
+            ? 'text-darkmode-50 text-opacity-100'
             : 'text-opacity-80',
         ]"
         @click.prevent="onKanjiClicked"
@@ -144,8 +144,9 @@ const onKanjiClicked = (event) => {
 
 const onKanjiMouseDown = (event) => {
   isDragging = true;
-  if (event.target.classList.contains("drag-selected")) isUnselecting = true;
-  startDragCnt = getMouseKanji(event).cnt;
+  const kanji = getMouseKanji(event);
+  isUnselecting = selected.value[kanji.mainIdx];
+  startDragCnt = kanji.cnt;
   minCnt = startDragCnt;
   maxCnt = startDragCnt;
 };
