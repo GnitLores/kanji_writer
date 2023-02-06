@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { doc, getDoc } from "firebase/firestore";
 import { listCollection } from "@/includes/firebase";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useSelection } from "@/use/useSelection";
 
 export const useStoreList = defineStore("storeList", {
   state: () => {
@@ -64,12 +65,21 @@ export const useStoreList = defineStore("storeList", {
         const target = {
           char: source.char,
           mainIdx: mainIdx,
-          selected: false,
         };
         data[levelIdx].kanji.push(target);
       });
 
+      data.forEach((level, levelIdx) => {
+        level.kanji.forEach((kanji, idxInLevel) => {
+          kanji.levelIdx = levelIdx;
+          kanji.idxInLevel = idxInLevel;
+        });
+      });
+
       this.kanjiByLevel = data;
+
+      const { initSelected } = useSelection();
+      initSelected();
     },
   },
 });

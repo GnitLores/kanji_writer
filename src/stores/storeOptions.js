@@ -14,8 +14,8 @@ export const useStoreOptions = defineStore("storeOptions", {
     };
   },
   actions: {
-    isLevelDisplayed(name) {
-      return !this.ignoredLevels.includes(name);
+    isLevelIgnored(name) {
+      return this.ignoredLevels.includes(name);
     },
     allLevelsIgnored() {
       const storeList = useStoreList();

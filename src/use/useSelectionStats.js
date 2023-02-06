@@ -1,50 +1,37 @@
 import { ref } from "vue";
+import { useStoreList } from "@/stores/storeList";
+
 const selectionStats = ref({});
 
 export function useSelectionStats() {
-  const updateSelectionStats = (displayData) => {
-    let nSelectedTotal = 0;
-    const stats = { levels: [] };
-    displayData.value.forEach((level) => {
+  const updateSelectionStats = (selected) => {
+    const storeList = useStoreList();
+
+    const stats = [];
+    stats.nSelected = 0;
+    storeList.kanjiByLevel.forEach((level) => {
       // Per level stats:
-      let nSelected = 0;
+      let nSelectedInLevel = 0;
       level.kanji.forEach((kanji) => {
-        nSelected += kanji.selected;
+        nSelectedInLevel += selected.value[kanji.mainIdx];
       });
-      stats.levels.push({
+      stats.push({
         name: level.name,
         nKanji: level.kanji.length,
-        nSelected: nSelected,
+        nSelected: nSelectedInLevel,
         levelIdx: level.levelIdx,
       });
 
       // Total stats:
-      nSelectedTotal += nSelected;
+      stats.nSelected += nSelectedInLevel;
     });
 
-    stats.nKanji = displayData.value.nKanji;
-    stats.nSelected = nSelectedTotal;
-    stats.nDisplayedLevels = displayData.value.length;
+    stats.nKanji = storeList.kanjiList.length;
     selectionStats.value = stats;
-  };
-
-  const changeLevelStatsByAmount = (levelIdx, amount) => {
-    selectionStats.value.levels[levelIdx].nSelected += amount;
-    selectionStats.value.nSelected += amount;
-  };
-
-  const addKanjiToStats = (kanji) => {
-    changeLevelStatsByAmount(kanji.levelIdx, 1);
-  };
-
-  const removeKanjiFromStats = (kanji) => {
-    changeLevelStatsByAmount(kanji.levelIdx, -1);
   };
 
   return {
     selectionStats,
     updateSelectionStats,
-    addKanjiToStats,
-    removeKanjiFromStats,
   };
 }

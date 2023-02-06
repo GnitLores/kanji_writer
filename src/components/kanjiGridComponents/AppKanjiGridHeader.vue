@@ -21,18 +21,26 @@
       />
       <div class="selection-bar grow mx-2">
         <div
-          v-for="level in selectionStats.levels"
+          v-for="level in selectionStats"
           v-show="!storeOptions.allLevelsIgnored()"
           :key="level.name"
-          class="inline-block relative bg-darkmode-500 border-solid first:border-l-2 border-r-2 border-y-2 border-gray-600 h-full"
+          class="inline-block relative border-solid first:border-l-2 border-r-2 border-y-2 border-gray-600 h-full"
+          :class="[
+            storeOptions.isLevelIgnored(level.name)
+              ? 'bg-gray-600 bg-opacity-50'
+              : 'bg-darkmode-500',
+          ]"
           :style="{
-            width: `${100 * (1 / selectionStats.nDisplayedLevels)}%`,
+            width: `${100 * (1 / selectionStats.length)}%`,
           }"
-          @click.prevent="selectAllUpToLevel(level.levelIdx)"
-          @contextmenu.prevent.stop="onHeaderBarContext($event, level.levelIdx)"
+          @click.prevent="selectAllUpToLevel(level.name)"
+          @contextmenu.prevent.stop="onHeaderBarContext($event, level.name)"
         >
           <span
             class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-white truncate hover:text-clip"
+            :class="[
+              storeOptions.isLevelIgnored(level.name) ? 'opacity-50' : '',
+            ]"
             >{{ level.name }}</span
           >
           <div
@@ -83,6 +91,7 @@
             type="checkbox"
             :value="level"
             v-model="storeOptions.ignoredLevels"
+            @change="onIgnoreLevelChange($event)"
           />
           <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
             level
@@ -131,11 +140,17 @@ const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
 const { selectionStats } = useSelectionStats();
-const { selectAllUpToLevel, selectAll } = useSelection();
+const { selectAllUpToLevel, selectAll, selectLevel, selected } = useSelection();
 
 const toggleDisplayOptions = () => {
   storeOptions.showDisplayOptions = !storeOptions.showDisplayOptions;
 };
+
+const onIgnoreLevelChange = (event) => {
+  const levelName = event.target.value;
+  selectLevel(levelName, false);
+};
+
 /*
 ===============
 Context Menus:

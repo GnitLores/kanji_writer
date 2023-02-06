@@ -6,35 +6,21 @@ import { useSelectionStats } from "@/use/useSelectionStats";
 const displayData = ref([]);
 let displayMap = ref(new Map());
 let displayList = ref([]);
-let isSearching = ref(false);
-let searchBackgroundData = ref([]); // Displaydata stored while searching
 
 export function useDisplayData() {
   const storeOptions = useStoreOptions();
   const storeList = useStoreList();
 
-  const { updateSelectionStats } = useSelectionStats();
-
-  /*
-  ===============
-  Display List:
-  ===============
-  */
-
   const updateDisplayData = () => {
-    const selections = getSelections();
-
     let data = createDataDeepCopy();
     data = filterIgnoredLevels(data);
-    data = initializeDisplayDataProps(data);
 
     if (storeOptions.reverseOrder) data = setReverseOrder(data);
     if (!storeOptions.doDisplayLevels) data = collapseLevels(data);
 
-    // When data finalized, map all displayed kanji to indices, set new displayData, and reapply stored selections.
+    // When data is finalized, map all displayed kanji to indices.
     mapDisplayedKanji(data);
     displayData.value = data;
-    applySelections(selections);
   };
 
   const createDataDeepCopy = () => {
@@ -46,7 +32,7 @@ export function useDisplayData() {
     let nKanjiIncluded = 0;
     const filtered = [];
     data.forEach((level) => {
-      if (storeOptions.isLevelDisplayed(level.name)) {
+      if (!storeOptions.isLevelIgnored(level.name)) {
         filtered.push(level);
         nKanjiIncluded += level.kanji.length;
       }
@@ -54,17 +40,6 @@ export function useDisplayData() {
 
     filtered.nKanji = nKanjiIncluded;
     return filtered;
-  };
-
-  const initializeDisplayDataProps = (data) => {
-    // Initialize dragging selection
-    data.forEach((level) => {
-      level.kanji.forEach((kanji) => {
-        kanji.selectedWhileDragging = false;
-        kanji.unSelectedWhileDragging = false;
-      });
-    });
-    return data;
   };
 
   const setReverseOrder = (data) => {
@@ -101,26 +76,6 @@ export function useDisplayData() {
     displayList.value = list;
   };
 
-  const getSelections = () => {
-    // Store all selections before updating displayData
-    const selectedKanji = [];
-    displayData.value.forEach((level) => {
-      level.kanji.forEach((kanji) => {
-        if (kanji.selected) selectedKanji.push(kanji.char);
-      });
-    });
-    return selectedKanji;
-  };
-
-  const applySelections = (selectedKanji) => {
-    // Reapply selections after updating displayData, ignoring ignored levels.
-    selectedKanji.forEach((char) => {
-      const kanji = getDisplayedKanjiByChar(char);
-      if (kanji) kanji.selected = true;
-    });
-    updateSelectionStats(displayData);
-  };
-
   const getDisplayedKanjiByChar = (char) => {
     return displayMap.value.get(char);
   };
@@ -136,5 +91,6 @@ export function useDisplayData() {
     updateDisplayData,
     getDisplayedKanjiByChar,
     getDisplayedKanjiByCount,
+    mapDisplayedKanji,
   };
 }

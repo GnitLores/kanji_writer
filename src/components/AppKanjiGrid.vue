@@ -22,9 +22,7 @@
       <div class="flex justify-evenly">
         <h3
           @click.prevent="toggleLevelSelection(level.kanji)"
-          @contextmenu.prevent.stop="
-            onLevelTitleContext($event, level.levelIdx)
-          "
+          @contextmenu.prevent.stop="onLevelTitleContext($event, level.name)"
           class="inline-block text-sky-200 cursor-pointer hover:text-white text-center mb-1 mt-2 font-bold tracking-wide"
         >
           {{ level.name }}:
@@ -35,15 +33,16 @@
         :key="kanji.char"
         class="kanji-character inline-block cursor-pointer hover:text-white text-white border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
-          (kanji.selected && !kanji.unselectedWhileDragging) ||
-          (!kanji.selected && kanji.selectedWhileDragging)
+          (selected[kanji.mainIdx] &&
+            !unselectedWhileDragging[kanji.mainIdx]) ||
+          (!selected[kanji.mainIdx] && selectedWhileDragging[kanji.mainIdx])
             ? 'drag-selected text-darkmode-50 text-opacity-100'
             : 'text-opacity-80',
         ]"
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"
         @mouseenter.prevent="onKanjiMouseEnter"
-        @contextmenu.prevent.stop="onKanjiContext($event, kanji.char)"
+        @contextmenu.prevent.stop="onKanjiContext($event, kanji)"
       >
         {{ kanji.char }}
       </div>
@@ -115,6 +114,9 @@ Kanji selection
 */
 
 const {
+  selected,
+  selectedWhileDragging,
+  unselectedWhileDragging,
   addRangeToDrag,
   removeRangeFromDrag,
   applyDraggingSelection,
@@ -125,7 +127,7 @@ const {
 const emit = defineEmits(["kanjiRangeSelected"]);
 
 let isDragging = false;
-let isRemoving = false;
+let isUnselecting = false;
 let startDragCnt = -1;
 let minCnt = -1;
 let maxCnt = -1;
@@ -137,12 +139,12 @@ const getMouseKanji = (event) => {
 };
 
 const onKanjiClicked = (event) => {
-  toggleKanjiSelection(getMouseChar(event));
+  toggleKanjiSelection(getMouseKanji(event));
 };
 
 const onKanjiMouseDown = (event) => {
   isDragging = true;
-  if (event.target.classList.contains("drag-selected")) isRemoving = true;
+  if (event.target.classList.contains("drag-selected")) isUnselecting = true;
   startDragCnt = getMouseKanji(event).cnt;
   minCnt = startDragCnt;
   maxCnt = startDragCnt;
@@ -166,11 +168,11 @@ const onKanjiMouseEnter = (event) => {
 
   if (cnt < minCnt) {
     // The selection is expanded in decreasing direction
-    addRangeToDrag(cnt, minCnt, isRemoving);
+    addRangeToDrag(cnt, minCnt, isUnselecting);
     minCnt = cnt;
   } else if (cnt > maxCnt) {
     // The selection is expanded in increasing direction
-    addRangeToDrag(maxCnt, cnt, isRemoving);
+    addRangeToDrag(maxCnt, cnt, isUnselecting);
     maxCnt = cnt;
   } else if (cnt < startDragCnt) {
     // An existing selection in decreasing direction is contracted
@@ -184,9 +186,13 @@ const onKanjiMouseEnter = (event) => {
 };
 
 const onMouseUp = (event) => {
+  // if (event.target.classList.contains("kanji-character")) {
+  //   if (getMouseKanji(event).cnt == startDragCnt) isDragging = false;
+  // }
+
   if (!isDragging) return;
   isDragging = false;
-  isRemoving = false;
+  isUnselecting = false;
   startDragCnt = -1;
   minCnt = -1;
   maxCnt = -1;
@@ -201,7 +207,6 @@ Lifecycle:
 */
 
 onMounted(() => {
-  // storeList.sortKanjiByLevel(); // list is updated by watching kanji sorted by level
   document.addEventListener("mouseup", onMouseUp);
 });
 onBeforeUnmount(() => {

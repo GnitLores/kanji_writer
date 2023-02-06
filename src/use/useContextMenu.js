@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useStoreKanji } from "@/stores/storeKanji";
+import { useStoreOptions } from "@/stores/storeOptions";
 import { useSelection } from "@/use/useSelection";
 
 const levelTitleContextRef = ref(null);
@@ -8,6 +9,7 @@ const headerBarContextRef = ref(null);
 
 export function useContextMenu() {
   const storeKanji = useStoreKanji();
+  const storeOptions = useStoreOptions();
 
   // This composable gives a central reference to all context menus, so all other menus can be close when opening a context menu without having to use a complicated control flow. Options and selection callbacks are handled in the components.
   const refs = [levelTitleContextRef, kanjiContextRef, headerBarContextRef];
@@ -40,20 +42,28 @@ export function useContextMenu() {
     { name: "Deselect from", class: "deselect-from" },
   ];
   const levelTitleContextOptionClicked = (event) => {
-    const levelIdx = event.item;
+    const levelName = event.item;
     const selection = event.option.class;
     switch (selection) {
       case "select-up-to":
-        selectAllUpToLevel(levelIdx, true, false);
+        !storeOptions.reverseOrder
+          ? selectAllUpToLevel(levelName, true, false)
+          : selectAllFromLevel(levelName, true, false);
         break;
       case "deselect-up-to":
-        selectAllUpToLevel(levelIdx, false, false);
+        !storeOptions.reverseOrder
+          ? selectAllUpToLevel(levelName, false, false)
+          : selectAllFromLevel(levelName, false, false);
         break;
       case "select-from":
-        selectAllFromLevel(levelIdx, true, false);
+        !storeOptions.reverseOrder
+          ? selectAllFromLevel(levelName, true, false)
+          : selectAllUpToLevel(levelName, true, false);
         break;
       case "deselect-from":
-        selectAllFromLevel(levelIdx, false, false);
+        !storeOptions.reverseOrder
+          ? selectAllFromLevel(levelName, false, false)
+          : selectAllUpToLevel(levelName, false, false);
         break;
       default:
         console.log("Invalid selection");
@@ -79,23 +89,31 @@ export function useContextMenu() {
     { name: "Deselect from", class: "deselect-from" },
   ];
   const kanjiContextOptionClicked = (event) => {
-    const char = event.item;
+    const kanji = event.item;
     const selection = event.option.class;
     switch (selection) {
       case "display-details":
-        storeKanji.displayKanjiDetailsModal(char);
+        storeKanji.displayKanjiDetailsModal(kanji);
         break;
       case "select-up-to":
-        selectAllUpToKanji(char, true, false);
+        !storeOptions.reverseOrder
+          ? selectAllUpToKanji(kanji, true, false)
+          : selectAllFromKanji(kanji, true, false);
         break;
       case "deselect-up-to":
-        selectAllUpToKanji(char, false, false);
+        !storeOptions.reverseOrder
+          ? selectAllUpToKanji(kanji, false, false)
+          : selectAllFromKanji(kanji, false, false);
         break;
       case "select-from":
-        selectAllFromKanji(char, true, false);
+        !storeOptions.reverseOrder
+          ? selectAllFromKanji(kanji, true, false)
+          : selectAllUpToKanji(kanji, true, false);
         break;
       case "deselect-from":
-        selectAllFromKanji(char, false, false);
+        !storeOptions.reverseOrder
+          ? selectAllFromKanji(kanji, false, false)
+          : selectAllUpToKanji(kanji, false, false);
         break;
       default:
         console.log("Invalid selection");
@@ -122,26 +140,26 @@ export function useContextMenu() {
     { name: "Deselect from", class: "deselect-from" },
   ];
   const headerBarContextOptionClicked = (event) => {
-    const levelIdx = event.item;
+    const levelName = event.item;
     const selection = event.option.class;
     switch (selection) {
       case "select-level":
-        selectLevel(levelIdx, true);
+        selectLevel(levelName, true);
         break;
       case "deselect-level":
-        selectLevel(levelIdx, false);
+        selectLevel(levelName, false);
         break;
       case "select-up-to":
-        selectAllUpToLevel(levelIdx, true, false);
+        selectAllUpToLevel(levelName, true, false);
         break;
       case "deselect-up-to":
-        selectAllUpToLevel(levelIdx, false, false);
+        selectAllUpToLevel(levelName, false, false);
         break;
       case "select-from":
-        selectAllFromLevel(levelIdx, true, false);
+        selectAllFromLevel(levelName, true, false);
         break;
       case "deselect-from":
-        selectAllFromLevel(levelIdx, false, false);
+        selectAllFromLevel(levelName, false, false);
         break;
       default:
         console.log("Invalid selection");
