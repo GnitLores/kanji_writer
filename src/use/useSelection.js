@@ -1,27 +1,16 @@
 import { ref } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
-import { useDisplayData } from "@/use/useDisplayData";
 import { useSelectionStats } from "@/use/useSelectionStats";
 
 const selected = ref([]);
-const selectedWhileDragging = ref([]);
-const unselectedWhileDragging = ref([]);
 
 export function useSelection() {
-  const { displayList, getDisplayedKanjiByChar } = useDisplayData();
-
   const { updateSelectionStats } = useSelectionStats();
 
   const initSelected = () => {
     const storeList = useStoreList();
     selected.value = new Array(storeList.kanjiList.length).fill(false);
-    selectedWhileDragging.value = new Array(storeList.kanjiList.length).fill(
-      false
-    );
-    unselectedWhileDragging.value = new Array(storeList.kanjiList.length).fill(
-      false
-    );
 
     updateSelectionStats(selected);
   };
@@ -48,45 +37,11 @@ export function useSelection() {
           : fun(kanji);
       });
     });
+    refreshStats();
   };
 
   const refreshStats = () => {
     updateSelectionStats(selected);
-  };
-
-  const addRangeToDrag = (min, max, isUnselecting) => {
-    // Used when expanding dragging selection
-    for (let cnt = min; cnt <= max; cnt++) {
-      const kanji = displayList.value[cnt];
-
-      if (isUnselecting) {
-        selectedWhileDragging.value[kanji.mainIdx] = false;
-        unselectedWhileDragging.value[kanji.mainIdx] = true;
-      } else {
-        selectedWhileDragging.value[kanji.mainIdx] = true;
-        unselectedWhileDragging.value[kanji.mainIdx] = false;
-      }
-    }
-  };
-  const removeRangeFromDrag = (min, max) => {
-    // Used when contracting dragging selection
-    for (let cnt = min; cnt <= max; cnt++) {
-      const kanji = displayList.value[cnt];
-      selectedWhileDragging.value[kanji.mainIdx] = false;
-      unselectedWhileDragging.value[kanji.mainIdx] = false;
-    }
-  };
-
-  const applyDraggingSelection = () => {
-    applyForAll((kanji) => {
-      const doSelect =
-        (isSelected(kanji) && !unselectedWhileDragging.value[kanji.mainIdx]) ||
-        (!isSelected(kanji) && selectedWhileDragging.value[kanji.mainIdx]);
-      selectKanji(kanji, doSelect);
-      selectedWhileDragging.value[kanji.mainIdx] = false;
-      unselectedWhileDragging.value[kanji.mainIdx] = false;
-    });
-    refreshStats();
   };
 
   const selectLevel = (levelName, toggle = true) => {
@@ -94,7 +49,6 @@ export function useSelection() {
     applyForAll((kanji) => {
       if (kanji.levelIdx === levelIdx) selectKanji(kanji, toggle);
     });
-    refreshStats();
   };
 
   const toggleLevelSelection = (kanjiList) => {
@@ -131,7 +85,6 @@ export function useSelection() {
         if (enforceOutsideRange) selectKanji(kanji, !toggle);
       }
     });
-    refreshStats();
   };
 
   const selectAllFromLevel = (
@@ -147,7 +100,6 @@ export function useSelection() {
         if (enforceOutsideRange) selectKanji(kanji, !toggle);
       }
     });
-    refreshStats();
   };
 
   const selectAllUpToKanji = (
@@ -162,7 +114,6 @@ export function useSelection() {
         if (enforceOutsideRange) selectKanji(kanji, !toggle);
       }
     });
-    refreshStats();
   };
 
   const selectAllFromKanji = (
@@ -177,7 +128,6 @@ export function useSelection() {
         if (enforceOutsideRange) selectKanji(kanji, !toggle);
       }
     });
-    refreshStats();
   };
 
   const toggleKanjiSelection = (kanji) => {
@@ -189,17 +139,14 @@ export function useSelection() {
     applyForAll((kanji) => {
       selectKanji(kanji, toggle);
     });
-    refreshStats();
   };
 
   return {
     selected,
-    selectedWhileDragging,
-    unselectedWhileDragging,
     initSelected,
-    addRangeToDrag,
-    removeRangeFromDrag,
-    applyDraggingSelection,
+    applyForAll,
+    isSelected,
+    selectKanji,
     selectLevel,
     toggleLevelSelection,
     selectAllUpToLevel,

@@ -68,6 +68,7 @@ import AppKanjiGridSearch from "@/components/kanjiGridComponents/AppKanjiGridSea
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";
+import { useDragSelection } from "@/use/useDragSelection";
 import { useContextMenu } from "@/use/useContextMenu";
 
 const storeOptions = useStoreOptions();
@@ -113,16 +114,15 @@ Kanji selection
 ===============
 */
 
+const { selected, toggleLevelSelection, toggleKanjiSelection } = useSelection();
 const {
-  selected,
   selectedWhileDragging,
   unselectedWhileDragging,
+  initDragSelection,
   addRangeToDrag,
   removeRangeFromDrag,
   applyDraggingSelection,
-  toggleLevelSelection,
-  toggleKanjiSelection,
-} = useSelection();
+} = useDragSelection();
 
 const emit = defineEmits(["kanjiRangeSelected"]);
 
@@ -147,6 +147,7 @@ const onKanjiMouseDown = (event) => {
   const kanji = getMouseKanji(event);
   isUnselecting = selected.value[kanji.mainIdx];
   startDragCnt = kanji.cnt;
+  initDragSelection();
   minCnt = startDragCnt;
   maxCnt = startDragCnt;
 };
