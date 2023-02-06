@@ -118,19 +118,12 @@ const { selected, toggleLevelSelection, toggleKanjiSelection } = useSelection();
 const {
   selectedWhileDragging,
   unselectedWhileDragging,
-  initDragSelection,
-  addRangeToDrag,
-  removeRangeFromDrag,
-  applyDraggingSelection,
+  startDrag,
+  updateDrag,
+  stopDrag,
 } = useDragSelection();
 
 const emit = defineEmits(["kanjiRangeSelected"]);
-
-let isDragging = false;
-let isUnselecting = false;
-let startDragCnt = -1;
-let minCnt = -1;
-let maxCnt = -1;
 
 const getMouseChar = (event) => event.target.__vnode.key;
 
@@ -143,63 +136,18 @@ const onKanjiClicked = (event) => {
 };
 
 const onKanjiMouseDown = (event) => {
-  isDragging = true;
   const kanji = getMouseKanji(event);
-  isUnselecting = selected.value[kanji.mainIdx];
-  startDragCnt = kanji.cnt;
-  initDragSelection();
-  minCnt = startDragCnt;
-  maxCnt = startDragCnt;
+  const isUnselecting = selected.value[kanji.mainIdx];
+  startDrag(kanji, isUnselecting);
 };
 
 const onKanjiMouseEnter = (event) => {
-  if (!isDragging) return;
-  const cnt = getMouseKanji(event).cnt;
-
-  // If there is a current selection and the mouse is moved outside any char to a char on the opposite side of the first clicked char, the direction of the selection has been flipped.
-  // Undo the existing selection before continuing.
-  if (maxCnt == startDragCnt && cnt > startDragCnt) {
-    // Direction was flipped from decreasing to increasing
-    removeRangeFromDrag(minCnt, startDragCnt);
-    minCnt = startDragCnt;
-  } else if (minCnt == startDragCnt && cnt < startDragCnt) {
-    // Direction was flipped from increasing to decreasing
-    removeRangeFromDrag(startDragCnt, maxCnt);
-    maxCnt = startDragCnt;
-  }
-
-  if (cnt < minCnt) {
-    // The selection is expanded in decreasing direction
-    addRangeToDrag(cnt, minCnt, isUnselecting);
-    minCnt = cnt;
-  } else if (cnt > maxCnt) {
-    // The selection is expanded in increasing direction
-    addRangeToDrag(maxCnt, cnt, isUnselecting);
-    maxCnt = cnt;
-  } else if (cnt < startDragCnt) {
-    // An existing selection in decreasing direction is contracted
-    removeRangeFromDrag(minCnt, cnt);
-    minCnt = cnt;
-  } else if (cnt > startDragCnt) {
-    // An existing selection in increasing direction is contracted
-    removeRangeFromDrag(cnt, maxCnt);
-    maxCnt = cnt;
-  }
+  const kanji = getMouseKanji(event);
+  updateDrag(kanji);
 };
 
-const onMouseUp = (event) => {
-  // if (event.target.classList.contains("kanji-character")) {
-  //   if (getMouseKanji(event).cnt == startDragCnt) isDragging = false;
-  // }
-
-  if (!isDragging) return;
-  isDragging = false;
-  isUnselecting = false;
-  startDragCnt = -1;
-  minCnt = -1;
-  maxCnt = -1;
-
-  applyDraggingSelection();
+const onMouseUp = () => {
+  stopDrag();
 };
 
 /*
