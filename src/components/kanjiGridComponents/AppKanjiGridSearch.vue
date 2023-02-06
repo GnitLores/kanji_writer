@@ -7,6 +7,7 @@
         placeholder="Enter text with kanji..."
         class="w-96 bg-darkmode-100 border border-black rounded pl-7"
         v-autofocus
+        @keyup.enter="startSearch"
       />
       <i
         class="fa-solid fa-magnifying-glass absolute top-1.5 left-1.5 text-black"
