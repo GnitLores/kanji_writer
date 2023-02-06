@@ -5,7 +5,7 @@
         type="text"
         v-model="input"
         placeholder="Enter text with kanji..."
-        class="w-96 bg-darkmode-100 border border-black rounded pl-7"
+        class="w-96 bg-darkmode-100 border border-black rounded px-7"
         v-autofocus
         maxlength="300"
         @keyup.enter="startSearch"
