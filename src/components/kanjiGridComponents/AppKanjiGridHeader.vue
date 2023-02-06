@@ -52,7 +52,7 @@
         </div>
       </div>
 
-      <div class="mr-2 cursor-pointer">
+      <div class="mr-2 cursor-pointer w-24">
         <div
           v-if="!storeOptions.showDisplayOptions"
           @click.prevent="
@@ -80,27 +80,34 @@
     ===============
     -->
     <transition name="slide">
-      <div v-show="storeOptions.showDisplayOptions" class="flex">
-        <p class="text-sky-100 mr-4 font-bold">Ignore:</p>
-        <div
-          class="truncate hover:text-clip"
-          v-for="level in storeList.levelNames"
-          :key="level"
-        >
-          <input
-            type="checkbox"
-            :value="level"
-            v-model="storeOptions.ignoredLevels"
-            @change="onIgnoreLevelChange($event)"
-          />
-          <label class="text-sky-200 tracking-wide mr-4 ml-0.5 font-bold">{{
-            level
-          }}</label>
+      <div v-show="storeOptions.showDisplayOptions">
+        <div class="flex">
+          <p class="text-sky-100 font-bold w-14">Ignore:</p>
+          <div class="flex grow mx-2">
+            <div
+              class="truncate hover:text-clip flex justify-center first:border-l-2 border-r-2 border-y-2 border-gray-600 border-hidden"
+              v-for="level in storeList.levelNames"
+              :key="level"
+              :style="{
+                width: `${100 * (1 / selectionStats.length)}%`,
+              }"
+            >
+              <input
+                type="checkbox"
+                :value="level"
+                v-model="storeOptions.ignoredLevels"
+                @change="onIgnoreLevelChange($event)"
+              />
+              <!-- <label class="text-sky-200 tracking-wide ml-0.5 font-bold">{{
+                level
+              }}</label> -->
+            </div>
+          </div>
+          <div class="w-24 mr-2"></div>
         </div>
 
-        <div class="grow"></div>
-
-        <div class="">
+        <div class="flex">
+          <p class="text-sky-100 font-bold w-16">Display:</p>
           <div class="inline-block ml-2">
             <input
               class=""
@@ -109,7 +116,7 @@
             />
             <label class="text-sky-100 font-bold ml-1">Reverse</label>
           </div>
-          <div class="inline-block ml-2">
+          <div class="inline-block ml-4">
             <input type="checkbox" v-model="storeOptions.doDisplayLevels" />
             <label class="text-sky-100 font-bold ml-1">By level</label>
           </div>
