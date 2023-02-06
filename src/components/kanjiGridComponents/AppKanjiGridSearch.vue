@@ -7,10 +7,16 @@
         placeholder="Enter text with kanji..."
         class="w-96 bg-darkmode-100 border border-black rounded pl-7"
         v-autofocus
+        maxlength="300"
         @keyup.enter="startSearch"
       />
       <i
         class="fa-solid fa-magnifying-glass absolute top-1.5 left-1.5 text-black"
+      ></i>
+      <i
+        class="fa-solid fa-times absolute top-1.5 right-1.5 text-black"
+        :class="[input === '' ? 'opacity-50' : 'hover:cursor-pointer']"
+        @click.prevent="clearSearch()"
       ></i>
     </div>
     <AppButton
@@ -18,12 +24,6 @@
       :text="'Search'"
       class="ml-2 w-12"
       @clicked="startSearch()"
-    />
-    <AppButton
-      :disabled="input === ''"
-      :text="'Clear'"
-      class="ml-2 w-12"
-      @clicked="clearSearch()"
     />
   </div>
   <div v-if="false" class="search-error"><p>No results found!</p></div>
