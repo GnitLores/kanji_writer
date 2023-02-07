@@ -7,7 +7,7 @@
         {{ storeQuiz.quizType }}
       </h4>
     </div>
-    <AppKanjiWriter ref="writerRef" />
+    <AppWritingField ref="writerRef" />
     <div class="flex justify-evenly mt-2">
       <button
         class="bg-transparent hover:bg-blue-500 text-sky-400 font-semibold hover:text-white py-2 border border-blue-500 hover:border-transparent rounded w-14 disabled:opacity-50"
@@ -39,7 +39,7 @@ import { ref, reactive, onMounted, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreQuiz } from "@/stores/storeQuiz";
-import AppKanjiWriter from "@/components/AppKanjiWriter.vue";
+import AppWritingField from "@/components/AppWritingField.vue";
 
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();

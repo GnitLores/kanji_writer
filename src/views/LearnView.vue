@@ -13,7 +13,7 @@ import {
   onUnmounted,
   computed,
 } from "vue";
-import AppKanjiGrid from "@/components/AppKanjiGrid.vue";
+import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 

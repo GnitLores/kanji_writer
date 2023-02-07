@@ -65,8 +65,8 @@ import {
 import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
-import AppKanjiGridHeader from "@/components/kanjiGridComponents/AppKanjiGridHeader.vue";
-import AppKanjiGridSearch from "@/components/kanjiGridComponents/AppKanjiGridSearch.vue";
+import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
+import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";

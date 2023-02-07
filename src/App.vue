@@ -1,5 +1,5 @@
 <template>
-  <KanjiDetailsModal />
+  <AppKanjiDetailsModal />
   <AppNavbar />
   <router-view v-slot="{ Component }">
     <component :is="Component"></component>
@@ -11,7 +11,7 @@ import { onMounted } from "vue";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppNavbar from "@/components/AppNavbar.vue";
-import KanjiDetailsModal from "@/components/modals/KanjiDetailsModal.vue";
+import AppKanjiDetailsModal from "@/components/Modals/AppKanjiDetailsModal.vue";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
