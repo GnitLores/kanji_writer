@@ -31,13 +31,15 @@
       <div
         v-for="kanji in level.kanji"
         :key="kanji.char"
-        class="kanji-character inline-block cursor-pointer text-white border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        class="kanji-character inline-block cursor-pointer border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
-          (selected[kanji.mainIdx] &&
-            !unselectedWhileDragging[kanji.mainIdx]) ||
-          (!selected[kanji.mainIdx] && selectedWhileDragging[kanji.mainIdx])
-            ? 'text-darkmode-50 text-opacity-100'
-            : 'text-opacity-80',
+          selectedWhileDragging[kanji.mainIdx]
+            ? 'text-darkmode-200'
+            : unselectedWhileDragging[kanji.mainIdx]
+            ? 'text-white text-opacity-100'
+            : selected[kanji.mainIdx]
+            ? 'text-darkmode-50 hover:text-darkmode-200'
+            : 'text-white text-opacity-80 hover:text-opacity-100',
         ]"
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"
