@@ -78,7 +78,7 @@ export function useDragSelection() {
     } else {
       applyDraggingSelection();
     }
-
+    initDragSelection();
     isDragging.value = false;
     isUnselecting = false;
     startDragCnt = -1;
