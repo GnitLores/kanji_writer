@@ -32,13 +32,15 @@
           :style="{
             width: `${100 * (1 / selectionStats.length)}%`,
           }"
-          @click.prevent="selectAllUpToLevel(level.name)"
-          @contextmenu.prevent.stop="onHeaderBarContext($event, level.name)"
+          @click.prevent="onLeftClick(level.name)"
+          @contextmenu.prevent.stop="onRightClick($event, level.name)"
         >
           <span
-            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 cursor-pointer hover:text-white truncate hover:text-clip"
+            class="absolute text-center w-full pt-0.5 text-sky-200 text-xs font-bold z-10 hover:text-white truncate hover:text-clip"
             :class="[
-              storeOptions.isLevelIgnored(level.name) ? 'opacity-50' : '',
+              storeOptions.isLevelIgnored(level.name)
+                ? 'opacity-50'
+                : 'cursor-pointer',
             ]"
             >{{ level.name }}</span
           >
@@ -155,6 +157,20 @@ const toggleDisplayOptions = () => {
 const onIgnoreLevelChange = (event) => {
   const levelName = event.target.value;
   selectLevel(levelName, false);
+};
+
+const onLeftClick = (levelName) => {
+  if (storeOptions.isLevelIgnored(levelName)) {
+  } else {
+    selectAllUpToLevel(levelName);
+  }
+};
+
+const onRightClick = (event, levelName) => {
+  if (storeOptions.isLevelIgnored(levelName)) {
+  } else {
+    onHeaderBarContext(event, levelName);
+  }
 };
 
 /*
