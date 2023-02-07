@@ -50,6 +50,7 @@ const storeOptions = useStoreOptions();
 
 const writerRef = ref(null);
 const animationIsPlaying = ref(false);
+let hintTimer = null;
 
 const onHintClicked = () => {
   writerRef.value.giveHint();
@@ -68,23 +69,33 @@ const showWritingAnimation = () => {
   writerRef.value.animate(startWriting);
 };
 
+const scheduleHint = () => {
+  cancelHints();
+  hintTimer = setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
+};
+
+const cancelHints = () => {
+  if (hintTimer) clearTimeout(hintTimer);
+  hintTimer = null;
+};
+
 const startWriting = () => {
   storeQuiz.initQuiz(storeKanji.char);
 
   const writerProps = {
-    showHintAfterMisses: 1,
+    showHintAfterMisses: 3,
     showOutline: true,
   };
   const quizOptions = {
     onCorrectStroke: (status) => {
       writerRef.value.markStrokeCorrect(status);
-      setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
+      scheduleHint();
     },
   };
 
   writerRef.value.startQuiz(writerProps, quizOptions);
   animationIsPlaying.value = false;
-  setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
+  scheduleHint();
 };
 
 onMounted(() => {
