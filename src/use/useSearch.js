@@ -3,7 +3,6 @@ import { useDisplayData } from "@/use/useDisplayData";
 
 const input = ref("");
 let isSearching = ref(false);
-let charsAvailable = ref(new Set());
 
 export function useSearch() {
   const { displayData, backgroundData, backgroundMap, mapDisplayedKanji } =
@@ -16,7 +15,7 @@ export function useSearch() {
 
   const startSearch = () => {
     if (input === "") stopSearch();
-    isSearching = true;
+    isSearching.value = true;
 
     const level = {};
     level.kanji = [];
@@ -30,7 +29,7 @@ export function useSearch() {
   };
 
   const stopSearch = () => {
-    isSearching = false;
+    isSearching.value = false;
     mapDisplayedKanji(backgroundData.value); // Restore indices of background data
     displayData.value = backgroundData.value;
   };
@@ -61,5 +60,5 @@ export function useSearch() {
     return str;
   }
 
-  return { input, startSearch, clearSearch };
+  return { input, isSearching, startSearch, clearSearch };
 }

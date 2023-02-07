@@ -22,7 +22,7 @@
       <div class="flex justify-evenly">
         <h3
           @click.prevent="toggleLevelSelection(level.kanji)"
-          @contextmenu.prevent.stop="onLevelTitleContext($event, level.name)"
+          @contextmenu.prevent.stop="onTitleRightClick($event, level.name)"
           class="inline-block text-sky-200 cursor-pointer hover:text-white text-center mb-1 mt-2 font-bold tracking-wide"
         >
           {{ level.name }}:
@@ -72,6 +72,7 @@ import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";
 import { useDragSelection } from "@/use/useDragSelection";
 import { useContextMenu } from "@/use/useContextMenu";
+import { useSearch } from "@/use/useSearch";
 
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
@@ -109,6 +110,13 @@ const {
   onKanjiContext,
   kanjiContextRef,
 } = useContextMenu();
+
+const { isSearching } = useSearch();
+
+const onTitleRightClick = (event, levelName) => {
+  if (isSearching.value || !storeOptions.doDisplayLevels) return;
+  onLevelTitleContext(event, levelName);
+};
 
 /*
 ===============
