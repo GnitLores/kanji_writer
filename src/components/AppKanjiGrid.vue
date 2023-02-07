@@ -31,7 +31,7 @@
       <div
         v-for="kanji in level.kanji"
         :key="kanji.char"
-        class="kanji-character inline-block cursor-pointer hover:text-white text-white border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        class="kanji-character inline-block cursor-pointer text-white border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
           (selected[kanji.mainIdx] &&
             !unselectedWhileDragging[kanji.mainIdx]) ||
@@ -116,6 +116,7 @@ Kanji selection
 
 const { selected, toggleLevelSelection, toggleKanjiSelection } = useSelection();
 const {
+  isDragging,
   selectedWhileDragging,
   unselectedWhileDragging,
   startDrag,
@@ -131,8 +132,12 @@ const getMouseKanji = (event) => {
   return getDisplayedKanjiByChar(getMouseChar(event));
 };
 
+const isMouseKanji = (event) => {
+  return event.target.classList.contains("kanji-character");
+};
+
 const onKanjiClicked = (event) => {
-  toggleKanjiSelection(getMouseKanji(event));
+  // clicking is handled in dragging selection on mouse up
 };
 
 const onKanjiMouseDown = (event) => {
@@ -146,8 +151,8 @@ const onKanjiMouseEnter = (event) => {
   updateDrag(kanji);
 };
 
-const onMouseUp = () => {
-  stopDrag();
+const onMouseUp = (event) => {
+  isMouseKanji(event) ? stopDrag(getMouseKanji(event)) : stopDrag();
 };
 
 /*
