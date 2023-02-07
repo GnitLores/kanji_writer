@@ -143,6 +143,7 @@ const onKanjiClicked = (event) => {
 };
 
 const onKanjiMouseDown = (event) => {
+  if (!(event.button === 0)) return; // only on left click
   const kanji = getMouseKanji(event);
   const isUnselecting = selected.value[kanji.mainIdx];
   startDrag(kanji, isUnselecting);
