@@ -6,11 +6,14 @@ import { useStoreList } from "@/stores/storeList";
 export const useStoreOptions = defineStore("storeOptions", {
   state: () => {
     return {
-      // Kanji display options:
+      // Kanji grid display options:
       doDisplayLevels: true,
       ignoredLevels: [],
       showDisplayOptions: false,
       reverseOrder: false,
+
+      // Writing options:
+      hintDelay: 500,
     };
   },
   actions: {

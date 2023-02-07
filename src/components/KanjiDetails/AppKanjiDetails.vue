@@ -1,13 +1,11 @@
 <template>
   <div class="container">
-    <div class="min-w-full border-red-600 border">
-      <div class="h-16 w-52 bg-darkmode-50"></div>
-      <div class=""></div>
-      <div class=""></div>
-    </div>
+    <AppDetailsWriting />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import AppDetailsWriting from "@/components/KanjiDetails/AppDetailsWriting.vue";
+</script>
 
 <style scoped></style>

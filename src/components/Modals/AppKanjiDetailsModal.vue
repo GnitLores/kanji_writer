@@ -1,12 +1,4 @@
 <template>
-  <!-- <button
-    type="button"
-    class="bg-indigo-200 px-3 py-1 font-medium"
-    @click="showModal = true"
-  >
-    Show modal
-  </button> -->
-
   <AppBaseModal :show="storeKanji.showModal">
     <AppKanjiDetails v-on-click-outside="closeModal" />
   </AppBaseModal>

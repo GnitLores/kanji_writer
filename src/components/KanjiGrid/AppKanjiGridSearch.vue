@@ -22,7 +22,7 @@
     <AppButton
       :disabled="input === ''"
       :text="'Search'"
-      class="ml-2 w-12"
+      class="ml-2 w-14"
       @clicked="startSearch()"
     />
   </div>

@@ -53,6 +53,8 @@ const createWriter = (writerProps = {}) => {
     highlightColor: "#FFFFFF",
     outlineColor: "#6B7280",
     drawingColor: "#38BDF8",
+    highlightOnComplete: true,
+    highlightCompleteColor: "#FB923C",
   };
 
   writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
@@ -76,15 +78,29 @@ const activateWriterQuiz = (quizOptions = {}) => {
 const cancelQuiz = () => {
   if (!writer) return;
 
+  writer.pauseAnimation(); // important to prevent canceled animations from firing onCompleted functions
   writer.cancelQuiz();
   writer.target.removeEventListeners();
 };
 
-const startQuiz = (writerProps, quizOptions) => {
+const startQuiz = (writerProps = {}, quizOptions = {}) => {
   cancelQuiz();
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
+};
+
+const animate = (onCompleteFunction = () => {}) => {
+  const writerProps = {
+    strokeAnimationSpeed: 2, // 5x normal speed
+    delayBetweenStrokes: 200, // milliseconds
+  };
+  startQuiz(writerProps, {});
+  writer.animateCharacter({
+    onComplete: function () {
+      setTimeout(onCompleteFunction, 500);
+    },
+  });
 };
 
 const initQuizField = () => {
@@ -131,6 +147,7 @@ onMounted(() => {
 defineExpose({
   startQuiz,
   giveHint,
+  animate,
   markStrokeMistake,
   markStrokeCorrect,
 });

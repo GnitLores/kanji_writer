@@ -10,7 +10,7 @@ export const useStoreQuiz = defineStore("storeQuiz", {
       mistakes: 0,
       currentStroke: 0,
       status: {},
-      quizSize: 200, // pixels
+      quizSize: 300, // pixels
     };
   },
   actions: {
@@ -30,6 +30,9 @@ export const useStoreQuiz = defineStore("storeQuiz", {
           break;
         case "Review":
           this.quizType = "Quiz";
+          break;
+        case "Details":
+          this.quizType = "Writing";
           break;
       }
     },
