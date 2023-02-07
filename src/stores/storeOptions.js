@@ -14,6 +14,8 @@ export const useStoreOptions = defineStore("storeOptions", {
 
       // Writing options:
       hintDelay: 500,
+      showDetailsOutline: true,
+      showDetailsHints: true,
     };
   },
   actions: {

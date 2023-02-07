@@ -53,8 +53,8 @@ const createWriter = (writerProps = {}) => {
     highlightColor: "#FFFFFF",
     outlineColor: "#6B7280",
     drawingColor: "#38BDF8",
-    // highlightOnComplete: true,
-    // highlightCompleteColor: "#FB923C",
+    highlightOnComplete: true,
+    highlightCompleteColor: "#FB923C",
   };
 
   writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
@@ -101,6 +101,10 @@ const animate = (onCompleteFunction = () => {}) => {
       setTimeout(onCompleteFunction, 500);
     },
   });
+};
+
+const toggleOutline = (toggle) => {
+  toggle ? writer.showOutline() : writer.hideOutline();
 };
 
 const initQuizField = () => {
@@ -150,6 +154,7 @@ defineExpose({
   animate,
   markStrokeMistake,
   markStrokeCorrect,
+  toggleOutline,
 });
 </script>
 

@@ -1,5 +1,25 @@
 <template>
   <div class="p-4">
+    <div class="flex justify-evenly my-1">
+      <div class="inline-block ml-2">
+        <input
+          class=""
+          type="checkbox"
+          v-model="storeOptions.showDetailsOutline"
+          @change="onShowOutlineChange()"
+        />
+        <label class="text-sky-100 font-bold ml-1">Outline</label>
+      </div>
+      <div class="inline-block ml-2">
+        <input
+          class=""
+          type="checkbox"
+          v-model="storeOptions.showDetailsHints"
+          @change="onShowHintsChange()"
+        />
+        <label class="text-sky-100 font-bold ml-1">Hints</label>
+      </div>
+    </div>
     <AppWritingField ref="writerRef" />
     <div class="flex justify-evenly mt-2">
       <AppButton
@@ -70,6 +90,7 @@ const showWritingAnimation = () => {
 };
 
 const scheduleHint = () => {
+  if (!storeOptions.showDetailsHints) return;
   cancelHints();
   hintTimer = setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
 };
@@ -84,7 +105,7 @@ const startWriting = () => {
 
   const writerProps = {
     showHintAfterMisses: 3,
-    showOutline: true,
+    showOutline: storeOptions.showDetailsOutline,
   };
   const quizOptions = {
     onCorrectStroke: (status) => {
@@ -97,6 +118,12 @@ const startWriting = () => {
   animationIsPlaying.value = false;
   scheduleHint();
 };
+
+const onShowOutlineChange = () => {
+  writerRef.value.toggleOutline(storeOptions.showDetailsOutline);
+};
+
+const onShowHintsChange = () => {};
 
 onMounted(() => {
   startWriting();
