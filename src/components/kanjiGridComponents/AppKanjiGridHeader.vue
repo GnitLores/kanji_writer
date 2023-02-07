@@ -22,7 +22,6 @@
       <div class="selection-bar grow mx-2">
         <div
           v-for="level in selectionStats"
-          v-show="!storeOptions.allLevelsIgnored()"
           :key="level.name"
           class="inline-block relative border-solid first:border-l-2 border-r-2 border-y-2 border-gray-600 h-full"
           :class="[
