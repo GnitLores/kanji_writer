@@ -18,6 +18,7 @@ import {
   computed,
   watch,
 } from "vue";
+import { storeToRefs } from "pinia";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -27,6 +28,7 @@ import { useKanjiWriter } from "@/use/useKanjiWriter";
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
+const { kanjiData } = storeToRefs(storeKanji);
 
 const KanjiWriter = useKanjiWriter();
 const strokeOrderRef = ref(null);
@@ -64,6 +66,20 @@ const drawStrokeOrder = () => {
     }
   });
 };
+
+const initVisualization = () => {
+  if (strokeOrderRef.value) {
+    [].slice
+      .call(strokeOrderRef.value.children)
+      .forEach((child) => strokeOrderRef.value.removeChild(child));
+  }
+};
+
+watch(kanjiData, () => {
+  if (storeKanji.char === "") return;
+  initVisualization();
+  drawStrokeOrder();
+});
 
 onMounted(() => {
   drawStrokeOrder();
