@@ -16,6 +16,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       hintDelay: 500,
       showDetailsOutline: true,
       showDetailsHints: true,
+      showDetailsStrokeOrder: true,
     };
   },
   actions: {

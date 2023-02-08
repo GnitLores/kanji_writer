@@ -1,7 +1,11 @@
 <template>
-  <div class="flex">
-    <div class="flex flex-wrap p-2" ref="strokeOrderRef"></div>
-  </div>
+  <transition name="slide">
+    <div v-show="storeOptions.showDetailsStrokeOrder">
+      <div class="flex">
+        <div class="flex flex-wrap p-2" ref="strokeOrderRef"></div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script setup>
@@ -66,4 +70,16 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide-enter-active {
+  transition: all 0.3s;
+}
+.slide-leave-active {
+  transition: all 0.3s;
+}
+.slide-enter-from, .slide-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-1rem);
+  opacity: 0;
+}
+</style>
