@@ -123,7 +123,9 @@ const onShowOutlineChange = () => {
   writerRef.value.toggleOutline(storeOptions.showDetailsOutline);
 };
 
-const onShowHintsChange = () => {};
+const onShowHintsChange = () => {
+  storeOptions.showDetailsHints ? writerRef.value.giveHint() : cancelHints();
+};
 
 onMounted(() => {
   startWriting();
