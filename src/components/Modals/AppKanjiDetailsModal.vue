@@ -14,7 +14,7 @@ import { vOnClickOutside } from "@vueuse/components";
 const storeKanji = useStoreKanji();
 
 const closeModal = () => {
-  storeKanji.showModal = false;
+  storeKanji.hideDetailsModal();
 };
 // const showModal = ref(false);
 </script>

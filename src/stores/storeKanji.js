@@ -12,6 +12,11 @@ export const useStoreKanji = defineStore("storeKanji", {
     };
   },
   actions: {
+    init() {
+      this.char = "";
+      this.writingData = {};
+      this.kanjiData = {};
+    },
     async loadKanji(char) {
       const docRef = doc(kanjiCollection, char);
       const snapshot = await getDoc(docRef);
@@ -23,6 +28,10 @@ export const useStoreKanji = defineStore("storeKanji", {
     async displayKanjiDetailsModal(char) {
       await this.loadKanji(char);
       this.showModal = true;
+    },
+    hideDetailsModal() {
+      this.showModal = false;
+      this.init();
     },
   },
 });

@@ -41,7 +41,9 @@
             ? 'text-darkmode-50 hover:text-darkmode-200'
             : 'text-white text-opacity-80 hover:text-opacity-100',
           storeKanji.char === kanji.char
-            ? 'border-darkmode-50'
+            ? selected[kanji.mainIdx]
+              ? 'border-white'
+              : 'border-darkmode-50'
             : 'border-transparent',
         ]"
         @click.prevent="onKanjiClicked"
