@@ -31,7 +31,7 @@
       <div
         v-for="kanji in level.kanji"
         :key="kanji.char"
-        class="kanji-character inline-block cursor-pointer border-transparent border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
+        class="kanji-character inline-block cursor-pointer border-solid border-2 p-0.5 -m-1 w-8 h-8 text-center rounded"
         :class="[
           selectedWhileDragging[kanji.mainIdx]
             ? 'text-darkmode-200'
@@ -40,6 +40,9 @@
             : selected[kanji.mainIdx]
             ? 'text-darkmode-50 hover:text-darkmode-200'
             : 'text-white text-opacity-80 hover:text-opacity-100',
+          storeKanji.char === kanji.char
+            ? 'border-darkmode-50'
+            : 'border-transparent',
         ]"
         @click.prevent="onKanjiClicked"
         @mousedown.prevent="onKanjiMouseDown"
@@ -65,6 +68,7 @@ import {
 import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
+import { useStoreKanji } from "@/stores/storeKanji";
 import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
 import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
@@ -76,6 +80,7 @@ import { useSearch } from "@/use/useSearch";
 
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
+const storeKanji = useStoreKanji();
 
 const {
   displayData,
