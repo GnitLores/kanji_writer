@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <AppStrokeOrderVisualization />
-    <AppDetailsWriting />
+    <div class="flex justify-center"><AppDetailsWriting /></div>
   </div>
 </template>
 

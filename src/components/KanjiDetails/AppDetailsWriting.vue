@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 w-fit">
     <div class="flex justify-evenly my-1">
       <div class="inline-block ml-2">
         <input
@@ -58,6 +58,7 @@ import {
   computed,
   watch,
 } from "vue";
+// import { storeToRefs } from "pinia";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -67,6 +68,7 @@ import AppButton from "@/components/AppButton.vue";
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
+// const { quizSize } = storeToRefs(storeKanji);
 
 const writerRef = ref(null);
 const animationIsPlaying = ref(false);
