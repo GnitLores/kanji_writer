@@ -24,6 +24,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       this.char = loadedData.kanji;
       this.writingData = JSON.parse(loadedData.data);
       this.kanjiData = loadedData;
+      console.log(this.kanjiData);
     },
     async displayKanjiDetailsModal(char) {
       await this.loadKanji(char);

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center my-2">
+  <div class="flex justify-center my-2 select-none">
     <div class="grow basis-0">
       <div
         class="mx-2 cursor-pointer w-32"

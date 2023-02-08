@@ -1,10 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: "jit",
+
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
   theme: {
     extend: {
       colors: {
@@ -23,4 +21,17 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern:
+        /(bg|text|border)-darkmode-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+  ],
+  plugins: [],
+
+  purge: [
+    "./index.html",
+    "./public/**/*.html",
+    "./src/**/*.{js,jsx,ts,tsx,vue}",
+  ],
 };

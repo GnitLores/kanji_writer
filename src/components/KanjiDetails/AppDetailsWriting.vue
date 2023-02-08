@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 w-fit">
+  <div class="p-4 w-fit select-none">
     <div class="flex justify-evenly my-1">
       <div class="inline-block ml-2">
         <input
@@ -29,19 +29,19 @@
           !storeQuiz.strokesRemain
         "
         :text="'Hint'"
-        class=""
+        class="w-20 py-1"
         @clicked="onHintClicked()"
       />
       <AppButton
         :disabled="!storeQuiz.quizIsActive || !storeQuiz.strokesRemain"
-        :text="'Show'"
-        class=""
+        :text="'Animate'"
+        class="w-20 py-1"
         @clicked="onShowClicked()"
       />
       <AppButton
         :disabled="!storeQuiz.quizIsActive"
         :text="'Reset'"
-        class=""
+        class="w-20 py-1"
         @clicked="onResetClicked()"
       />
     </div>
