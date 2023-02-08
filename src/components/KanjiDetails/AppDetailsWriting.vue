@@ -58,7 +58,7 @@ import {
   computed,
   watch,
 } from "vue";
-// import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -68,7 +68,7 @@ import AppButton from "@/components/AppButton.vue";
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
-// const { quizSize } = storeToRefs(storeKanji);
+const { kanjiData } = storeToRefs(storeKanji);
 
 const writerRef = ref(null);
 const animationIsPlaying = ref(false);
@@ -103,6 +103,7 @@ const cancelHints = () => {
 };
 
 const startWriting = () => {
+  cancelHints();
   storeQuiz.initQuiz(storeKanji.char);
 
   const writerProps = {
@@ -129,8 +130,17 @@ const onShowHintsChange = () => {
   storeOptions.showDetailsHints ? writerRef.value.giveHint() : cancelHints();
 };
 
+watch(kanjiData, () => {
+  if (storeKanji.char === "") return;
+  startWriting();
+});
+
 onMounted(() => {
   startWriting();
+});
+onBeforeUnmount(() => {
+  cancelHints();
+  writerRef.value.cancelQuiz();
 });
 </script>
 

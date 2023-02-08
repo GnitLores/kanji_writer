@@ -7,7 +7,7 @@
 
       <!-- Where the actual content goes -->
       <div class="fixed inset-0 flex items-center justify-center">
-        <div class="bg-darkmode-700 rounded">
+        <div class="bg-darkmode-700 rounded border-2 border-gray-600">
           <slot></slot>
         </div>
       </div>

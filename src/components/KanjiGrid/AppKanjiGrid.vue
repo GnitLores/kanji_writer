@@ -84,12 +84,8 @@ const storeOptions = useStoreOptions();
 const storeList = useStoreList();
 const storeKanji = useStoreKanji();
 
-const {
-  displayData,
-  updateDisplayData,
-  getDisplayedKanjiByChar,
-  getDisplayedKanjiByCount,
-} = useDisplayData();
+const { displayData, updateDisplayData, getDisplayedKanjiByChar } =
+  useDisplayData();
 
 // Watch stores and update display data:
 const { kanjiByLevel } = storeToRefs(storeList);

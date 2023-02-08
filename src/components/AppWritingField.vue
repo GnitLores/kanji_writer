@@ -139,12 +139,18 @@ const drawQuizLines = () => {
   drawQuizLine(0, dim, dim, dim);
 };
 
+const setNewChar = (char) => {
+  writer.setCharacter(char);
+};
+
 onMounted(() => {
   initQuizField();
 });
 
 defineExpose({
   startQuiz,
+  cancelQuiz,
+  setNewChar,
   giveHint,
   animate,
   markStrokeMistake,

@@ -84,8 +84,18 @@ export function useDisplayData() {
     return displayMap.value.get(char);
   };
 
-  const getDisplayedKanjiByCount = (cnt) => {
+  const getDisplayedKanjiByCountWrapping = (cnt) => {
+    if (cnt < 0) cnt += displayData.value.nKanji;
+    if (cnt >= displayData.value.nKanji) cnt -= displayData.value.nKanji;
     return displayList.value[cnt];
+  };
+
+  const getDisplayedKanjiRelative = (char, offset = 0) => {
+    // Based on an input character, returns the kanji displayed the number of offset fields after that character.
+    // e.g. char = 力 and offset = -1 returns the kanji displayed to the left of 力
+    // The method wraps around when either end is reached.
+    const kanji = getDisplayedKanjiByChar(char);
+    return getDisplayedKanjiByCountWrapping(kanji.cnt + offset);
   };
 
   return {
@@ -96,7 +106,7 @@ export function useDisplayData() {
     backgroundMap,
     updateDisplayData,
     getDisplayedKanjiByChar,
-    getDisplayedKanjiByCount,
+    getDisplayedKanjiRelative,
     mapDisplayedKanji,
   };
 }

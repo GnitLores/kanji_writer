@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="flex justify-center"><AppDetailsWriting /></div>
-    <AppKanjiDetailsSelectBar />
     <AppStrokeOrderVisualization />
+    <AppKanjiDetailsSelectBar />
   </div>
 </template>
 
