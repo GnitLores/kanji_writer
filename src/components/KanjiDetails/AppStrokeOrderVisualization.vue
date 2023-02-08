@@ -95,7 +95,7 @@ onMounted(() => {
 }
 .slide-enter-from, .slide-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(-1rem);
+  transform: translateY(1rem);
   opacity: 0;
 }
 </style>
