@@ -27,8 +27,6 @@ const storeOptions = useStoreOptions();
 const KanjiWriter = useKanjiWriter();
 const strokeOrderRef = ref(null);
 
-// const boxSize = 50;
-
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const boxSize = nStrokes <= 10 ? 80 : nStrokes <= 20 ? 70 : 60;

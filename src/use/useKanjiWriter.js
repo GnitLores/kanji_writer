@@ -1,3 +1,5 @@
+import { useStoreKanji } from "@/stores/storeKanji";
+
 export function useKanjiWriter() {
   /**
    * Hanzi Writer v3.4.0 | https://chanind.github.io/hanzi-writer
@@ -2536,8 +2538,16 @@ export function useKanjiWriter() {
       xhr.send(null);
     };
 
+    // Make Hanziwriter load from database by default even for static methods:
+    // With this method, it is also no longer necessary to pass the data loader to instances.
+    const loadWritingData = (char, onComplete) => {
+      const storeKanji = useStoreKanji();
+      onComplete(storeKanji.writingData);
+    };
+
     const defaultOptions = {
-      charDataLoader: defaultCharDataLoader,
+      // charDataLoader: defaultCharDataLoader,
+      charDataLoader: loadWritingData,
       onLoadCharDataError: null,
       onLoadCharDataSuccess: null,
       showOutline: true,

@@ -25,10 +25,6 @@ const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 
-const loadWritingData = (char, onComplete) => {
-  onComplete(storeKanji.writingData);
-};
-
 const markStrokeMistake = (status) => {
   storeQuiz.addMistake(status);
 };
@@ -39,7 +35,6 @@ const markStrokeCorrect = (status) => {
 
 const createWriter = (writerProps = {}) => {
   const defaultProperties = {
-    charDataLoader: loadWritingData,
     width: storeQuiz.quizSize,
     height: storeQuiz.quizSize,
     padding: 0,
