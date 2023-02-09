@@ -2,7 +2,7 @@
   <transition name="slide">
     <div v-show="storeOptions.showDetailsStrokeOrder">
       <div class="flex">
-        <div class="flex flex-wrap p-2" ref="strokeOrderRef"></div>
+        <div class="flex flex-wrap" ref="strokeOrderRef"></div>
       </div>
     </div>
   </transition>
@@ -37,11 +37,11 @@ const emit = defineEmits(["strokeOrderClicked"]);
 
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  const boxSize = nStrokes <= 10 ? 80 : nStrokes <= 20 ? 70 : 60;
+  const boxSize = nStrokes <= 10 ? 56 : nStrokes <= 20 ? 40 : 34;
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
-  svg.classList =
-    "inline-block border border-gray-600 m-0.5 hover:cursor-pointer";
+  svg.classList = "inline-block border border-gray-600 hover:cursor-pointer";
+  if (nStrokes < 20) svg.classList += " m-0.5";
   svg.addEventListener("click", () => {
     emit("strokeOrderClicked", strokeNr, nStrokes);
   });
@@ -101,7 +101,7 @@ onMounted(() => {
 }
 .slide-enter-from, .slide-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(1rem);
+  transform: translateY(-1rem);
   opacity: 0;
 }
 </style>

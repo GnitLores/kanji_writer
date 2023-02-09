@@ -19,6 +19,15 @@
         />
         <label class="text-sky-100 font-bold ml-1">Hints</label>
       </div>
+      <div class="inline-block ml-2">
+        <input
+          class=""
+          type="checkbox"
+          v-model="storeOptions.showDetailsStrokeOrder"
+          @change="onShowStrokesChange()"
+        />
+        <label class="text-sky-100 font-bold ml-1">Strokes</label>
+      </div>
     </div>
     <AppWritingField ref="writerRef" />
     <div class="flex justify-evenly mt-2">
@@ -45,6 +54,10 @@
         @clicked="onResetClicked()"
       />
     </div>
+    <AppStrokeOrderVisualization
+      class="mt-4"
+      @strokeOrderClicked="onStrokeOrderClicked"
+    />
   </div>
 </template>
 
@@ -64,6 +77,7 @@ import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppWritingField from "@/components/AppWritingField.vue";
 import AppButton from "@/components/AppButton.vue";
+import AppStrokeOrderVisualization from "@/components/KanjiDetails/AppStrokeOrderVisualization.vue";
 
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
@@ -134,6 +148,12 @@ const onShowOutlineChange = () => {
 
 const onShowHintsChange = () => {
   storeOptions.showDetailsHints ? writerRef.value.giveHint() : cancelHints();
+};
+
+const onShowStrokesChange = () => {};
+
+const onStrokeOrderClicked = (strokeNr, nStrokes) => {
+  displayStroke(strokeNr, nStrokes);
 };
 
 watch(kanjiData, () => {

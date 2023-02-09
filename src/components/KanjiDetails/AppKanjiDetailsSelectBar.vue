@@ -1,46 +1,27 @@
 <template>
   <div class="flex justify-center my-2 select-none">
-    <div class="grow basis-0">
-      <div
-        class="mx-2 cursor-pointer w-32"
-        @click.prevent="showStrokeOrderClicked"
-      >
-        <span
-          ><p
-            class="text-sky-100 inline-block mr-2 font-bold"
-            :class="[storeOptions.showDetailsStrokeOrder ? 'underline' : '']"
-          >
-            Stroke order
-          </p>
-          <i
-            v-if="storeOptions.showDetailsStrokeOrder"
-            class="fas fa-angles-down text-sky-100"
-          ></i
-          ><i v-else class="fas fa-angles-up text-sky-100"></i
-        ></span>
-      </div>
-    </div>
     <div class="inline-block">
       <div class="flex justify-evenly w-72">
         <AppButton
-          :disabled="false"
-          :text="'Previous'"
-          class="w-24 text-lg h-10"
+          :disabled="nextKanji == storeKanji.char"
+          :text="`Previous - ${prevKanji}`"
+          class="w-32 text-lg h-10"
           @clicked="previousButtonClicked"
         />
         <AppButton
-          :disabled="false"
-          :text="'Next'"
-          class="w-24 text-lg h-10"
+          :disabled="nextKanji == storeKanji.char"
+          :text="`Next - ${nextKanji}`"
+          class="w-32 text-lg h-10"
           @clicked="nextButtonClicked"
         />
       </div>
     </div>
-    <div class="grow basis-0"><div class="w-32"></div></div>
   </div>
 </template>
 
 <script setup>
+import { ref, watch, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreKanji } from "@/stores/storeKanji";
 import AppButton from "@/components/AppButton.vue";
@@ -49,21 +30,34 @@ import { useDisplayData } from "@/use/useDisplayData";
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 
-const showStrokeOrderClicked = () => {
-  storeOptions.showDetailsStrokeOrder = !storeOptions.showDetailsStrokeOrder;
-};
+let prevKanji = ref("");
+let nextKanji = ref("");
 
 const { getDisplayedKanjiRelative } = useDisplayData();
 
+const { kanjiData } = storeToRefs(storeKanji);
+
 const previousButtonClicked = () => {
-  const kanji = getDisplayedKanjiRelative(storeKanji.char, -1);
-  storeKanji.loadKanji(kanji.char);
+  // findAdjacentKanji();
+  storeKanji.loadKanji(prevKanji.value);
 };
 
 const nextButtonClicked = () => {
-  const kanji = getDisplayedKanjiRelative(storeKanji.char, 1);
-  storeKanji.loadKanji(kanji.char);
+  // findAdjacentKanji();
+  storeKanji.loadKanji(nextKanji.value);
 };
+
+const findAdjacentKanji = () => {
+  if (storeKanji.char === "") return;
+  prevKanji.value = getDisplayedKanjiRelative(storeKanji.char, -1).char;
+  nextKanji.value = getDisplayedKanjiRelative(storeKanji.char, 1).char;
+};
+
+watch(kanjiData, findAdjacentKanji);
+
+onMounted(() => {
+  findAdjacentKanji();
+});
 </script>
 
 <style scoped></style>
