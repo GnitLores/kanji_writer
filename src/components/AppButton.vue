@@ -1,6 +1,6 @@
 <template>
   <button
-    class="select-none border font-semibold rounded text-s w-14 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 disabled:opacity-50"
+    class="select-none border font-semibold rounded text-s w-14 bg-zinc-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 disabled:opacity-30"
     @click.prevent="$emit('clicked')"
   >
     {{ text }}

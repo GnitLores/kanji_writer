@@ -38,12 +38,10 @@ const { getDisplayedKanjiRelative } = useDisplayData();
 const { kanjiData } = storeToRefs(storeKanji);
 
 const previousButtonClicked = () => {
-  // findAdjacentKanji();
   storeKanji.loadKanji(prevKanji.value);
 };
 
 const nextButtonClicked = () => {
-  // findAdjacentKanji();
   storeKanji.loadKanji(nextKanji.value);
 };
 
