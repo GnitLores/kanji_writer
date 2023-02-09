@@ -52,7 +52,7 @@ const createWriter = (writerProps = {}) => {
     strokeColor: "#FFFFFF",
     // highlightColor: "#FFFFFF",
     highlightColor: "#38BDF8",
-    outlineColor: "#6B7280",
+    outlineColor: "#374151",
     drawingColor: "#38BDF8",
     highlightOnComplete: true,
     highlightCompleteColor: "#FB923C",

@@ -30,7 +30,9 @@
       </div>
     </div>
 
-    <div class="flex justify-center"><AppWritingField ref="writerRef" /></div>
+    <div class="flex justify-center bg-darkmode-700">
+      <AppWritingField ref="writerRef" />
+    </div>
 
     <div class="flex justify-evenly mt-2">
       <AppButton

@@ -41,7 +41,7 @@ const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
   svg.classList =
-    "inline-block border border-gray-600 hover:cursor-pointer hover:border-white";
+    "inline-block border border-gray-600 bg-darkmode-700 hover:cursor-pointer hover:border-white";
   if (nStrokes < 20) svg.classList += " m-0.5";
   svg.addEventListener("click", () => {
     emit("strokeOrderClicked", strokeNr, nStrokes);
