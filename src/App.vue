@@ -16,6 +16,13 @@ import AppKanjiDetailsModal from "@/components/Modals/AppKanjiDetailsModal.vue";
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
 
+document
+  .querySelector("meta[name=viewport]")
+  .setAttribute(
+    "content",
+    "width=device-width, initial-scale=" + 1 / window.devicePixelRatio
+  );
+
 onMounted(() => {
   storeList.loadKanjiList();
 });
