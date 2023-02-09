@@ -50,18 +50,19 @@
         >
       </div>
       <div class="flex-1 flex justify-center">
-        <span><AppDetailsWriting /></span>
+        <span><AppDetailsWriting ref="detailsWriterRef" /></span>
       </div>
       <div class="flex-1 flex justify-center">
         <span class="ml-auto"><div class="mr-2 mt-2">HEJ</div></span>
       </div>
     </div>
-    <AppStrokeOrderVisualization />
+    <AppStrokeOrderVisualization @strokeOrderClicked="onStrokeOrderClicked" />
     <AppKanjiDetailsSelectBar />
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreKanji } from "@/stores/storeKanji";
 import AppDetailsWriting from "@/components/KanjiDetails/AppDetailsWriting.vue";
@@ -70,6 +71,12 @@ import AppKanjiDetailsSelectBar from "@/components/KanjiDetails/AppKanjiDetailsS
 
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
+
+const detailsWriterRef = ref(null);
+
+const onStrokeOrderClicked = (strokeNr, nStrokes) => {
+  detailsWriterRef.value.displayStroke(strokeNr, nStrokes);
+};
 </script>
 
 <style scoped></style>

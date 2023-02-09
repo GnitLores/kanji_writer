@@ -8,6 +8,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       kanjiData: {},
       char: "",
       writingData: {},
+      nStrokes: 0,
       showModal: false,
     };
   },
@@ -16,6 +17,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       this.char = "";
       this.writingData = {};
       this.kanjiData = {};
+      this.nStrokes = 0;
     },
     async loadKanji(char) {
       const docRef = doc(kanjiCollection, char);
@@ -23,6 +25,7 @@ export const useStoreKanji = defineStore("storeKanji", {
       const loadedData = snapshot.data();
       this.char = loadedData.kanji;
       this.writingData = JSON.parse(loadedData.data);
+      this.nStrokes = this.writingData.strokes.length;
       this.kanjiData = loadedData;
       console.log(this.kanjiData);
     },

@@ -1,24 +1,32 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
+import { useStoreKanji } from "@/stores/storeKanji";
 
 export const useStoreQuiz = defineStore("storeQuiz", {
   state: () => {
     return {
       title: "Kanji Writer",
-      kanji: "",
+      // kanji: "",
       quizType: "Quiz",
       mistakes: 0,
       currentStroke: 0,
       status: {},
       quizSize: 300, // pixels
+      quizIsActive: false,
     };
   },
   actions: {
     initQuiz(kanji) {
       this.mistakes = 0;
       this.currentStroke = 0;
-      this.status = {};
-      this.kanji = kanji;
+      this.quizIsActive = true;
+      // this.status = {};
+      // this.kanji = kanji;
+    },
+    completeQuiz() {
+      const storeKanji = useStoreKanji();
+      this.quizIsActive = false;
+      this.currentStroke = storeKanji.nStrokes;
     },
     changeQuizType() {
       switch (this.quizType) {
@@ -36,18 +44,17 @@ export const useStoreQuiz = defineStore("storeQuiz", {
           break;
       }
     },
-    addMistake(status) {
+    addMistake() {
       this.mistakes += 1;
-      this.status = status;
     },
-    addStroke(status) {
+    addStroke() {
       this.currentStroke += 1;
-      this.status = status;
     },
   },
   getters: {
-    strokesRemain: (state) =>
-      !(state.status && state.status.strokesRemaining == 0),
-    quizIsActive: (state) => state.kanji !== "",
+    strokesRemain: (state) => {
+      const storeKanji = useStoreKanji();
+      return !(state.currentStroke === storeKanji.nStrokes);
+    },
   },
 });

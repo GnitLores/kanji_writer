@@ -39,7 +39,7 @@
         @clicked="onShowClicked()"
       />
       <AppButton
-        :disabled="!storeQuiz.quizIsActive"
+        :disabled="!storeKanji.char === ''"
         :text="'Reset'"
         class="w-20 py-1"
         @clicked="onResetClicked()"
@@ -102,12 +102,14 @@ const cancelHints = () => {
   hintTimer = null;
 };
 
-const startWriting = () => {
+const startWriting = (strokeNr = 0) => {
   cancelHints();
   storeQuiz.initQuiz(storeKanji.char);
+  storeQuiz.currentStroke = strokeNr;
 
   const writerProps = {
     showHintAfterMisses: 3,
+    quizStartStrokeNum: strokeNr,
     showOutline: storeOptions.showDetailsOutline,
   };
   const quizOptions = {
@@ -120,6 +122,10 @@ const startWriting = () => {
   writerRef.value.startQuiz(writerProps, quizOptions);
   animationIsPlaying.value = false;
   scheduleHint();
+};
+
+const displayStroke = (strokeNr, nStrokes) => {
+  strokeNr < nStrokes ? startWriting(strokeNr) : writerRef.value.completeQuiz();
 };
 
 const onShowOutlineChange = () => {
@@ -141,6 +147,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   cancelHints();
   writerRef.value.cancelQuiz();
+});
+
+defineExpose({
+  displayStroke,
 });
 </script>
 

@@ -33,12 +33,18 @@ const { kanjiData } = storeToRefs(storeKanji);
 const KanjiWriter = useKanjiWriter();
 const strokeOrderRef = ref(null);
 
+const emit = defineEmits(["strokeOrderClicked"]);
+
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const boxSize = nStrokes <= 10 ? 80 : nStrokes <= 20 ? 70 : 60;
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
-  svg.classList = "inline-block border border-gray-600 m-0.5";
+  svg.classList =
+    "inline-block border border-gray-600 m-0.5 hover:cursor-pointer";
+  svg.addEventListener("click", () => {
+    emit("strokeOrderClicked", strokeNr, nStrokes);
+  });
   target.appendChild(svg);
   var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
 

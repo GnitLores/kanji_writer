@@ -21,16 +21,19 @@ const KanjiWriter = useKanjiWriter();
 let writer = null;
 const quizFieldRef = ref(null);
 
+let customProps = {};
+let customOptions = {};
+
 const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
 
-const markStrokeMistake = (status) => {
-  storeQuiz.addMistake(status);
+const markStrokeMistake = () => {
+  storeQuiz.addMistake();
 };
 
-const markStrokeCorrect = (status) => {
-  storeQuiz.addStroke(status);
+const markStrokeCorrect = () => {
+  storeQuiz.addStroke();
 };
 
 const createWriter = (writerProps = {}) => {
@@ -53,9 +56,11 @@ const createWriter = (writerProps = {}) => {
     highlightCompleteColor: "#FB923C",
   };
 
-  writer = KanjiWriter.create(quizFieldRef.value, storeQuiz.kanji, {
+  customProps = writerProps;
+
+  writer = KanjiWriter.create(quizFieldRef.value, storeKanji.char, {
     ...defaultProperties,
-    ...writerProps,
+    ...customProps,
   });
 };
 
@@ -65,9 +70,11 @@ const activateWriterQuiz = (quizOptions = {}) => {
     onMistake: markStrokeMistake,
   };
 
+  customOptions = quizOptions;
+
   writer.quiz({
     ...defaultOptions,
-    ...quizOptions,
+    ...customOptions,
   });
 };
 
@@ -84,6 +91,14 @@ const startQuiz = (writerProps = {}, quizOptions = {}) => {
   initQuizField();
   createWriter(writerProps);
   activateWriterQuiz(quizOptions);
+};
+
+const completeQuiz = () => {
+  cancelQuiz();
+  initQuizField();
+  createWriter(customOptions);
+  storeQuiz.completeQuiz();
+  writer.showCharacter();
 };
 
 const animate = (onCompleteFunction = () => {}) => {
@@ -151,6 +166,7 @@ onMounted(() => {
 defineExpose({
   startQuiz,
   cancelQuiz,
+  completeQuiz,
   setNewChar,
   giveHint,
   animate,
