@@ -104,11 +104,13 @@ const completeQuiz = () => {
 };
 
 const animate = (onCompleteFunction = () => {}) => {
-  const writerProps = {
+  const animationProps = {
     strokeAnimationSpeed: 2, // 5x normal speed
     delayBetweenStrokes: 200, // milliseconds
   };
-  startQuiz(writerProps, {});
+  cancelQuiz();
+  writer.hideCharacter({ duration: 0 });
+  createWriter(animationProps);
   writer.animateCharacter({
     onComplete: function () {
       setTimeout(onCompleteFunction, 500);
