@@ -13,9 +13,11 @@ import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreQuiz } from "@/stores/storeQuiz";
+import { useStoreOptions } from "../stores/storeOptions";
 
 const storeKanji = useStoreKanji();
 const storeQuiz = useStoreQuiz();
+const storeOptions = useStoreOptions();
 
 const KanjiWriter = useKanjiWriter();
 let writer = null;
@@ -104,13 +106,18 @@ const completeQuiz = () => {
 };
 
 const animate = (onCompleteFunction = () => {}) => {
+  cancelQuiz();
   const animationProps = {
     strokeAnimationSpeed: 2, // 5x normal speed
     delayBetweenStrokes: 200, // milliseconds
   };
-  cancelQuiz();
+
+  // This part makes sure the animation can execute with the outline shown or hidden and with the partially or completely written character instantly hidden before animating:
   writer.hideCharacter({ duration: 0 });
+  if (storeOptions.showDetailsOutline) writer.hideOutline({ duration: 0 });
   createWriter(animationProps);
+  if (storeOptions.showDetailsOutline) writer.showOutline({ duration: 0 });
+
   writer.animateCharacter({
     onComplete: function () {
       setTimeout(onCompleteFunction, 500);
