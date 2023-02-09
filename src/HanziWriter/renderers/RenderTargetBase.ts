@@ -1,4 +1,4 @@
-import { Point } from '../typings/types';
+import { Point } from "../typings/types";
 
 type BoundEvent = {
   getPoint(): Point;
@@ -14,33 +14,56 @@ export default class RenderTargetBase<
     | HTMLCanvasElement = HTMLElement
 > {
   node: TElement;
+  eventMouseDown: any;
+  eventTouchStart: any;
+  eventMouseMove: any;
+  eventTouchMove: any;
+  eventMouseUp: any;
+  eventTouchEnd: any;
 
   constructor(node: TElement) {
     this.node = node;
   }
 
   addPointerStartListener(callback: (arg: BoundEvent) => void) {
-    this.node.addEventListener('mousedown', (evt) => {
+    this.eventMouseDown = (evt: any) => {
       callback(this._eventify(evt as MouseEvent, this._getMousePoint));
-    });
-    this.node.addEventListener('touchstart', (evt) => {
+    };
+    this.eventTouchStart = (evt: any) => {
       callback(this._eventify(evt as TouchEvent, this._getTouchPoint));
-    });
+    };
+
+    this.node.addEventListener("mousedown", this.eventMouseDown);
+    this.node.addEventListener("touchstart", this.eventTouchStart);
   }
 
   addPointerMoveListener(callback: (arg: BoundEvent) => void) {
-    this.node.addEventListener('mousemove', (evt) => {
+    this.eventMouseMove = (evt: any) => {
       callback(this._eventify(evt as MouseEvent, this._getMousePoint));
-    });
-    this.node.addEventListener('touchmove', (evt) => {
+    };
+    this.eventTouchMove = (evt: any) => {
       callback(this._eventify(evt as TouchEvent, this._getTouchPoint));
-    });
+    };
+
+    this.node.addEventListener("mousemove", this.eventMouseMove);
+    this.node.addEventListener("touchmove", this.eventTouchMove);
   }
 
   addPointerEndListener(callback: () => void) {
+    this.eventMouseUp = callback;
+    this.eventTouchEnd = callback;
     // TODO: find a way to not need global listeners
-    document.addEventListener('mouseup', callback);
-    document.addEventListener('touchend', callback);
+    document.addEventListener("mouseup", this.eventMouseUp);
+    document.addEventListener("touchend", this.eventTouchEnd);
+  }
+
+  removeEventListeners() {
+    this.node.removeEventListener("mousedown", this.eventMouseDown);
+    this.node.removeEventListener("touchstart", this.eventTouchStart);
+    this.node.removeEventListener("mousemove", this.eventMouseMove);
+    this.node.removeEventListener("touchmove", this.eventTouchMove);
+    document.removeEventListener("mouseup", this.eventMouseUp);
+    document.removeEventListener("touchend", this.eventTouchEnd);
   }
 
   getBoundingClientRect() {
@@ -48,11 +71,14 @@ export default class RenderTargetBase<
   }
 
   updateDimensions(width: string | number, height: string | number) {
-    this.node.setAttribute('width', `${width}`);
-    this.node.setAttribute('height', `${height}`);
+    this.node.setAttribute("width", `${width}`);
+    this.node.setAttribute("height", `${height}`);
   }
 
-  _eventify<TEvent extends Event>(evt: TEvent, pointFunc: (event: TEvent) => Point) {
+  _eventify<TEvent extends Event>(
+    evt: TEvent,
+    pointFunc: (event: TEvent) => Point
+  ) {
     return {
       getPoint: () => pointFunc.call(this, evt),
       preventDefault: () => evt.preventDefault(),
