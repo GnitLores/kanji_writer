@@ -6,22 +6,18 @@ export const useStoreQuiz = defineStore("storeQuiz", {
   state: () => {
     return {
       title: "Kanji Writer",
-      // kanji: "",
       quizType: "Quiz",
       mistakes: 0,
       currentStroke: 0,
       status: {},
-      quizSize: 300, // pixels
       quizIsActive: false,
     };
   },
   actions: {
-    initQuiz(kanji) {
+    initQuiz() {
       this.mistakes = 0;
       this.currentStroke = 0;
       this.quizIsActive = true;
-      // this.status = {};
-      // this.kanji = kanji;
     },
     completeQuiz() {
       const storeKanji = useStoreKanji();

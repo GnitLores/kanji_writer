@@ -1,8 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    :width="storeQuiz.quizSize"
-    :height="storeQuiz.quizSize"
+    :width="quizSize"
+    :height="quizSize"
     ref="quizFieldRef"
   ></svg>
 </template>
@@ -21,6 +21,8 @@ const KanjiWriter = useKanjiWriter();
 let writer = null;
 const quizFieldRef = ref(null);
 
+const quizSize = 300;
+
 let customProps = {};
 let customOptions = {};
 
@@ -38,8 +40,8 @@ const markStrokeCorrect = () => {
 
 const createWriter = (writerProps = {}) => {
   const defaultProperties = {
-    width: storeQuiz.quizSize,
-    height: storeQuiz.quizSize,
+    width: quizSize,
+    height: quizSize,
     padding: 0,
     leniency: 1.5,
     showCharacter: false,
@@ -143,7 +145,7 @@ const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
 };
 
 const drawQuizLines = () => {
-  const dim = storeQuiz.quizSize;
+  const dim = quizSize;
   const halfDim = dim / 2;
   // drawPlaceHolderLine(0, 0, dim, dim, true);
   // drawPlaceHolderLine(dim, 0, 0, dim, true);

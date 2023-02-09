@@ -33,7 +33,7 @@
         @clicked="onHintClicked()"
       />
       <AppButton
-        :disabled="!storeQuiz.quizIsActive || !storeQuiz.strokesRemain"
+        :disabled="!storeKanji.char === ''"
         :text="'Animate'"
         class="w-20 py-1"
         @clicked="onShowClicked()"
@@ -104,7 +104,7 @@ const cancelHints = () => {
 
 const startWriting = (strokeNr = 0) => {
   cancelHints();
-  storeQuiz.initQuiz(storeKanji.char);
+  storeQuiz.initQuiz();
   storeQuiz.currentStroke = strokeNr;
 
   const writerProps = {

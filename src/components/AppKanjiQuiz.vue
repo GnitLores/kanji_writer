@@ -54,7 +54,7 @@ const changeQuizType = () => {
 };
 
 const startQuiz = () => {
-  storeQuiz.initQuiz(storeKanji.char);
+  storeQuiz.initQuiz();
   switch (storeQuiz.quizType) {
     case "Quiz":
       startNormalQuiz();
