@@ -1,13 +1,22 @@
-import { HanziWriterOptions } from './typings/types';
-import defaultCharDataLoader from './defaultCharDataLoader';
+import { HanziWriterOptions } from "./typings/types";
+import { useStoreKanji } from "../stores/storeKanji";
+// import defaultCharDataLoader from './defaultCharDataLoader';
+
+// Make Hanziwriter load from database by default even for static methods:
+// With this method, it is also no longer necessary to pass the data loader to instances.
+const loadWritingData = (char, onComplete) => {
+  const storeKanji = useStoreKanji();
+  onComplete(storeKanji.writingData);
+};
 
 const defaultOptions: HanziWriterOptions = {
-  charDataLoader: defaultCharDataLoader,
+  // charDataLoader: defaultCharDataLoader,
+  charDataLoader: loadWritingData,
   onLoadCharDataError: null,
   onLoadCharDataSuccess: null,
   showOutline: true,
   showCharacter: true,
-  renderer: 'svg',
+  renderer: "svg",
 
   // positioning options
 
@@ -26,11 +35,11 @@ const defaultOptions: HanziWriterOptions = {
 
   // colors
 
-  strokeColor: '#555',
+  strokeColor: "#555",
   radicalColor: null,
-  highlightColor: '#AAF',
-  outlineColor: '#DDD',
-  drawingColor: '#333',
+  highlightColor: "#AAF",
+  outlineColor: "#DDD",
+  drawingColor: "#333",
 
   // quiz options
 
