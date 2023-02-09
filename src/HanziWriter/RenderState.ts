@@ -1,12 +1,13 @@
-import Character from './models/Character';
-import { GenericMutation } from './Mutation';
+import Character from "./models/Character";
+import { GenericMutation } from "./Mutation";
 import {
   ColorObject,
   OnCompleteFunction,
   Point,
   RecursivePartial,
-} from './typings/types';
-import { copyAndMergeDeep, colorStringToVals, noop } from './utils';
+} from "./typings/types";
+import { copyAndMergeDeep, colorStringToVals, noop } from "./utils";
+import { useStoreOptions } from "../stores/storeOptions";
 
 export type StrokeRenderState = {
   opacity: number;
@@ -43,11 +44,11 @@ export type RenderStateObject = {
   > | null;
 };
 
-export type CharacterName = keyof RenderStateObject['character'];
+export type CharacterName = keyof RenderStateObject["character"];
 
 type OnStateChangeCallback = (
   nextState: RenderStateObject,
-  currentState: RenderStateObject,
+  currentState: RenderStateObject
 ) => void;
 
 type MutationChain = {
@@ -81,10 +82,10 @@ export default class RenderState {
   constructor(
     character: Character,
     options: RenderStateOptions,
-    onStateChange: OnStateChangeCallback = noop,
+    onStateChange: OnStateChangeCallback = noop
   ) {
     this._onStateChange = onStateChange;
-
+    const storeOptions = useStoreOptions();
     this.state = {
       options: {
         drawingFadeDuration: options.drawingFadeDuration,
@@ -92,7 +93,9 @@ export default class RenderState {
         drawingColor: colorStringToVals(options.drawingColor),
         strokeColor: colorStringToVals(options.strokeColor),
         outlineColor: colorStringToVals(options.outlineColor),
-        radicalColor: colorStringToVals(options.radicalColor || options.strokeColor),
+        radicalColor: colorStringToVals(
+          options.radicalColor || options.strokeColor
+        ),
         highlightColor: colorStringToVals(options.highlightColor),
       },
       character: {
@@ -101,7 +104,7 @@ export default class RenderState {
           strokes: {},
         },
         outline: {
-          opacity: options.showOutline ? 1 : 0,
+          opacity: options.showOutline ? storeOptions.outlineOpacity : 0,
           strokes: {},
         },
         highlight: {
@@ -144,7 +147,7 @@ export default class RenderState {
     mutations: GenericMutation[],
     options: {
       loop?: boolean;
-    } = {},
+    } = {}
   ) {
     const scopes = mutations.map((mut) => mut.scope);
 
@@ -176,7 +179,7 @@ export default class RenderState {
       } else {
         mutationChain._isActive = false; // eslint-disable-line no-param-reassign
         this._mutationChains = this._mutationChains.filter(
-          (chain) => chain !== mutationChain,
+          (chain) => chain !== mutationChain
         );
         // The chain is done - resolve the promise to signal it finished successfully
         mutationChain._resolve({ canceled: false });
@@ -210,7 +213,10 @@ export default class RenderState {
     for (const chain of this._mutationChains) {
       for (const chainId of chain._scopes) {
         for (const scopeToCancel of scopesToCancel) {
-          if (chainId.startsWith(scopeToCancel) || scopeToCancel.startsWith(chainId)) {
+          if (
+            chainId.startsWith(scopeToCancel) ||
+            scopeToCancel.startsWith(chainId)
+          ) {
             this._cancelMutationChain(chain);
           }
         }
@@ -219,19 +225,23 @@ export default class RenderState {
   }
 
   cancelAll() {
-    this.cancelMutations(['']);
+    this.cancelMutations([""]);
   }
 
   _cancelMutationChain(mutationChain: MutationChain) {
     mutationChain._isActive = false;
-    for (let i = mutationChain._index; i < mutationChain._mutations.length; i++) {
+    for (
+      let i = mutationChain._index;
+      i < mutationChain._mutations.length;
+      i++
+    ) {
       mutationChain._mutations[i].cancel(this);
     }
 
     mutationChain._resolve?.({ canceled: true });
 
     this._mutationChains = this._mutationChains.filter(
-      (chain) => chain !== mutationChain,
+      (chain) => chain !== mutationChain
     );
   }
 }
