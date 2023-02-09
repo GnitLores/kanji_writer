@@ -38,9 +38,6 @@ import { vAutofocus } from "@/directives/vAutofocus";
 const { input, startSearch, clearSearch } = useSearch();
 
 watch(input, () => {
-  var w = window.innerWidth;
-  var h = window.innerHeight;
-  console.log(w, h);
   if (input.value === "") clearSearch();
 });
 </script>
