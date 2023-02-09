@@ -1,17 +1,8 @@
 import { HanziWriterOptions } from "./typings/types";
-import { useStoreKanji } from "../stores/storeKanji";
-// import defaultCharDataLoader from './defaultCharDataLoader';
-
-// Make Hanziwriter load from database by default even for static methods:
-// With this method, it is also no longer necessary to pass the data loader to instances.
-const loadWritingData = (char: any, onComplete: any) => {
-  const storeKanji = useStoreKanji();
-  onComplete(storeKanji.writingData);
-};
+import defaultCharDataLoader from "./defaultCharDataLoader";
 
 const defaultOptions: HanziWriterOptions = {
-  // charDataLoader: defaultCharDataLoader,
-  charDataLoader: loadWritingData,
+  charDataLoader: defaultCharDataLoader,
   onLoadCharDataError: null,
   onLoadCharDataSuccess: null,
   showOutline: true,
