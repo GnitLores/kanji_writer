@@ -112,7 +112,8 @@ export default {
 
 <style scoped>
 .vue-simple-context-menu {
-  background-color: #ecf0f1;
+  /* background-color: #ecf0f1; */
+  background-color: #f2e8e5;
   border-bottom-width: 0px;
   border-radius: 4px;
   box-shadow: 0 3px 6px 0 rgba(#333, 0.2);
@@ -120,6 +121,7 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  font-weight: 600;
   left: 0;
   list-style: none;
   margin: 0;
@@ -138,11 +140,11 @@ export default {
   color: #333;
   cursor: pointer;
   display: flex;
-  padding: 5px 15px;
+  padding: 2px 8px;
 }
 
 .vue-simple-context-menu__item:hover {
-  background-color: #007aff;
+  background-color: #0369a1;
   color: #fff;
 }
 
@@ -151,7 +153,7 @@ export default {
   background-color: #c2cfd2;
   box-sizing: content-box;
   height: 2px;
-  padding: 4px 0;
+  padding: 2px 0;
   pointer-events: none;
 }
 
