@@ -1,4 +1,4 @@
-import { average } from './utils';
+import { average } from "./utils";
 import {
   cosineSimilarity,
   equals,
@@ -8,17 +8,28 @@ import {
   normalizeCurve,
   rotate,
   length,
-} from './geometry';
-import { Point } from './typings/types';
-import UserStroke from './models/UserStroke';
-import Stroke from './models/Stroke';
-import Character from './models/Character';
+} from "./geometry";
+import { Point } from "./typings/types";
+import UserStroke from "./models/UserStroke";
+import Stroke from "./models/Stroke";
+import Character from "./models/Character";
 
-const AVG_DIST_THRESHOLD = 350; // bigger = more lenient
-const COSINE_SIMILARITY_THRESHOLD = 0; // -1 to 1, smaller = more lenient
-const START_AND_END_DIST_THRESHOLD = 250; // bigger = more lenient
-const FRECHET_THRESHOLD = 0.4; // bigger = more lenient
-const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient
+// TODO finalize thresholds
+// The problem with drawing long vertical strokes as in 本 seems to depend most on AVG_DIST_THRESHOLD and START_AND_END_DIST_THRESHOLD. Setting them to 450 and 350 makes it easier. Might possibly also want to to make MIN_LEN_THRESHOLD more lenient to e.g 0.25.
+// The problem with small curved strokes like the first stroke in 斤 seems to be due to FRECHET_THRESHOLD. setting it to 0.5 or 0.6 makes 斤 far more writable. With an increased general leniency of 1.5, this is no longer an issue, so I set it back to 0.4.
+
+const AVG_DIST_THRESHOLD = 450; // bigger = more lenient (DEFAULT 350)
+const COSINE_SIMILARITY_THRESHOLD = 0; // -1 to 1, smaller = more lenient (DEFAULT 0)
+const START_AND_END_DIST_THRESHOLD = 350; // bigger = more lenient (DEFAULT 250)
+const FRECHET_THRESHOLD = 0.4; // bigger = more lenient (DEFAULT 0.4)
+const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient (DEFAULT 0.35)
+
+// Default settings
+// const AVG_DIST_THRESHOLD = 350; // bigger = more lenient (DEFAULT 350)
+// const COSINE_SIMILARITY_THRESHOLD = 0; // -1 to 1, smaller = more lenient (DEFAULT 0)
+// const START_AND_END_DIST_THRESHOLD = 250; // bigger = more lenient (DEFAULT 250)
+// const FRECHET_THRESHOLD = 0.4; // bigger = more lenient (DEFAULT 0.4)
+// const MIN_LEN_THRESHOLD = 0.35; // smaller = more lenient (DEFAULT 0.35)
 
 export interface StrokeMatchResultMeta {
   isStrokeBackwards: boolean;
@@ -36,7 +47,7 @@ export default function strokeMatches(
   options: {
     leniency?: number;
     isOutlineVisible?: boolean;
-  } = {},
+  } = {}
 ): StrokeMatchResult {
   const strokes = character.strokes;
   const points = stripDuplicates(userStroke.points);
@@ -45,7 +56,11 @@ export default function strokeMatches(
     return { isMatch: false, meta: { isStrokeBackwards: false } };
   }
 
-  const { isMatch, meta, avgDist } = getMatchData(points, strokes[strokeNum], options);
+  const { isMatch, meta, avgDist } = getMatchData(
+    points,
+    strokes[strokeNum],
+    options
+  );
 
   if (!isMatch) {
     return { isMatch, meta };
@@ -68,7 +83,8 @@ export default function strokeMatches(
   // if leniency is already really high we can allow some similar strokes to pass
   if (closestMatchDist < avgDist) {
     // adjust leniency between 0.3 and 0.6 depending on how much of a better match the new match is
-    const leniencyAdjustment = (0.6 * (closestMatchDist + avgDist)) / (2 * avgDist);
+    const leniencyAdjustment =
+      (0.6 * (closestMatchDist + avgDist)) / (2 * avgDist);
     const { isMatch, meta } = getMatchData(points, strokes[strokeNum], {
       ...options,
       leniency: (options.leniency || 1) * leniencyAdjustment,
@@ -79,9 +95,16 @@ export default function strokeMatches(
   return { isMatch, meta };
 }
 
-const startAndEndMatches = (points: Point[], closestStroke: Stroke, leniency: number) => {
+const startAndEndMatches = (
+  points: Point[],
+  closestStroke: Stroke,
+  leniency: number
+) => {
   const startingDist = distance(closestStroke.getStartingPoint(), points[0]);
-  const endingDist = distance(closestStroke.getEndingPoint(), points[points.length - 1]);
+  const endingDist = distance(
+    closestStroke.getEndingPoint(),
+    points[points.length - 1]
+  );
   return (
     startingDist <= START_AND_END_DIST_THRESHOLD * leniency &&
     endingDist <= START_AND_END_DIST_THRESHOLD * leniency
@@ -104,7 +127,7 @@ const directionMatches = (points: Point[], stroke: Stroke) => {
   const strokeVectors = stroke.getVectors();
   const similarities = edgeVectors.map((edgeVector) => {
     const strokeSimilarities = strokeVectors.map((strokeVector) =>
-      cosineSimilarity(strokeVector, edgeVector),
+      cosineSimilarity(strokeVector, edgeVector)
     );
     return Math.max(...strokeSimilarities);
   });
@@ -114,7 +137,8 @@ const directionMatches = (points: Point[], stroke: Stroke) => {
 
 const lengthMatches = (points: Point[], stroke: Stroke, leniency: number) => {
   return (
-    (leniency * (length(points) + 25)) / (stroke.getLength() + 25) >= MIN_LEN_THRESHOLD
+    (leniency * (length(points) + 25)) / (stroke.getLength() + 25) >=
+    MIN_LEN_THRESHOLD
   );
 };
 
@@ -156,9 +180,17 @@ const shapeFit = (curve1: Point[], curve2: Point[], leniency: number) => {
 const getMatchData = (
   points: Point[],
   stroke: Stroke,
-  options: { leniency?: number; isOutlineVisible?: boolean; checkBackwards?: boolean },
+  options: {
+    leniency?: number;
+    isOutlineVisible?: boolean;
+    checkBackwards?: boolean;
+  }
 ): StrokeMatchResult & { avgDist: number } => {
-  const { leniency = 1, isOutlineVisible = false, checkBackwards = true } = options;
+  const {
+    leniency = 1,
+    isOutlineVisible = false,
+    checkBackwards = true,
+  } = options;
   const avgDist = stroke.getAverageDistance(points);
   const distMod = isOutlineVisible || stroke.strokeNum > 0 ? 0.5 : 1;
   const withinDistThresh = avgDist <= AVG_DIST_THRESHOLD * distMod * leniency;
@@ -172,7 +204,11 @@ const getMatchData = (
   const lengthMatch = lengthMatches(points, stroke, leniency);
 
   const isMatch =
-    withinDistThresh && startAndEndMatch && directionMatch && shapeMatch && lengthMatch;
+    withinDistThresh &&
+    startAndEndMatch &&
+    directionMatch &&
+    shapeMatch &&
+    lengthMatch;
 
   if (checkBackwards && !isMatch) {
     const backwardsMatchData = getMatchData([...points].reverse(), stroke, {
