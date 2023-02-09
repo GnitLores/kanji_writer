@@ -1,23 +1,28 @@
-import Stroke from './models/Stroke';
-import { ColorObject, RecursivePartial } from './typings/types';
-import Character from './models/Character';
-import Mutation, { GenericMutation } from './Mutation';
-import { objRepeat } from './utils';
-import { CharacterName, CharacterRenderState, RenderStateObject } from './RenderState';
+import Stroke from "./models/Stroke";
+import { ColorObject, RecursivePartial } from "./typings/types";
+import Character from "./models/Character";
+import Mutation, { GenericMutation } from "./Mutation";
+import { objRepeat } from "./utils";
+import {
+  CharacterName,
+  CharacterRenderState,
+  RenderStateObject,
+} from "./RenderState";
+import { useStoreOptions } from "../stores/storeOptions";
 
 export const showStrokes = (
   charName: CharacterName,
   character: Character,
-  duration: number,
+  duration: number
 ): GenericMutation[] => {
   return [
     new Mutation(
       `character.${charName}.strokes`,
       objRepeat(
         { opacity: 1, displayPortion: 1 },
-        character.strokes.length,
-      ) as CharacterRenderState['strokes'],
-      { duration, force: true },
+        character.strokes.length
+      ) as CharacterRenderState["strokes"],
+      { duration, force: true }
     ),
   ];
 };
@@ -25,16 +30,21 @@ export const showStrokes = (
 export const showCharacter = (
   charName: CharacterName,
   character: Character,
-  duration: number,
+  duration: number
 ): GenericMutation[] => {
+  const storeOptions = useStoreOptions();
+  const opacity = charName === "outline" ? storeOptions.outlineOpacity : 1;
   return [
     new Mutation(
       `character.${charName}`,
       {
-        opacity: 1,
-        strokes: objRepeat({ opacity: 1, displayPortion: 1 }, character.strokes.length),
+        opacity: opacity,
+        strokes: objRepeat(
+          { opacity: 1, displayPortion: 1 }, // don't change the opacity here as well!!
+          character.strokes.length
+        ),
       },
-      { duration, force: true },
+      { duration, force: true }
     ),
   ];
 };
@@ -42,7 +52,7 @@ export const showCharacter = (
 export const hideCharacter = (
   charName: CharacterName,
   character: Character,
-  duration?: number,
+  duration?: number
 ): GenericMutation[] => {
   return [
     new Mutation(`character.${charName}.opacity`, 0, { duration, force: true }),
@@ -53,7 +63,7 @@ export const hideCharacter = (
 export const updateColor = (
   colorName: string,
   colorVal: ColorObject | null,
-  duration: number,
+  duration: number
 ) => {
   return [new Mutation(`options.${colorName}`, colorVal, { duration })];
 };
@@ -61,13 +71,13 @@ export const updateColor = (
 export const highlightStroke = (
   stroke: Stroke,
   color: ColorObject | null,
-  speed: number,
+  speed: number
 ): GenericMutation[] => {
   const strokeNum = stroke.strokeNum;
   const duration = (stroke.getLength() + 600) / (3 * speed);
   return [
-    new Mutation('options.highlightColor', color),
-    new Mutation('character.highlight', {
+    new Mutation("options.highlightColor", color),
+    new Mutation("character.highlight", {
       opacity: 1,
       strokes: {
         [strokeNum]: {
@@ -82,7 +92,7 @@ export const highlightStroke = (
         displayPortion: 1,
         opacity: 1,
       },
-      { duration },
+      { duration }
     ),
     new Mutation(`character.highlight.strokes.${strokeNum}.opacity`, 0, {
       duration,
@@ -94,7 +104,7 @@ export const highlightStroke = (
 export const animateStroke = (
   charName: CharacterName,
   stroke: Stroke,
-  speed: number,
+  speed: number
 ): GenericMutation[] => {
   const strokeNum = stroke.strokeNum;
   const duration = (stroke.getLength() + 600) / (3 * speed);
@@ -108,9 +118,13 @@ export const animateStroke = (
         },
       },
     }),
-    new Mutation(`character.${charName}.strokes.${strokeNum}.displayPortion`, 1, {
-      duration,
-    }),
+    new Mutation(
+      `character.${charName}.strokes.${strokeNum}.displayPortion`,
+      1,
+      {
+        duration,
+      }
+    ),
   ];
 };
 
@@ -118,7 +132,7 @@ export const animateSingleStroke = (
   charName: CharacterName,
   character: Character,
   strokeNum: number,
-  speed: number,
+  speed: number
 ): GenericMutation[] => {
   const mutationStateFunc = (state: RenderStateObject) => {
     const curCharState = state.character[charName];
@@ -143,7 +157,7 @@ export const animateSingleStroke = (
 export const showStroke = (
   charName: CharacterName,
   strokeNum: number,
-  duration: number,
+  duration: number
 ): GenericMutation[] => {
   return [
     new Mutation(
@@ -152,7 +166,7 @@ export const showStroke = (
         displayPortion: 1,
         opacity: 1,
       },
-      { duration, force: true },
+      { duration, force: true }
     ),
   ];
 };
@@ -162,9 +176,13 @@ export const animateCharacter = (
   character: Character,
   fadeDuration: number,
   speed: number,
-  delayBetweenStrokes: number,
+  delayBetweenStrokes: number
 ): GenericMutation[] => {
-  let mutations: GenericMutation[] = hideCharacter(charName, character, fadeDuration);
+  let mutations: GenericMutation[] = hideCharacter(
+    charName,
+    character,
+    fadeDuration
+  );
   mutations = mutations.concat(showStrokes(charName, character, 0));
   mutations.push(
     new Mutation(
@@ -173,8 +191,8 @@ export const animateCharacter = (
         opacity: 1,
         strokes: objRepeat({ opacity: 0 }, character.strokes.length),
       },
-      { force: true },
-    ),
+      { force: true }
+    )
   );
   character.strokes.forEach((stroke, i) => {
     if (i > 0) mutations.push(new Mutation.Delay(delayBetweenStrokes));
@@ -189,14 +207,14 @@ export const animateCharacterLoop = (
   fadeDuration: number,
   speed: number,
   delayBetweenStrokes: number,
-  delayBetweenLoops: number,
+  delayBetweenLoops: number
 ): GenericMutation[] => {
   const mutations = animateCharacter(
     charName,
     character,
     fadeDuration,
     speed,
-    delayBetweenStrokes,
+    delayBetweenStrokes
   );
   mutations.push(new Mutation.Delay(delayBetweenLoops));
   return mutations;

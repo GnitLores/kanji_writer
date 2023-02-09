@@ -105,6 +105,7 @@ export default class RenderState {
         },
         outline: {
           opacity: options.showOutline ? storeOptions.outlineOpacity : 0,
+          // opacity: options.showOutline ? 1 : 0,
           strokes: {},
         },
         highlight: {
@@ -122,7 +123,7 @@ export default class RenderState {
       };
 
       this.state.character.outline.strokes[i] = {
-        opacity: 1,
+        opacity: 1, // Don't change the opacity here as well!!
         displayPortion: 1,
       };
 
