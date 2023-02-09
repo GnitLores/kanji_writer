@@ -34,4 +34,14 @@ defineProps({
     zoom: 0.66;
   }
 }
+@media (-webkit-device-pixel-ratio: 1.75) {
+  .mood {
+    zoom: 0.57;
+  }
+}
+@media (-webkit-device-pixel-ratio: 2) {
+  .mood {
+    zoom: 0.5;
+  }
+}
 </style>
