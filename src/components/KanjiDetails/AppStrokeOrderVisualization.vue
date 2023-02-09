@@ -37,7 +37,7 @@ const emit = defineEmits(["strokeOrderClicked"]);
 
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  const boxSize = nStrokes <= 10 ? 56 : nStrokes <= 20 ? 40 : 34;
+  const boxSize = nStrokes <= 10 ? 56 : nStrokes <= 20 ? 46 : 37;
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
   svg.classList =

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 w-fit select-none">
+  <div class="w-fit select-none my-2">
     <div class="flex justify-evenly my-1">
       <div class="inline-block ml-2">
         <input
@@ -29,7 +29,9 @@
         <label class="text-sky-100 font-bold ml-1">Strokes</label>
       </div>
     </div>
-    <AppWritingField ref="writerRef" />
+
+    <div class="flex justify-center"><AppWritingField ref="writerRef" /></div>
+
     <div class="flex justify-evenly mt-2">
       <AppButton
         :disabled="
@@ -54,6 +56,7 @@
         @clicked="onResetClicked()"
       />
     </div>
+
     <AppStrokeOrderVisualization
       class="mt-4"
       @strokeOrderClicked="onStrokeOrderClicked"
