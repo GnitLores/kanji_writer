@@ -18,6 +18,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       showDetailsHints: true,
       showDetailsStrokeOrder: true,
       outlineOpacity: 0.7,
+      showLines: true,
     };
   },
   actions: {

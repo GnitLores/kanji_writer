@@ -23,6 +23,15 @@
         <input
           class=""
           type="checkbox"
+          v-model="storeOptions.showLines"
+          @change="onShowLinesChange()"
+        />
+        <label class="text-sky-100 font-bold ml-1">Lines</label>
+      </div>
+      <div class="inline-block ml-2">
+        <input
+          class=""
+          type="checkbox"
           v-model="storeOptions.showDetailsStrokeOrder"
           @change="onShowStrokesChange()"
         />
@@ -153,6 +162,10 @@ const onShowOutlineChange = () => {
 
 const onShowHintsChange = () => {
   storeOptions.showDetailsHints ? writerRef.value.giveHint() : cancelHints();
+};
+
+const onShowLinesChange = () => {
+  writerRef.value.toggleCenterLines();
 };
 
 const onShowStrokesChange = () => {};

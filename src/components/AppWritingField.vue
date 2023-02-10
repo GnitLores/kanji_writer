@@ -28,6 +28,8 @@ const quizSize = 300;
 let customProps = {};
 let customOptions = {};
 
+let centerLines = [];
+
 const giveHint = () => {
   if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
 };
@@ -151,19 +153,36 @@ const drawQuizLine = (x1 = 0, y1 = 0, x2 = 0, y2 = 0, dashed = false) => {
     newLine.setAttribute("stroke-dasharray", "5,5");
   }
   quizBackground.append(newLine);
+  return newLine;
 };
 
 const drawQuizLines = () => {
   const dim = quizSize;
   const halfDim = dim / 2;
-  // drawPlaceHolderLine(0, 0, dim, dim, true);
-  // drawPlaceHolderLine(dim, 0, 0, dim, true);
-  drawQuizLine(halfDim, 0, halfDim, dim, true);
-  drawQuizLine(0, halfDim, dim, halfDim, true);
+  drawCenterLines();
   drawQuizLine(0, 0, 0, dim);
   drawQuizLine(0, 0, dim, 0);
   drawQuizLine(dim, 0, dim, dim);
   drawQuizLine(0, dim, dim, dim);
+};
+
+const drawCenterLines = () => {
+  const dim = quizSize;
+  const halfDim = dim / 2;
+  // drawPlaceHolderLine(0, 0, dim, dim, true);
+  // drawPlaceHolderLine(dim, 0, 0, dim, true);
+  centerLines = [];
+  const line1 = drawQuizLine(halfDim, 0, halfDim, dim, true);
+  const line2 = drawQuizLine(0, halfDim, dim, halfDim, true);
+  centerLines.push(line1);
+  centerLines.push(line2);
+  toggleCenterLines();
+};
+
+const toggleCenterLines = () => {
+  centerLines.forEach((line) => {
+    line.style.display = storeOptions.showLines ? "" : "none";
+  });
 };
 
 const setNewChar = (char) => {
@@ -184,6 +203,7 @@ defineExpose({
   markStrokeMistake,
   markStrokeCorrect,
   toggleOutline,
+  toggleCenterLines,
 });
 </script>
 
