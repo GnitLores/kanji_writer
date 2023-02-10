@@ -133,7 +133,7 @@ Kanji selection
 ===============
 */
 
-const { selected, toggleLevelSelection } = useSelection();
+const { selected, initSelected, toggleLevelSelection } = useSelection();
 const {
   isDragging,
   selectedWhileDragging,
@@ -198,6 +198,8 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   document.removeEventListener("mouseup", onMouseUp);
+  storeKanji.init();
+  initSelected();
 });
 </script>
 
