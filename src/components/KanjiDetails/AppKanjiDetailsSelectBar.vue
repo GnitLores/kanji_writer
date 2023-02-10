@@ -3,13 +3,13 @@
     <div class="inline-block">
       <div class="flex justify-evenly w-72">
         <AppButton
-          :disabled="nextKanji == storeKanji.char"
+          :disabled="!prevKanji || prevKanji == storeKanji.char"
           :text="`Previous - ${prevKanji}`"
           class="w-32 text-lg h-10"
           @clicked="previousButtonClicked"
         />
         <AppButton
-          :disabled="nextKanji == storeKanji.char"
+          :disabled="!nextKanji || nextKanji == storeKanji.char"
           :text="`Next - ${nextKanji}`"
           class="w-32 text-lg h-10"
           @clicked="nextButtonClicked"
@@ -33,7 +33,8 @@ const storeOptions = useStoreOptions();
 let prevKanji = ref("");
 let nextKanji = ref("");
 
-const { getDisplayedKanjiRelative } = useDisplayData();
+const { displayData, getDisplayedKanjiRelative, isKanjiDisplayed } =
+  useDisplayData();
 
 const { kanjiData } = storeToRefs(storeKanji);
 
@@ -51,7 +52,17 @@ const findAdjacentKanji = () => {
   nextKanji.value = getDisplayedKanjiRelative(storeKanji.char, 1).char;
 };
 
+const onDisplayDataUpdated = () => {
+  if (!isKanjiDisplayed(storeKanji.char)) {
+    prevKanji.value = "";
+    nextKanji.value = "";
+  } else {
+    findAdjacentKanji();
+  }
+};
+
 watch(kanjiData, findAdjacentKanji);
+watch(displayData, onDisplayDataUpdated);
 
 onMounted(() => {
   findAdjacentKanji();

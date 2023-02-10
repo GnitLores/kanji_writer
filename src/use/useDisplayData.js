@@ -90,6 +90,10 @@ export function useDisplayData() {
     return displayList.value[cnt];
   };
 
+  const isKanjiDisplayed = (char) => {
+    return displayMap.value.has(char);
+  };
+
   const getDisplayedKanjiRelative = (char, offset = 0) => {
     // Based on an input character, returns the kanji displayed the number of offset fields after that character.
     // e.g. char = 力 and offset = -1 returns the kanji displayed to the left of 力
@@ -107,6 +111,7 @@ export function useDisplayData() {
     updateDisplayData,
     getDisplayedKanjiByChar,
     getDisplayedKanjiRelative,
+    isKanjiDisplayed,
     mapDisplayedKanji,
   };
 }
