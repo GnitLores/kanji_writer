@@ -28,10 +28,4 @@ module.exports = {
     },
   ],
   plugins: [],
-
-  purge: [
-    "./index.html",
-    "./public/**/*.html",
-    "./src/**/*.{js,jsx,ts,tsx,vue}",
-  ],
 };
