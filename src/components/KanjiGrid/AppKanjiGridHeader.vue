@@ -24,7 +24,7 @@
           <div
             v-for="level in selectionStats"
             :key="level.name"
-            class="inline-block relative border-solid first:border-l-2 border-r-2 border-y-2 border-gray-600 h-full"
+            class="inline-block relative border-solid first:border-l-2 border-r-2 border-y-2 first:rounded-l last:rounded-r border-gray-600 h-full"
             :class="[
               storeOptions.isLevelIgnored(level.name)
                 ? 'bg-gray-600 bg-opacity-50'
