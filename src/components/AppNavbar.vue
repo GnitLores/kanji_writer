@@ -3,7 +3,7 @@
     <nav class="container mx-auto flex justify-start items-center py-2">
       <router-link
         class="tracking-wider font-bold capitalize text-2xl mr-4 min-w-fit"
-        :class="[route.name === 'home' ? 'text-orange-400' : 'text-white']"
+        :class="[route.name === 'home' ? 'text-sky-400' : 'text-white']"
         :to="{ name: 'home' }"
         >Mojidoori <i class="fas fa-pen-to-square text-sky-400"></i
       ></router-link>
