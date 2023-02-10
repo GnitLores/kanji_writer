@@ -67,7 +67,6 @@ import {
   computed,
   watch,
 } from "vue";
-import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreKanji } from "@/stores/storeKanji";
@@ -84,18 +83,7 @@ const storeOptions = useStoreOptions();
 const storeList = useStoreList();
 const storeKanji = useStoreKanji();
 
-const { displayData, updateDisplayData, getDisplayedKanjiByChar } =
-  useDisplayData();
-
-// Watch stores and update display data:
-const { kanjiByLevel } = storeToRefs(storeList);
-watch(kanjiByLevel, updateDisplayData);
-
-const { doDisplayLevels, ignoredLevels, reverseOrder } =
-  storeToRefs(storeOptions);
-watch(doDisplayLevels, updateDisplayData);
-watch(ignoredLevels, updateDisplayData);
-watch(reverseOrder, updateDisplayData);
+const { displayData, getDisplayedKanjiByChar } = useDisplayData();
 
 /*
 ===============

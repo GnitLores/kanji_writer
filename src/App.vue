@@ -7,14 +7,27 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { watch, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useDisplayData } from "@/use/useDisplayData";
 import AppNavbar from "@/components/AppNavbar.vue";
 import AppKanjiDetailsModal from "@/components/Modals/AppKanjiDetailsModal.vue";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
+
+// Watch stores and update display data:
+const { updateDisplayData } = useDisplayData();
+const { kanjiByLevel } = storeToRefs(storeList);
+watch(kanjiByLevel, updateDisplayData);
+
+const { doDisplayLevels, ignoredLevels, reverseOrder } =
+  storeToRefs(storeOptions);
+watch(doDisplayLevels, updateDisplayData);
+watch(ignoredLevels, updateDisplayData);
+watch(reverseOrder, updateDisplayData);
 
 onMounted(() => {
   storeList.loadKanjiList();
