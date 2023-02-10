@@ -4,7 +4,7 @@
       <AppKanjiDetails />
     </div>
 
-    <AppKanjiGrid />
+    <AppKanjiGrid selectionType="single" />
   </div>
 </template>
 
