@@ -89,6 +89,7 @@ watch(kanjiData, () => {
 });
 
 onMounted(() => {
+  if (storeKanji.char === "") return;
   drawStrokeOrder();
 });
 </script>

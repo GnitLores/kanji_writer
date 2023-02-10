@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="flex justify-evenly">
-      <AppKanjiQuiz ref="quizRef" />
+    <div v-if="storeKanji.char !== ''" class="flex justify-center">
+      <AppKanjiDetails />
     </div>
 
     <AppKanjiGrid />
@@ -10,7 +10,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
-import AppKanjiQuiz from "@/components/AppKanjiQuiz.vue";
+import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreKanji } from "@/stores/storeKanji";
 

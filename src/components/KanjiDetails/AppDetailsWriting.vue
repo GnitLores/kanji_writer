@@ -167,6 +167,7 @@ watch(kanjiData, () => {
 });
 
 onMounted(() => {
+  if (storeKanji.char === "") return;
   startWriting();
 });
 onBeforeUnmount(() => {
