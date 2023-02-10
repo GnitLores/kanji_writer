@@ -3,9 +3,9 @@
     <div v-if="storeKanji.char !== ''" class="flex justify-center">
       <AppKanjiDetails />
     </div>
-    <div v-else class="min-h-[600px] flex justify-center place-items-center">
+    <div v-else class="min-h-[550px] flex justify-center place-items-center">
       <p class="text-white text-4xl font-semibold text-opacity-80">
-        Left any kanji to select
+        Left click any kanji to select
       </p>
     </div>
 

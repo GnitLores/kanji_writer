@@ -23,19 +23,16 @@
         </div>
       </li>
       <li class="pt-2 border-b border-gray-600">
-        <div class="text-white text-opacity-100">
-          Class - {{ storeKanji.kanjiData.class }}
-        </div>
-        <div class="text-white text-opacity-100">
-          Radical - {{ storeKanji.kanjiData.radical }}
-        </div>
-        <div class="text-white text-opacity-100">
-          Kanken level - {{ storeKanji.kanjiData.kanken_level_text }}
-        </div>
-        <div class="text-white text-opacity-100">
-          Jōyō -
-          {{ parseFloat(storeKanji.kanjiData.kanken_level) > 2 ? "Yes" : "No" }}
-        </div>
+        <ul class="text-white text-opacity-100">
+          <li>Class - {{ storeKanji.kanjiData.class }}</li>
+          <li>
+            Radical - {{ storeKanji.kanjiData.radical }} | Strokes -
+            {{ storeKanji.kanjiData.stroke_count }}
+          </li>
+          <li></li>
+          <li></li>
+          <li>{{ kankenString }}</li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -48,6 +45,10 @@ import { useStoreKanji } from "@/stores/storeKanji";
 
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
+
+let kankenString = `${
+  parseFloat(storeKanji.kanjiData.kanken_level) > 2 ? "Jōyō | " : "Jinmeiyō"
+}Kanken ${storeKanji.kanjiData.kanken_level_text}`;
 </script>
 
 <style scoped></style>

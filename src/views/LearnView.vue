@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[600px] flex justify-center place-items-center">
+  <div class="min-h-[550px] flex justify-center place-items-center">
     <p class="text-white text-4xl font-semibold text-opacity-80">Learn</p>
   </div>
   <div>
