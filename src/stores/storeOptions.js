@@ -19,6 +19,10 @@ export const useStoreOptions = defineStore("storeOptions", {
       showDetailsStrokeOrder: true,
       outlineOpacity: 0.7,
       showLines: true,
+      // gridUiMinHeight: "min-h-[550px]",
+      // gridUiMinHeightCompact: "min-h-[400px]",
+      gridUiMinHeight: "h-[550px]",
+      gridUiMinHeightCompact: "h-[400px]",
     };
   },
   actions: {

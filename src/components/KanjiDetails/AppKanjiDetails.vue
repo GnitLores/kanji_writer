@@ -1,5 +1,12 @@
 <template>
-  <div class="container min-h-[550px]">
+  <div
+    class="container"
+    :class="[
+      storeOptions.showDetailsStrokeOrder
+        ? storeOptions.gridUiMinHeight
+        : storeOptions.gridUiMinHeightCompact,
+    ]"
+  >
     <div class="flex">
       <div class="flex-1 flex justify-center">
         <span class="mr-auto"
