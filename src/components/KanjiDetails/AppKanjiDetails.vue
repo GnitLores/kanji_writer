@@ -9,7 +9,7 @@
   >
     <div class="flex">
       <div class="flex-1 flex justify-center">
-        <span class="mr-auto"
+        <span class="mr-auto w-full"
           ><AppDetailedInfoA class="ml-2 mr-4 my-2" />
         </span>
       </div>
@@ -17,7 +17,7 @@
         <span> <AppDetailsWriting ref="detailsWriterRef" /></span>
       </div>
       <div class="flex-1 flex justify-center">
-        <span class="mr-auto">
+        <span class="mr-auto w-full">
           <AppKanjiDetailsSelectBar />
           <AppDetailedInfoB class="ml-4 mr-2 my-2"
         /></span>
