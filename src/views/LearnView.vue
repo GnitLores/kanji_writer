@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppKanjiGrid @kanjiRangeSelected="onKanjiRangeSelected" />
+    <AppKanjiGrid />
   </div>
 </template>
 
@@ -19,10 +19,6 @@ import { useStoreList } from "@/stores/storeList";
 
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
-
-const onKanjiRangeSelected = () => {
-  // storeList.applyDraggingSelection();
-};
 </script>
 
 <style scoped></style>

@@ -137,8 +137,6 @@ const {
   stopDrag,
 } = useDragSelection();
 
-const emit = defineEmits(["kanjiRangeSelected"]);
-
 const getMouseChar = (event) => event.target.__vnode.key;
 
 const getMouseKanji = (event) => {
