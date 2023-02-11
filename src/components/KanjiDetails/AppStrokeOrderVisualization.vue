@@ -22,7 +22,6 @@ import { storeToRefs } from "pinia";
 import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
-
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 
 const storeKanji = useStoreKanji();
@@ -30,7 +29,6 @@ const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
 const { kanjiData } = storeToRefs(storeKanji);
 
-const KanjiWriter = useKanjiWriter();
 const strokeOrderRef = ref(null);
 
 const totalWidth = 300; // pixels
@@ -47,15 +45,25 @@ let doSeparate = true;
 
 const emit = defineEmits(["strokeOrderClicked"]);
 
+const drawStrokeOrder = () => {
+  const storeKanji = useStoreKanji();
+  const strokes = storeKanji.writingData.strokes;
+  const target = strokeOrderRef.value;
+  for (var i = 0; i < storeKanji.nStrokes; i++) {
+    var strokesPortion = strokes.slice(0, i + 1);
+    renderFanningStrokes(target, strokesPortion, storeKanji.nStrokes, i + 1);
+  }
+};
+
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   const boxSize = calcBoxSize(nStrokes);
-  const svg = createStrokeSvg(boxSize);
-  svg.appendChild(renderStrokes(boxSize, strokes));
-  target.appendChild(svg);
+  const svg = createStrokeSvg(strokes, boxSize);
 
   svg.addEventListener("click", () => {
     emit("strokeOrderClicked", strokeNr, nStrokes);
   });
+
+  target.appendChild(svg);
 };
 
 const calcBoxSize = (nStrokes) => {
@@ -87,7 +95,7 @@ const calcBoxSize = (nStrokes) => {
   return boxSize;
 };
 
-const createStrokeSvg = (boxSize) => {
+const createStrokeSvg = (strokes, boxSize) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
@@ -95,12 +103,16 @@ const createStrokeSvg = (boxSize) => {
     "inline-block border-gray-600 bg-darkmode-700 hover:cursor-pointer hover:border-white";
   if (doSeparate) svg.classList += ` m-[${margin}px] rounded`;
   svg.classList += borderWidth === 1 ? " border" : ` border-${borderWidth}`;
+
+  svg.appendChild(renderStrokes(strokes, boxSize));
+
   return svg;
 };
 
-const renderStrokes = (boxSize, strokes) => {
+const renderStrokes = (strokes, boxSize) => {
   // set the transform property on the g element so the character renders at the boxSize
   var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const KanjiWriter = useKanjiWriter();
   var transformData = KanjiWriter.getScalingTransform(boxSize, boxSize);
   group.setAttributeNS(null, "transform", transformData.transform);
 
@@ -112,16 +124,6 @@ const renderStrokes = (boxSize, strokes) => {
     group.appendChild(path);
   });
   return group;
-};
-
-const drawStrokeOrder = () => {
-  const storeKanji = useStoreKanji();
-  const strokes = storeKanji.writingData.strokes;
-  const target = strokeOrderRef.value;
-  for (var i = 0; i < storeKanji.nStrokes; i++) {
-    var strokesPortion = strokes.slice(0, i + 1);
-    renderFanningStrokes(target, strokesPortion, storeKanji.nStrokes, i + 1);
-  }
 };
 
 const initVisualization = () => {
