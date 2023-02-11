@@ -40,16 +40,18 @@
     </div>
 
     <div class="flex justify-center bg-darkmode-700">
-      <AppWritingField ref="writerRef" />
+      <AppWritingField
+        ref="writerRef"
+        @mistakeMade="addCorrect()"
+        @correctStrokeMade="addMistake()"
+        :writeIsActive="writeIsActive"
+        :currentStroke="currentStroke"
+      />
     </div>
 
     <div class="flex justify-evenly mt-2">
       <AppButton
-        :disabled="
-          !storeQuiz.quizIsActive ||
-          animationIsPlaying ||
-          !storeQuiz.strokesRemain
-        "
+        :disabled="!writeIsActive || animationIsPlaying"
         :text="'Hint'"
         class="w-20 py-1"
         @clicked="onHintClicked()"
@@ -86,17 +88,29 @@ import {
   watch,
 } from "vue";
 import { storeToRefs } from "pinia";
-import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useWrite } from "@/use/useWrite";
 import AppWritingField from "@/components/AppWritingField.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppStrokeOrderVisualization from "@/components/KanjiDetails/AppStrokeOrderVisualization.vue";
 
 const storeKanji = useStoreKanji();
-const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
-const { kanjiData } = storeToRefs(storeKanji);
+const { kanjiData, nStrokes } = storeToRefs(storeKanji);
+
+const {
+  nMistakesTotal,
+  nMistakesCurrent,
+  currentStroke,
+  writeIsActive,
+  writeIsComplete,
+  initWrite,
+  resetWrite,
+  completeWrite,
+  addMistake,
+  addCorrect,
+} = useWrite();
 
 const writerRef = ref(null);
 const animationIsPlaying = ref(false);
@@ -120,7 +134,7 @@ const showWritingAnimation = () => {
 };
 
 const scheduleHint = () => {
-  if (!storeOptions.showDetailsHints) return;
+  if (!storeOptions.showDetailsHints || !writeIsActive.value) return;
   cancelHints();
   hintTimer = setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
 };
@@ -132,8 +146,7 @@ const cancelHints = () => {
 
 const startWriting = (strokeNr = 0) => {
   cancelHints();
-  storeQuiz.initQuiz();
-  storeQuiz.currentStroke = strokeNr;
+  initWrite(nStrokes.value, strokeNr);
 
   const writerProps = {
     showHintAfterMisses: 3,
@@ -142,7 +155,7 @@ const startWriting = (strokeNr = 0) => {
   };
   const quizOptions = {
     onCorrectStroke: (status) => {
-      writerRef.value.markStrokeCorrect(status);
+      addCorrect();
       scheduleHint();
     },
   };
@@ -153,7 +166,12 @@ const startWriting = (strokeNr = 0) => {
 };
 
 const displayStroke = (strokeNr, nStrokes) => {
-  strokeNr < nStrokes ? startWriting(strokeNr) : writerRef.value.completeQuiz();
+  if (strokeNr < nStrokes) {
+    startWriting(strokeNr);
+  } else {
+    completeWrite();
+    writerRef.value.completeQuiz();
+  }
 };
 
 const onShowOutlineChange = () => {

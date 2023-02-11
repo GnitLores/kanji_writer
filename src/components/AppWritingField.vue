@@ -12,11 +12,9 @@ import { ref, reactive, onMounted, computed, watch } from "vue";
 
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreKanji } from "@/stores/storeKanji";
-import { useStoreQuiz } from "@/stores/storeQuiz";
 import { useStoreOptions } from "../stores/storeOptions";
 
 const storeKanji = useStoreKanji();
-const storeQuiz = useStoreQuiz();
 const storeOptions = useStoreOptions();
 
 const KanjiWriter = useKanjiWriter();
@@ -25,21 +23,24 @@ const quizFieldRef = ref(null);
 
 const quizSize = 300;
 
-let customProps = {};
-let customOptions = {};
+let customWriterProps = {};
+let customQuizOptions = {};
 
 let centerLines = [];
 
+const props = defineProps({
+  writeIsActive: {
+    type: Boolean,
+    required: true,
+  },
+  currentStroke: {
+    type: Number,
+    required: true,
+  },
+});
+
 const giveHint = () => {
-  if (storeQuiz.strokesRemain) writer.highlightStroke(storeQuiz.currentStroke);
-};
-
-const markStrokeMistake = () => {
-  storeQuiz.addMistake();
-};
-
-const markStrokeCorrect = () => {
-  storeQuiz.addStroke();
+  if (props.writeIsActive) writer.highlightStroke(props.currentStroke);
 };
 
 const createWriter = (writerProps = {}) => {
@@ -66,25 +67,33 @@ const createWriter = (writerProps = {}) => {
     },
   };
 
-  customProps = writerProps;
+  customWriterProps = writerProps;
 
   writer = KanjiWriter.create(quizFieldRef.value, storeKanji.char, {
     ...defaultProperties,
-    ...customProps,
+    ...customWriterProps,
   });
+};
+
+const emit = defineEmits(["mistakeMade", "correctStrokeMade"]);
+const reportMistake = () => {
+  emit("mistakeMade");
+};
+const reportCorrect = () => {
+  emit("correctStrokeMade");
 };
 
 const activateWriterQuiz = (quizOptions = {}) => {
   const defaultOptions = {
-    onCorrectStroke: markStrokeCorrect,
-    onMistake: markStrokeMistake,
+    onCorrectStroke: reportMistake,
+    onMistake: reportCorrect,
   };
 
-  customOptions = quizOptions;
+  customQuizOptions = quizOptions;
 
   writer.quiz({
     ...defaultOptions,
-    ...customOptions,
+    ...customQuizOptions,
   });
 };
 
@@ -106,8 +115,7 @@ const startQuiz = (writerProps = {}, quizOptions = {}) => {
 const completeQuiz = () => {
   cancelQuiz();
   initQuizField();
-  createWriter(customOptions);
-  storeQuiz.completeQuiz();
+  createWriter(customQuizOptions);
   writer.showCharacter();
 };
 
@@ -204,8 +212,6 @@ defineExpose({
   setNewChar,
   giveHint,
   animate,
-  markStrokeMistake,
-  markStrokeCorrect,
   toggleOutline,
   toggleCenterLines,
 });
