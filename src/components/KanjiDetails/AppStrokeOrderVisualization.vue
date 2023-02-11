@@ -37,12 +37,12 @@ const emit = defineEmits(["strokeOrderClicked"]);
 
 const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  const boxSize = nStrokes <= 10 ? 56 : nStrokes <= 20 ? 46 : 37;
+  const boxSize = nStrokes <= 10 ? 56 : nStrokes <= 18 ? 46 : 37;
   svg.style.width = boxSize + "px";
   svg.style.height = boxSize + "px";
   svg.classList =
     "inline-block border border-gray-600 bg-darkmode-700 hover:cursor-pointer hover:border-white";
-  if (nStrokes < 20) svg.classList += " m-0.5 rounded";
+  if (nStrokes < 18) svg.classList += " m-0.5 rounded";
   svg.addEventListener("click", () => {
     emit("strokeOrderClicked", strokeNr, nStrokes);
   });
