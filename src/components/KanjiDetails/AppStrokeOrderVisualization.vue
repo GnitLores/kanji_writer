@@ -64,14 +64,12 @@ const renderFanningStrokes = (target, strokes, nStrokes, strokeNr) => {
 };
 
 const drawStrokeOrder = () => {
-  KanjiWriter.loadCharacterData(storeKanji.char).then(function (charData) {
-    var target = strokeOrderRef.value;
-    const nStrokes = charData.strokes.length;
-    for (var i = 0; i < nStrokes; i++) {
-      var strokesPortion = charData.strokes.slice(0, i + 1);
-      renderFanningStrokes(target, strokesPortion, nStrokes, i + 1);
-    }
-  });
+  const storeKanji = useStoreKanji();
+  const target = strokeOrderRef.value;
+  for (var i = 0; i < storeKanji.nStrokes; i++) {
+    var strokesPortion = storeKanji.writingData.strokes.slice(0, i + 1);
+    renderFanningStrokes(target, strokesPortion, storeKanji.nStrokes, i + 1);
+  }
 };
 
 const initVisualization = () => {
