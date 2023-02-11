@@ -22,12 +22,10 @@
 <script setup>
 import { ref, watch, onMounted, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
-import { useStoreList } from "@/stores/storeList";
 import AppButton from "@/components/AppButton.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 
 const storeOptions = useStoreOptions();
-const storeList = useStoreList();
 
 const { kanji } = inject("kanji");
 
@@ -61,6 +59,7 @@ const onDisplayDataUpdated = () => {
 };
 
 watch(displayData, onDisplayDataUpdated);
+watch(kanji, findAdjacentKanji);
 
 onMounted(() => {
   findAdjacentKanji();
