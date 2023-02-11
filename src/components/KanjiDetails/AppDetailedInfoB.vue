@@ -19,15 +19,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
-import { useStoreKanji } from "@/stores/storeKanji";
 
-const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 
+const { kanji } = inject("kanji");
+
 const meaningStrings = computed(() => {
-  const strs = storeKanji.kanjiData.meaning.split(" ");
+  const strs = kanji.data.meaning.split(" ");
   const parsed = [];
   const divider = " - ";
   parsed.push(strs.shift());

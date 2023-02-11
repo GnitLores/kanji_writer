@@ -83,6 +83,8 @@ import { useDragSelection } from "@/use/useDragSelection";
 import { useContextMenu } from "@/use/useContextMenu";
 import { useSearch } from "@/use/useSearch";
 
+const emit = defineEmits(["singleKanjiSelected"]);
+
 const storeOptions = useStoreOptions();
 const storeList = useStoreList();
 const storeKanji = useStoreKanji();
@@ -159,7 +161,8 @@ const singleSelectionEnabled = computed(() => props.selectionType === "single");
 const onKanjiClicked = (event) => {
   if (!singleSelectionEnabled.value) return;
   const kanji = getMouseKanji(event);
-  storeKanji.loadKanji(kanji.char);
+  emit("singleKanjiSelected", kanji.char);
+  // storeKanji.loadKanji(kanji.char);
 };
 
 const onKanjiMouseDown = (event) => {

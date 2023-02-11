@@ -21,6 +21,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       showLines: true,
       // gridUiMinHeight: "min-h-[550px]",
       // gridUiMinHeightCompact: "min-h-[400px]",
+      writerSize: 300,
       gridUiMinHeight: "h-[550px]",
       gridUiMinHeightCompact: "h-[400px]",
     };

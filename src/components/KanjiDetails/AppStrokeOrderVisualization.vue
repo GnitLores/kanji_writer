@@ -9,29 +9,17 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  onUnmounted,
-  computed,
-  watch,
-} from "vue";
-import { storeToRefs } from "pinia";
-import { useStoreQuiz } from "@/stores/storeQuiz";
-import { useStoreKanji } from "@/stores/storeKanji";
+import { ref, onMounted, watch, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 
-const storeKanji = useStoreKanji();
-const storeQuiz = useStoreQuiz();
+const emit = defineEmits(["strokeOrderClicked"]);
+
 const storeOptions = useStoreOptions();
-const { kanjiData } = storeToRefs(storeKanji);
 
 const strokeOrderRef = ref(null);
 
-const totalWidth = 300; // pixels
+const totalWidth = storeOptions.writerSize; // pixels
 const margin = 2; // pixels
 const borderWidth = 1; // pixels
 const perRowBig = 5; // boxes
@@ -43,15 +31,14 @@ const medUpTo = 18; // boxes
 const smallUpTo = 21; // boxes
 let doSeparate = true;
 
-const emit = defineEmits(["strokeOrderClicked"]);
+const { kanji } = inject("kanji");
 
 const drawStrokeOrder = () => {
-  const storeKanji = useStoreKanji();
-  const strokes = storeKanji.writingData.strokes;
+  const strokes = kanji.writingData.strokes;
   const target = strokeOrderRef.value;
-  for (var i = 0; i < storeKanji.nStrokes; i++) {
+  for (var i = 0; i < kanji.nStrokes; i++) {
     var strokesPortion = strokes.slice(0, i + 1);
-    renderFanningStrokes(target, strokesPortion, storeKanji.nStrokes, i + 1);
+    renderFanningStrokes(target, strokesPortion, kanji.nStrokes, i + 1);
   }
 };
 
@@ -134,14 +121,14 @@ const initVisualization = () => {
   }
 };
 
-watch(kanjiData, () => {
-  if (storeKanji.char === "") return;
+watch(kanji, () => {
+  if (kanji.char === "") return;
   initVisualization();
   drawStrokeOrder();
 });
 
 onMounted(() => {
-  if (storeKanji.char === "") return;
+  if (kanji.char === "") return;
   drawStrokeOrder();
 });
 </script>

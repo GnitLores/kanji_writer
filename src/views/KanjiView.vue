@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="storeKanji.char !== ''" class="flex justify-center">
-      <AppKanjiDetails />
+    <div v-if="kanji.char !== ''" class="flex justify-center">
+      <AppKanjiDetails :kanji="kanji" />
     </div>
     <div
       v-else
@@ -17,22 +17,29 @@
       </p>
     </div>
 
-    <AppKanjiGrid selectionType="single" />
+    <AppKanjiGrid selectionType="single" @singleKanjiSelected="selectChar" />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
-import { storeToRefs } from "pinia";
+import { ref, reactive, provide } from "vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useKanji } from "@/use/useKanji";
 
 const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 
-// const { gridUiMinHeight } = storeToRefs(storeOptions);
+const selectedChar = ref("");
+
+const selectChar = async (char) => {
+  await kanji.loadKanji(char);
+};
+
+const kanji = reactive(useKanji());
+provide("kanji", { kanji, selectChar });
 </script>
 
 <style scoped></style>

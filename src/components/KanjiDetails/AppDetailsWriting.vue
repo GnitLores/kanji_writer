@@ -57,13 +57,13 @@
         @clicked="onHintClicked()"
       />
       <AppButton
-        :disabled="!storeKanji.char === ''"
+        :disabled="!kanji.char === ''"
         :text="'Animate'"
         class="w-20 py-1"
         @clicked="onShowClicked()"
       />
       <AppButton
-        :disabled="!storeKanji.char === ''"
+        :disabled="!kanji.char === ''"
         :text="'Reset'"
         class="w-20 py-1"
         @clicked="onResetClicked()"
@@ -78,35 +78,19 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  onUnmounted,
-  computed,
-  watch,
-} from "vue";
-import { storeToRefs } from "pinia";
-import { useStoreKanji } from "@/stores/storeKanji";
+import { ref, onMounted, onBeforeUnmount, watch, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useWrite } from "@/use/useWrite";
 import AppWritingField from "@/components/AppWritingField.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppStrokeOrderVisualization from "@/components/KanjiDetails/AppStrokeOrderVisualization.vue";
 
-const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
-const { kanjiData, nStrokes } = storeToRefs(storeKanji);
 
 const {
-  nMistakesTotal,
-  nMistakesCurrent,
   currentStroke,
   writeIsActive,
-  writeIsComplete,
   initWrite,
-  resetWrite,
   completeWrite,
   addMistake,
   addCorrect,
@@ -115,6 +99,8 @@ const {
 const writerRef = ref(null);
 const animationIsPlaying = ref(false);
 let hintTimer = null;
+
+const { kanji } = inject("kanji");
 
 const onHintClicked = () => {
   writerRef.value.giveHint();
@@ -146,7 +132,7 @@ const cancelHints = () => {
 
 const startWriting = (strokeNr = 0) => {
   cancelHints();
-  initWrite(nStrokes.value, strokeNr);
+  initWrite(kanji.nStrokes, strokeNr);
 
   const writerProps = {
     showHintAfterMisses: 3,
@@ -192,13 +178,13 @@ const onStrokeOrderClicked = (strokeNr, nStrokes) => {
   displayStroke(strokeNr, nStrokes);
 };
 
-watch(kanjiData, () => {
-  if (storeKanji.char === "") return;
+watch(kanji, () => {
+  if (kanji.char === "") return;
   startWriting();
 });
 
 onMounted(() => {
-  if (storeKanji.char === "") return;
+  if (kanji.char === "") return;
   startWriting();
 });
 onBeforeUnmount(() => {

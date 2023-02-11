@@ -8,20 +8,18 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, watch } from "vue";
+import { ref, onMounted, inject } from "vue";
 
 import { useKanjiWriter } from "@/use/useKanjiWriter";
-import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "../stores/storeOptions";
 
-const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 
 const KanjiWriter = useKanjiWriter();
 let writer = null;
 const quizFieldRef = ref(null);
 
-const quizSize = 300;
+const quizSize = storeOptions.writerSize;
 
 let customWriterProps = {};
 let customQuizOptions = {};
@@ -38,6 +36,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const { kanji } = inject("kanji");
 
 const giveHint = () => {
   if (props.writeIsActive) writer.highlightStroke(props.currentStroke);
@@ -62,14 +62,13 @@ const createWriter = (writerProps = {}) => {
     highlightOnComplete: true,
     highlightCompleteColor: "#FB923C",
     charDataLoader: (char, onComplete) => {
-      const storeKanji = useStoreKanji();
-      onComplete(storeKanji.writingData);
+      onComplete(kanji.writingData);
     },
   };
 
   customWriterProps = writerProps;
 
-  writer = KanjiWriter.create(quizFieldRef.value, storeKanji.char, {
+  writer = KanjiWriter.create(quizFieldRef.value, kanji.char, {
     ...defaultProperties,
     ...customWriterProps,
   });
