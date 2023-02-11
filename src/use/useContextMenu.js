@@ -93,7 +93,7 @@ export function useContextMenu() {
     const selection = event.option.class;
     switch (selection) {
       case "display-details":
-        storeKanji.displayKanjiDetailsModal(kanji.char);
+        storeOptions.displayKanjiDetailsModal(kanji.char);
         break;
       case "select-up-to":
         !storeOptions.reverseOrder

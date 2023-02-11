@@ -3,13 +3,13 @@
     <div class="inline-block">
       <div class="flex justify-evenly w-72">
         <AppButton
-          :disabled="!prevKanji || prevKanji == storeKanji.char"
+          :disabled="!prevKanji || prevKanji == kanji.char"
           :text="`Previous - ${prevKanji}`"
           class="w-32 text-lg h-10"
           @clicked="previousButtonClicked"
         />
         <AppButton
-          :disabled="!nextKanji || nextKanji == storeKanji.char"
+          :disabled="!nextKanji || nextKanji == kanji.char"
           :text="`Next - ${nextKanji}`"
           class="w-32 text-lg h-10"
           @clicked="nextButtonClicked"
@@ -20,15 +20,16 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
-import { storeToRefs } from "pinia";
+import { ref, watch, onMounted, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
-import { useStoreKanji } from "@/stores/storeKanji";
+import { useStoreList } from "@/stores/storeList";
 import AppButton from "@/components/AppButton.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 
-const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
+const storeList = useStoreList();
+
+const { kanji } = inject("kanji");
 
 let prevKanji = ref("");
 let nextKanji = ref("");
@@ -36,24 +37,22 @@ let nextKanji = ref("");
 const { displayData, getDisplayedKanjiRelative, isKanjiDisplayed } =
   useDisplayData();
 
-const { kanjiData } = storeToRefs(storeKanji);
-
 const previousButtonClicked = () => {
-  storeKanji.loadKanji(prevKanji.value);
+  kanji.loadKanji(prevKanji.value);
 };
 
 const nextButtonClicked = () => {
-  storeKanji.loadKanji(nextKanji.value);
+  kanji.loadKanji(nextKanji.value);
 };
 
 const findAdjacentKanji = () => {
-  if (storeKanji.char === "") return;
-  prevKanji.value = getDisplayedKanjiRelative(storeKanji.char, -1).char;
-  nextKanji.value = getDisplayedKanjiRelative(storeKanji.char, 1).char;
+  if (kanji.char === "") return;
+  prevKanji.value = getDisplayedKanjiRelative(kanji.char, -1).char;
+  nextKanji.value = getDisplayedKanjiRelative(kanji.char, 1).char;
 };
 
 const onDisplayDataUpdated = () => {
-  if (!isKanjiDisplayed(storeKanji.char)) {
+  if (!isKanjiDisplayed(kanji.char)) {
     prevKanji.value = "";
     nextKanji.value = "";
   } else {
@@ -61,7 +60,6 @@ const onDisplayDataUpdated = () => {
   }
 };
 
-watch(kanjiData, findAdjacentKanji);
 watch(displayData, onDisplayDataUpdated);
 
 onMounted(() => {

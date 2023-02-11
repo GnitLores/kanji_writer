@@ -78,7 +78,7 @@ export const useStoreList = defineStore("storeList", {
 
       this.kanjiByLevel = data;
 
-      const { initSelected } = useSelection();
+      const { initSelected, initViewing } = useSelection();
       initSelected();
     },
   },

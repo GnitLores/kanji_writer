@@ -1,20 +1,25 @@
 <template>
-  <AppBaseModal :show="storeKanji.showModal">
-    <AppKanjiDetails v-on-click-outside="closeModal" />
+  <AppBaseModal :show="storeOptions.showDetailsModal">
+    <AppKanjiDetails
+      v-on-click-outside="closeModal"
+      :detailsType="'modal'"
+      :kanji="storeOptions.modalKanji"
+    />
   </AppBaseModal>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useStoreKanji } from "@/stores/storeKanji";
+import { ref, reactive, provide } from "vue";
+import { storeToRefs } from "pinia";
+import { useStoreOptions } from "@/stores/storeOptions";
 import AppBaseModal from "@/components/Modals/AppBaseModal.vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import { vOnClickOutside } from "@vueuse/components";
 
-const storeKanji = useStoreKanji();
+const storeOptions = useStoreOptions();
+// const { modalsKanji } = storeToRefs(storeOptions);
 
 const closeModal = () => {
-  storeKanji.hideDetailsModal();
+  storeOptions.hideDetailsModal();
 };
-// const showModal = ref(false);
 </script>

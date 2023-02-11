@@ -3,7 +3,9 @@ import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useSelectionStats } from "@/use/useSelectionStats";
 
-const selected = ref([]);
+const selected = ref([]); // list of booleans for each kanji, indicates all the kanji selected to be included in quiz
+const detailsKanji = ref(""); // char currently being viewed in details
+const modalKanji = ref(""); // char currently being viewed in modal
 
 export function useSelection() {
   const { updateSelectionStats } = useSelectionStats();
@@ -143,6 +145,8 @@ export function useSelection() {
 
   return {
     selected,
+    detailsKanji,
+    modalKanji,
     initSelected,
     applyForAll,
     isSelected,

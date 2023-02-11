@@ -43,7 +43,9 @@
               : selected[kanji.mainIdx]
               ? 'text-darkmode-50 hover:text-darkmode-200'
               : 'text-white text-opacity-80 hover:text-opacity-100',
-            storeKanji.char === kanji.char
+            modalKanji === kanji.char
+              ? 'border-sky-400'
+              : detailsKanji === kanji.char
               ? selected[kanji.mainIdx]
                 ? 'border-white'
                 : 'border-darkmode-50'
@@ -135,7 +137,13 @@ Kanji selection
 ===============
 */
 
-const { selected, initSelected, toggleLevelSelection } = useSelection();
+const {
+  selected,
+  initSelected,
+  toggleLevelSelection,
+  detailsKanji,
+  modalKanji,
+} = useSelection();
 const {
   isDragging,
   selectedWhileDragging,

@@ -1,7 +1,9 @@
+import { reactive } from "vue";
 import { defineStore } from "pinia";
 import { doc, getDoc } from "firebase/firestore";
 import { db, kanjiCollection } from "@/includes/firebase";
 import { useStoreList } from "@/stores/storeList";
+import { useKanji } from "@/use/useKanji";
 
 export const useStoreOptions = defineStore("storeOptions", {
   state: () => {
@@ -24,6 +26,11 @@ export const useStoreOptions = defineStore("storeOptions", {
       writerSize: 300,
       gridUiMinHeight: "h-[550px]",
       gridUiMinHeightCompact: "h-[400px]",
+
+      // Details modal display:
+      // showModal: false,
+      modalKanji: {},
+      showDetailsModal: false,
     };
   },
   actions: {
@@ -33,6 +40,15 @@ export const useStoreOptions = defineStore("storeOptions", {
     allLevelsIgnored() {
       const storeList = useStoreList();
       return this.ignoredLevels.length === storeList.nrOfLevels;
+    },
+    async displayKanjiDetailsModal(char) {
+      this.modalKanji = reactive(useKanji());
+      await this.modalKanji.loadKanji(char);
+      this.showDetailsModal = true;
+    },
+    hideDetailsModal() {
+      this.modalKanji = {};
+      this.showDetailsModal = false;
     },
   },
 });
