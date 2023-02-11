@@ -28,7 +28,6 @@ export const useStoreOptions = defineStore("storeOptions", {
       gridUiMinHeightCompact: "h-[400px]",
 
       // Details modal display:
-      // showModal: false,
       modalKanji: {},
       showDetailsModal: false,
     };

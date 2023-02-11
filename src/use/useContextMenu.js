@@ -1,18 +1,22 @@
 import { ref } from "vue";
-import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useSelection } from "@/use/useSelection";
 
 const levelTitleContextRef = ref(null);
 const kanjiContextRef = ref(null);
 const headerBarContextRef = ref(null);
+const detailsContextRef = ref(null);
 
 export function useContextMenu() {
-  const storeKanji = useStoreKanji();
   const storeOptions = useStoreOptions();
 
   // This composable gives a central reference to all context menus, so all other menus can be close when opening a context menu without having to use a complicated control flow. Options and selection callbacks are handled in the components.
-  const refs = [levelTitleContextRef, kanjiContextRef, headerBarContextRef];
+  const refs = [
+    levelTitleContextRef,
+    kanjiContextRef,
+    headerBarContextRef,
+    detailsContextRef,
+  ];
 
   const closeOtherMenus = (openRef) => {
     refs.forEach((menuRef) => {
@@ -170,6 +174,30 @@ export function useContextMenu() {
     headerBarContextRef.value.showMenu(event, item);
   };
 
+  /*
+  ===============
+  Kanji details:
+  ===============
+  */
+  const detailsContextOptions = [
+    { name: "Display details", class: "display-details" },
+  ];
+  const detailsContextOptionClicked = (event) => {
+    const kanji = event.item;
+    const selection = event.option.class;
+    switch (selection) {
+      case "display-details":
+        storeOptions.displayKanjiDetailsModal(kanji.char);
+        break;
+      default:
+        console.log("Invalid selection");
+    }
+  };
+  const onDetailsContext = (event, item) => {
+    closeOtherMenus(detailsContextRef);
+    detailsContextRef.value.showMenu(event, item);
+  };
+
   return {
     levelTitleContextOptions,
     levelTitleContextOptionClicked,
@@ -185,5 +213,10 @@ export function useContextMenu() {
     headerBarContextOptionClicked,
     onHeaderBarContext,
     headerBarContextRef,
+
+    detailsContextOptions,
+    detailsContextOptionClicked,
+    onDetailsContext,
+    detailsContextRef,
   };
 }

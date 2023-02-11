@@ -12,6 +12,12 @@
       ref="kanjiContextRef"
       @option-clicked="kanjiContextOptionClicked"
     />
+    <VueSimpleContextMenu
+      element-id="details-context"
+      :options="detailsContextOptions"
+      ref="detailsContextRef"
+      @option-clicked="detailsContextOptionClicked"
+    />
 
     <AppKanjiGridHeader :selectionType="`${selectionType}`" />
     <AppKanjiGridSearch />
@@ -116,6 +122,11 @@ const {
   kanjiContextOptionClicked,
   onKanjiContext,
   kanjiContextRef,
+
+  detailsContextOptions,
+  detailsContextOptionClicked,
+  onDetailsContext,
+  detailsContextRef,
 } = useContextMenu();
 
 const { isSearching } = useSearch();
@@ -194,8 +205,8 @@ const onMouseUp = (event) => {
 };
 
 const onKanjiRightClicked = (event, kanji) => {
-  if (!rangeSelectionEnabled.value) return;
-  onKanjiContext(event, kanji);
+  if (rangeSelectionEnabled.value) onKanjiContext(event, kanji);
+  if (singleSelectionEnabled.value) onDetailsContext(event, kanji);
 };
 
 /*
