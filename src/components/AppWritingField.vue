@@ -60,6 +60,10 @@ const createWriter = (writerProps = {}) => {
     drawingColor: "#38BDF8",
     highlightOnComplete: true,
     highlightCompleteColor: "#FB923C",
+    charDataLoader: (char, onComplete) => {
+      const storeKanji = useStoreKanji();
+      onComplete(storeKanji.writingData);
+    },
   };
 
   customProps = writerProps;

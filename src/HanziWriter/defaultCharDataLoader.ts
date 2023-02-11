@@ -38,4 +38,4 @@ const defaultCharDataLoader = (char: any, onComplete: any) => {
   onComplete(storeKanji.writingData);
 };
 
-export default defaultCharDataLoader;
+export default null;
