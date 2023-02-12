@@ -13,10 +13,7 @@
           <AppDetailedInfoA class="ml-2 mr-4 my-2" />
         </span>
       </div>
-      <div
-        class="flex justify-center"
-        :class="[`w-[${storeOptions.writerSize}px]`]"
-      >
+      <div class="flex justify-center" :class="'writer-width'">
         <span> <AppDetailsWriting ref="detailsWriterRef" /></span>
       </div>
       <div class="flex-1 flex justify-center">
