@@ -70,18 +70,8 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  onUnmounted,
-  computed,
-  watch,
-} from "vue";
+import { onMounted, onBeforeUnmount, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
-import { useStoreList } from "@/stores/storeList";
-import { useStoreKanji } from "@/stores/storeKanji";
 import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
 import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
@@ -94,8 +84,6 @@ import { useSearch } from "@/use/useSearch";
 const emit = defineEmits(["singleKanjiSelected"]);
 
 const storeOptions = useStoreOptions();
-const storeList = useStoreList();
-const storeKanji = useStoreKanji();
 
 const { displayData, getDisplayedKanjiByChar } = useDisplayData();
 
@@ -181,7 +169,6 @@ const onKanjiClicked = (event) => {
   if (!singleSelectionEnabled.value) return;
   const kanji = getMouseKanji(event);
   emit("singleKanjiSelected", kanji.char);
-  // storeKanji.loadKanji(kanji.char);
 };
 
 const onKanjiMouseDown = (event) => {
@@ -220,7 +207,6 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   document.removeEventListener("mouseup", onMouseUp);
-  storeKanji.init();
   initSelected();
 });
 </script>

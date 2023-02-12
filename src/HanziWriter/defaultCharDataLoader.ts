@@ -32,10 +32,4 @@
 //   xhr.send(null);
 // };
 
-import { useStoreKanji } from "../stores/storeKanji";
-const defaultCharDataLoader = (char: any, onComplete: any) => {
-  const storeKanji = useStoreKanji();
-  onComplete(storeKanji.writingData);
-};
-
 export default null;

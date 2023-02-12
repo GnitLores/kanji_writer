@@ -15,10 +15,8 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
-import { useStoreKanji } from "@/stores/storeKanji";
 import { useStoreOptions } from "@/stores/storeOptions";
 
-const storeKanji = useStoreKanji();
 const storeOptions = useStoreOptions();
 </script>
 

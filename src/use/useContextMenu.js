@@ -10,7 +10,7 @@ const detailsContextRef = ref(null);
 export function useContextMenu() {
   const storeOptions = useStoreOptions();
 
-  // This composable gives a central reference to all context menus, so all other menus can be close when opening a context menu without having to use a complicated control flow. Options and selection callbacks are handled in the components.
+  // This composable gives a central reference to all context menus, so all other menus can be closed when opening a context menu without having to use a complicated control flow. Options and selection callbacks are handled in the components.
   const refs = [
     levelTitleContextRef,
     kanjiContextRef,
