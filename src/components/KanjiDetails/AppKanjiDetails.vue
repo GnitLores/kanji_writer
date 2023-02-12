@@ -1,11 +1,7 @@
 <template>
   <div
     class="container"
-    :class="[
-      storeOptions.showDetailsStrokeOrder
-        ? 'details-ui-height'
-        : 'details-ui-height-no-strokes',
-    ]"
+    :class="[storeOptions.showDetailsStrokeOrder ? 'h-[550px]' : 'h-[400px]']"
   >
     <div class="flex">
       <div class="flex-1 flex justify-center">
@@ -13,7 +9,7 @@
           <AppDetailedInfoA class="ml-2 mr-4 my-2" />
         </span>
       </div>
-      <div class="flex justify-center" :class="'writer-width'">
+      <div class="flex justify-center w-[300px]">
         <span> <AppDetailsWriting ref="detailsWriterRef" /></span>
       </div>
       <div class="flex-1 flex justify-center">

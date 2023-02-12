@@ -6,11 +6,7 @@
     <div
       v-else
       class="flex justify-center place-items-center"
-      :class="[
-        storeOptions.showDetailsStrokeOrder
-          ? 'details-ui-height'
-          : 'details-ui-height-no-strokes',
-      ]"
+      :class="[storeOptions.showDetailsStrokeOrder ? 'h-[550px]' : 'h-[400px]']"
     >
       <p class="text-white text-4xl font-semibold text-opacity-80">
         Left click any kanji to select

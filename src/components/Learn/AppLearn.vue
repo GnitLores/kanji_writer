@@ -1,14 +1,5 @@
 <template>
-  <div
-    class="flex justify-center place-items-center"
-    :class="[
-      storeOptions.showDetailsStrokeOrder
-        ? 'details-ui-height'
-        : 'details-ui-height-no-strokes',
-    ]"
-  >
-    HEJ
-  </div>
+  <div class="flex justify-center place-items-center h-[400px]">HEJ</div>
 </template>
 
 <script setup>

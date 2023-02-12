@@ -21,6 +21,7 @@ const strokeOrderRef = ref(null);
 
 const totalWidth = storeOptions.writerSize; // pixels
 const margin = 2; // pixels
+const marginClass = " m-[2px]";
 const borderWidth = 1; // pixels
 const perRowBig = 5; // boxes
 const perRowMed = 6; // boxes
@@ -88,7 +89,8 @@ const createStrokeSvg = (strokes, boxSize) => {
   svg.style.height = boxSize + "px";
   svg.classList =
     "inline-block border-gray-600 bg-darkmode-700 hover:cursor-pointer hover:border-white";
-  if (doSeparate) svg.classList += ` m-[${margin}px] rounded`;
+  if (doSeparate) svg.classList += marginClass;
+  if (doSeparate) svg.classList += ` rounded`;
   svg.classList += borderWidth === 1 ? " border" : ` border-${borderWidth}`;
 
   svg.appendChild(renderStrokes(strokes, boxSize));
