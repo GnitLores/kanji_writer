@@ -1,42 +1,22 @@
 <template>
-  <div class="container mx-auto flex h-[400px]">
-    <div class="inline-block w-48">
-      <ul>
-        <li>
-          <AppButton
-            :disabled="!selected || !selected.some((val) => val)"
-            :text="'Set as known'"
-            class="w-32 text-lg h-10"
-            @clicked=""
-          />
-        </li>
-
-        <li>
-          <AppButton
-            :text="'Test'"
-            class="w-32 text-lg h-10"
-            @clicked="onTest"
-          />
-        </li>
-      </ul>
-    </div>
+  <div class="container mx-auto">
+    <AppLearnHeader />
+    <AppLearnControls />
   </div>
 </template>
 
 <script setup>
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useStoreUser } from "@/stores/storeUser";
 import { useSelection } from "@/use/useSelection";
 import AppButton from "@/components/AppButton.vue";
+import AppLearnHeader from "@/components/Learn/AppLearnHeader.vue";
+import AppLearnControls from "@/components/Learn/AppLearnControls.vue";
 
 const storeOptions = useStoreOptions();
-//
-const { selected } = useSelection();
-console.log(selected);
+const storeUser = useStoreUser();
 
-const onTest = () => {
-  console.log(!selected.value);
-  console.log(!selected.value.some((val) => val === true));
-};
+const { selected } = useSelection();
 </script>
 
 <style scoped></style>
