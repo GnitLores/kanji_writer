@@ -48,6 +48,8 @@
               ? 'text-white text-opacity-100'
               : selected[kanji.mainIdx]
               ? 'text-darkmode-50 hover:text-darkmode-200'
+              : storeUser.known[kanji.mainIdx]
+              ? 'text-green-200'
               : 'text-white text-opacity-80 hover:text-opacity-100',
             modalKanji === kanji.char
               ? 'border-sky-400'
@@ -72,6 +74,7 @@
 <script setup>
 import { onMounted, onBeforeUnmount, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useStoreUser } from "@/stores/storeUser";
 import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
 import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
@@ -84,6 +87,7 @@ import { useSearch } from "@/use/useSearch";
 const emit = defineEmits(["singleKanjiSelected"]);
 
 const storeOptions = useStoreOptions();
+const storeUser = useStoreUser();
 
 const { displayData, getDisplayedKanjiByChar } = useDisplayData();
 

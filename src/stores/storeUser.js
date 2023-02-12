@@ -15,10 +15,10 @@ export const useStoreUser = defineStore("storeUser", {
       const storeList = useStoreList();
       this.known = new Array(storeList.kanjiList.length).fill(false);
     },
-    setIndicesAsKnown(indices, toggle = true) {
-      indices.forEach((idx) => {
-        this.known[idx] = toggle;
-      });
+    setSelectionAsKnown(selection, toggle = true) {
+      this.known = selection.map((isSelected, idx) =>
+        isSelected ? toggle : this.known[idx]
+      );
     },
   },
 });

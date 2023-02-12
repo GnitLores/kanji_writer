@@ -91,19 +91,26 @@ import AppButton from "@/components/AppButton.vue";
 const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
-const { selected, initSelected } = useSelection();
+const { selected, initSelected, setSelectionAsSelected } = useSelection();
 
-const selectKnownClicked = () => {};
+const selectKnownClicked = () => {
+  setSelectionAsSelected(storeUser.known, true, true);
+};
 
-const selectUnknownClicked = () => {};
+const selectUnknownClicked = () => {
+  const unknown = storeUser.known.map((val) => !val);
+  // console.log(storeUser.known);
+  // console.log(unknown);
+  setSelectionAsSelected(unknown, true, true);
+};
 
 const setKnownClicked = () => {
-  storeUser.setIndicesAsKnown(selected.value, true);
+  storeUser.setSelectionAsKnown(selected.value, true);
   initSelected();
 };
 
 const setUnknownClicked = () => {
-  storeUser.setIndicesAsKnown(selected.value, false);
+  storeUser.setSelectionAsKnown(selected.value, false);
   initSelected();
 };
 

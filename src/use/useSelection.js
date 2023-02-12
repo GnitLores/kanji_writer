@@ -143,6 +143,16 @@ export function useSelection() {
     });
   };
 
+  const setSelectionAsSelected = (selection, toggle = true, strict = true) => {
+    // Pass in a boolean array and select or deselect all indices set to true in selection.
+    // If strict mode, all others are deselected.
+    // For example, can be used to select all known or all unknown kanji
+    selected.value = selection.map((isSelected, idx) => {
+      if (strict && !isSelected) return false;
+      return isSelected ? toggle : selected.value[idx];
+    });
+  };
+
   return {
     selected,
     detailsKanji,
@@ -159,5 +169,6 @@ export function useSelection() {
     selectAllFromKanji,
     toggleKanjiSelection,
     selectAll,
+    setSelectionAsSelected,
   };
 }
