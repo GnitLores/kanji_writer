@@ -1,5 +1,9 @@
 @import "./base.css";
 
+:root {
+  --tooltip-width: 160px;
+}
+
 /* Tooltip container */
 .tooltip {
   position: relative;
@@ -10,11 +14,11 @@
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: var(--tooltip-width);
   background-color: #f2e8e5;
   color: black;
-  font-weight: 400;
-  font-size: medium;
+  font-weight: 500;
+  font-size: small;
   text-align: center;
   padding: 0.2rem 0.5rem;
   border-radius: 0.5rem;
@@ -35,13 +39,13 @@
   width: fit-content;
   bottom: calc(100% + 5px);
   left: 50%;
-  margin-left: -60px;
+  margin-left: calc((var(--tooltip-width) * -1) / 2);
 }
 .tooltip-bottom {
   width: 120px;
   top: calc(100% + 5px);
   left: 50%;
-  margin-left: -60px;
+  margin-left: calc((var(--tooltip-width) * -1) / 2);
 }
 
 .tooltip:hover .tooltiptext {
