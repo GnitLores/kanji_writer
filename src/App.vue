@@ -11,12 +11,14 @@ import { watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useStoreList } from "@/stores/storeList";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useStoreUser } from "@/stores/storeUser";
 import { useDisplayData } from "@/use/useDisplayData";
 import AppNavbar from "@/components/AppNavbar.vue";
 import AppKanjiDetailsModal from "@/components/Modals/AppKanjiDetailsModal.vue";
 
 const storeList = useStoreList();
 const storeOptions = useStoreOptions();
+const storeUser = useStoreUser();
 
 // Watch stores and update display data:
 const { updateDisplayData } = useDisplayData();
@@ -29,8 +31,9 @@ watch(doDisplayLevels, updateDisplayData);
 watch(ignoredLevels, updateDisplayData);
 watch(reverseOrder, updateDisplayData);
 
-onMounted(() => {
-  storeList.loadKanjiList();
+onMounted(async () => {
+  await storeList.loadKanjiList();
+  storeUser.initUser();
 });
 </script>
 
