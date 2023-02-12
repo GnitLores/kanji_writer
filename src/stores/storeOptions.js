@@ -22,8 +22,9 @@ export const useStoreOptions = defineStore("storeOptions", {
       outlineOpacity: 0.7,
       showLines: true,
       writerSize: 300,
-      detailsUiMinHeight: "h-[550px]",
-      detailsUiMinHeightCompact: "h-[400px]",
+      strokeOrderSize: 150,
+      detailsUiMinHeight: 550,
+      detailsUiMinHeightCompact: 400,
 
       // Details modal display:
       modalKanji: {},

@@ -1,9 +1,16 @@
 <template>
-  <div class="">
+  <div
+    class="overflow-y-auto"
+    :class="[
+      storeOptions.showDetailsStrokeOrder
+        ? `max-h-[${storeOptions.writerSize + storeOptions.strokeOrderSize}px]`
+        : `max-h-[${storeOptions.writerSize}px]`,
+    ]"
+  >
     <ul class="capitalize font-semibold">
       <li class="pt-2 border-b border-gray-600">
-        <div class="">
-          <ul>
+        <div>
+          <ul class="">
             <li
               v-for="meaning in meaningStrings"
               :key="meaning"
