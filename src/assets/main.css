@@ -1,1 +1,8 @@
 @import "./base.css";
+
+.details-ui-height {
+  height: 550px;
+}
+.details-ui-height-no-strokes {
+  height: 400px;
+}

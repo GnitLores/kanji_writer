@@ -8,8 +8,8 @@
       class="flex justify-center place-items-center"
       :class="[
         storeOptions.showDetailsStrokeOrder
-          ? `h-[${storeOptions.detailsUiMinHeight}px]`
-          : `h-[${storeOptions.detailsUiMinHeightCompact}px]`,
+          ? 'details-ui-height'
+          : 'details-ui-height-no-strokes',
       ]"
     >
       <p class="text-white text-4xl font-semibold text-opacity-80">

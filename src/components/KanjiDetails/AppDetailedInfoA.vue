@@ -7,11 +7,7 @@
     <div
       class="overflow-y-auto"
       :class="[
-        storeOptions.showDetailsStrokeOrder
-          ? `max-h-[${
-              storeOptions.writerSize + storeOptions.strokeOrderSize + 20
-            }px]`
-          : `max-h-[${storeOptions.writerSize + 20}px]`,
+        storeOptions.showDetailsStrokeOrder ? `max-h-[470px]` : `max-h-[320px]`,
       ]"
     >
       <ul class="capitalize font-semibold">

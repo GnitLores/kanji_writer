@@ -3,8 +3,8 @@
     class="container"
     :class="[
       storeOptions.showDetailsStrokeOrder
-        ? `h-[${storeOptions.detailsUiMinHeight}px]`
-        : `h-[${storeOptions.detailsUiMinHeightCompact}px]`,
+        ? 'details-ui-height'
+        : 'details-ui-height-no-strokes',
     ]"
   >
     <div class="flex">
