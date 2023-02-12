@@ -21,11 +21,9 @@ export const useStoreOptions = defineStore("storeOptions", {
       showDetailsStrokeOrder: true,
       outlineOpacity: 0.7,
       showLines: true,
-      // gridUiMinHeight: "min-h-[550px]",
-      // gridUiMinHeightCompact: "min-h-[400px]",
       writerSize: 300,
-      gridUiMinHeight: "h-[550px]",
-      gridUiMinHeightCompact: "h-[400px]",
+      detailsUiMinHeight: "h-[550px]",
+      detailsUiMinHeightCompact: "h-[400px]",
 
       // Details modal display:
       modalKanji: {},
