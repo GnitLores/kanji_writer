@@ -4,7 +4,7 @@
     :class="[
       storeOptions.showDetailsStrokeOrder
         ? `h-[${storeOptions.detailsUiMinHeight}px]`
-        : `h-[${storeOptions.storeOptions.detailsUiMinHeightCompact}px]`,
+        : `h-[${storeOptions.detailsUiMinHeightCompact}px]`,
     ]"
   >
     <p class="text-white text-4xl font-semibold text-opacity-80">Learn</p>

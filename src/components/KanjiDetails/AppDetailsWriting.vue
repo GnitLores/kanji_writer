@@ -172,9 +172,7 @@ const onShowLinesChange = () => {
   writerRef.value.toggleCenterLines();
 };
 
-const onShowStrokesChange = () => {
-  console.log(storeOptions.showDetailsStrokeOrder);
-};
+const onShowStrokesChange = () => {};
 
 const onStrokeOrderClicked = (strokeNr, nStrokes) => {
   displayStroke(strokeNr, nStrokes);
