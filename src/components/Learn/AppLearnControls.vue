@@ -10,6 +10,7 @@
         <li>
           <div class="tooltip">
             <AppButton
+              :disabled="nKnown === 0"
               :text="'Known Kanji'"
               class="w-32 text-base h-10 mb-2"
               @clicked="selectKnownClicked"
@@ -23,6 +24,7 @@
         <li>
           <div class="tooltip">
             <AppButton
+              :disabled="nKnown === storeUser.known.length"
               :text="'Unknown Kanji '"
               class="w-32 text-base h-10 mb-2"
               @clicked="selectUnknownClicked"
@@ -76,7 +78,7 @@
         Click, click-and-drag, or right click elements to select kanji.
       </p>
       <span class="grow"></span>
-      <p>{{ nSelected }} kanji selected</p>
+      <p>{{ nSelected }} kanji selected | {{ nKnown }} kanji known</p>
     </div>
   </div>
 </template>
@@ -115,6 +117,7 @@ const setUnknownClicked = () => {
 };
 
 const nSelected = computed(() => selected.value.filter(Boolean).length);
+const nKnown = computed(() => storeUser.known.filter(Boolean).length);
 </script>
 
 <style scoped></style>
