@@ -49,7 +49,7 @@
               : selected[kanji.mainIdx]
               ? 'text-darkmode-50 hover:text-darkmode-200'
               : storeUser.known[kanji.mainIdx]
-              ? 'text-green-200'
+              ? 'text-emerald-400 hover:text-emerald-200'
               : 'text-white text-opacity-80 hover:text-opacity-100',
             modalKanji === kanji.char
               ? 'border-sky-400'
