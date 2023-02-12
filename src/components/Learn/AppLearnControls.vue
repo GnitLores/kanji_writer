@@ -8,19 +8,29 @@
           Select:
         </p>
         <li>
-          <AppButton
-            :text="'Known Kanji'"
-            class="w-32 text-base h-10 mb-2"
-            @clicked="selectKnownClicked"
-          />
+          <div class="tooltip">
+            <AppButton
+              :text="'Known Kanji'"
+              class="w-32 text-base h-10 mb-2"
+              @clicked="selectKnownClicked"
+            />
+            <span class="tooltiptext tooltip-top arrow-bottom"
+              >Select all kanji marked as known</span
+            >
+          </div>
         </li>
 
         <li>
-          <AppButton
-            :text="'Unknown Kanji '"
-            class="w-32 text-base h-10 mb-2"
-            @clicked="selectUnknownClicked"
-          />
+          <div class="tooltip">
+            <AppButton
+              :text="'Unknown Kanji '"
+              class="w-32 text-base h-10 mb-2"
+              @clicked="selectUnknownClicked"
+            />
+            <span class="tooltiptext tooltip-bottom arrow-top"
+              >Select all kanji marked as unknown</span
+            >
+          </div>
         </li>
       </ul>
     </div>
@@ -30,24 +40,34 @@
         <p
           class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
         >
-          Edit selected:
+          Edit:
         </p>
         <li>
-          <AppButton
-            :disabled="nSelected === 0"
-            :text="'Set Known'"
-            class="w-32 text-base h-10 mb-2"
-            @clicked="setKnownClicked"
-          />
+          <div class="tooltip">
+            <AppButton
+              :disabled="nSelected === 0"
+              :text="'Set Known'"
+              class="w-32 text-base h-10 mb-2"
+              @clicked="setKnownClicked"
+            />
+            <span class="tooltiptext tooltip-top arrow-bottom"
+              >Indicate that you already know how to write selected kanji
+            </span>
+          </div>
         </li>
 
         <li>
-          <AppButton
-            :disabled="nSelected === 0"
-            :text="'Set Unknown '"
-            class="w-32 text-base h-10 mb-2"
-            @clicked="setUnknownClicked"
-          />
+          <div class="tooltip">
+            <AppButton
+              :disabled="nSelected === 0"
+              :text="'Set Unknown '"
+              class="w-32 text-base h-10 mb-2"
+              @clicked="setUnknownClicked"
+            />
+            <span class="tooltiptext tooltip-bottom arrow-top"
+              >Indicate that you have not learned to write selected kanji</span
+            >
+          </div>
         </li>
       </ul>
     </div>

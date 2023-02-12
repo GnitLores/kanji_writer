@@ -24,7 +24,7 @@
   border-radius: 0.5rem;
 
   position: absolute;
-  z-index: 1;
+  z-index: 1000;
 }
 
 .tooltip-right {
@@ -43,7 +43,7 @@
 }
 .tooltip-bottom {
   width: 120px;
-  top: calc(100% + 5px);
+  top: calc(100%);
   left: 50%;
   margin-left: calc((var(--tooltip-width) * -1) / 2);
 }
