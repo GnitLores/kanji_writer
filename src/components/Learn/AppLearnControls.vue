@@ -56,6 +56,12 @@
               >Indicate that you already know how to write selected kanji
             </span>
           </div>
+          <AppConfirmationDialog
+            ref="knownDialogRef"
+            :text="'Set selected kanji as known?'"
+            @onConfirm="setKnownConfirmed"
+            @onCancel=""
+          />
         </li>
 
         <li>
@@ -70,6 +76,12 @@
               >Indicate that you have not learned to write selected kanji</span
             >
           </div>
+          <AppConfirmationDialog
+            ref="unknownDialogRef"
+            :text="'Set selected kanji as unknown?'"
+            @onConfirm="setUnknownConfirmed"
+            @onCancel=""
+          />
         </li>
       </ul>
     </div>
@@ -84,16 +96,20 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
 import { useSelection } from "@/use/useSelection";
 import AppButton from "@/components/AppButton.vue";
+import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue";
 
 const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
 const { selected, initSelected, setSelectionAsSelected } = useSelection();
+
+const knownDialogRef = ref(null);
+const unknownDialogRef = ref(null);
 
 const selectKnownClicked = () => {
   setSelectionAsSelected(storeUser.known, true, true);
@@ -101,17 +117,23 @@ const selectKnownClicked = () => {
 
 const selectUnknownClicked = () => {
   const unknown = storeUser.known.map((val) => !val);
-  // console.log(storeUser.known);
-  // console.log(unknown);
   setSelectionAsSelected(unknown, true, true);
 };
 
 const setKnownClicked = () => {
+  knownDialogRef.value.showDialog();
+};
+
+const setKnownConfirmed = () => {
   storeUser.setSelectionAsKnown(selected.value, true);
   initSelected();
 };
 
 const setUnknownClicked = () => {
+  unknownDialogRef.value.showDialog();
+};
+
+const setUnknownConfirmed = () => {
   storeUser.setSelectionAsKnown(selected.value, false);
   initSelected();
 };
