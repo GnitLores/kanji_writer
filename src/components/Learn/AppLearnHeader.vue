@@ -16,7 +16,8 @@
           @clicked="quickStartClicked"
         />
         <span class="tooltiptext tooltip-bottom arrow-top"
-          >Start learning from first unknown kanji with no need to select</span
+          >Start learning from first unknown kanji using current settings with
+          no need to select kanji</span
         >
       </div>
     </div>
