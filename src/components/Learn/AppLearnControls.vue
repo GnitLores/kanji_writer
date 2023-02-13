@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex select-none">
     <div class="w-40 border-2 border-gray-600 p-2 rounded">
       <div
         class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
@@ -54,14 +54,14 @@
     <div
       class="grow flex flex-col border-2 border-gray-600 rounded ml-4 text-white text-opacity-80 font-semibold"
     >
-      <div class="flex justify-center border h-10">
+      <div class="flex justify-center border-b-2 border-gray-600">
         <p class="text-lg">Options</p>
       </div>
-      <div class="grow border">
-        <div class="flex place-items-center h-full">
-          <table class="text-center w-72 border h-full">
-            <tr>
-              <th class="text-opacity-100">Step</th>
+      <div class="grow flex">
+        <div class="inline-block">
+          <table class="text-center w-72 border-r-2 border-gray-600 h-full">
+            <tr class="border-b border-gray-600">
+              <th class="">Step</th>
               <th>Show</th>
               <th>Repetitions</th>
             </tr>
@@ -160,8 +160,49 @@
             </tr>
           </table>
         </div>
+
+        <div class="w-60 inline-block border-r-2 border-gray-600 ml-2 pt-2">
+          <div class="flex">
+            <span class="">Batch size (kanji):</span>
+            <span class="grow"></span>
+            <AppButton
+              :disabled="storeOptions.learnBatchSize <= 0"
+              :text="'-'"
+              class="w-5 h-5 text-xs mr-1 ml-2 bg-gray-600"
+              @clicked="storeOptions.learnBatchSize -= 1"
+            />
+            <span class="w-fit h-5 text-center">{{
+              storeOptions.learnBatchSize
+            }}</span>
+            <AppButton
+              :disabled="storeOptions.learnBatchSize >= 20"
+              :text="'+'"
+              class="w-5 h-5 text-xs ml-1 bg-gray-600"
+              @clicked="storeOptions.learnBatchSize += 1"
+            />
+          </div>
+          <div class="flex">
+            <span class="">Review delay (mins):</span>
+            <span class="grow"></span>
+            <AppButton
+              :disabled="storeOptions.learnReviewDelay <= 0"
+              :text="'-'"
+              class="w-5 h-5 text-xs mr-1 ml-2 bg-gray-600"
+              @clicked="storeOptions.learnReviewDelay -= 1"
+            />
+            <span class="w-fit h-5 text-center">{{
+              storeOptions.learnReviewDelay
+            }}</span>
+            <AppButton
+              :disabled="storeOptions.learnReviewDelay >= 15"
+              :text="'+'"
+              class="w-5 h-5 text-xs ml-1 bg-gray-600"
+              @clicked="storeOptions.learnReviewDelay += 1"
+            />
+          </div>
+        </div>
       </div>
-      <div class="flex justify-end border">
+      <div class="flex justify-end border-t-2 border-gray-600">
         <p class="text-xl">
           {{
             nSelected === 0

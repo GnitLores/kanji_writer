@@ -34,6 +34,8 @@ export const useStoreOptions = defineStore("storeOptions", {
       learnLearningStepRepetitions: 1,
       learnReinforcementStepRepetitions: 1,
       learnQuizStepRepetitions: 1,
+      learnBatchSize: 5,
+      learnReviewDelay: 5,
     };
   },
   actions: {
