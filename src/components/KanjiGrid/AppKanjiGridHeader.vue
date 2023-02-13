@@ -22,7 +22,7 @@
       </div>
     </transition>
 
-    <div class="flex flex-wrap justify-center">
+    <div class="flex flex-wrap justify-center mt-2">
       <div
         class="flex justify-start w-[270px]"
         :class="selectionType === 'range' ? 'visible' : 'invisible'"
@@ -45,7 +45,7 @@
         <div class="tooltip">
           <AppButton
             :disabled="nKnown === 0 || nSelected === selected.length"
-            :text="'All'"
+            :text="'Known'"
             class="w-20 ml-2"
             @clicked="selectKnownClicked"
           />
@@ -77,7 +77,7 @@
         class="w-[270px] flex justify-end"
         :class="selectionType === 'range' ? 'visible' : 'invisible'"
       >
-        <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
+        <p class="text-white text-opacity-80 font-semibold mr-4 inline-block">
           {{ nSelected }} kanji selected | {{ nKnown }} known
         </p>
       </div>
