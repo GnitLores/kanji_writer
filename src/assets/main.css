@@ -1,5 +1,11 @@
 @import "./base.css";
 
+/*
+===============
+Tooltips:
+===============
+*/
+
 :root {
   --tooltip-width: 160px;
 }
@@ -104,4 +110,21 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent transparent #f2e8e5;
+}
+
+/*
+===============
+Sliding Animations:
+===============
+*/
+.slideDown-enter-active {
+  transition: all 0.3s;
+}
+.slideDown-leave-active {
+  transition: all 0.3s;
+}
+.slideDown-enter-from, .slideDown-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-1rem);
+  opacity: 0;
 }

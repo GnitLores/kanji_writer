@@ -13,12 +13,12 @@
       </p>
     </div>
 
-    <AppKanjiGrid selectionType="single" @singleKanjiSelected="selectChar" />
+    <AppKanjiGrid @singleKanjiSelected="selectChar" />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, provide } from "vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -31,6 +31,8 @@ const selectChar = async (char) => {
 };
 
 const kanji = reactive(useKanji());
+
+provide("selectionType", { selectionType: "single" });
 </script>
 
 <style scoped></style>

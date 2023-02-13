@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition name="slideDown">
     <div v-show="storeOptions.showDetailsStrokeOrder" class="">
       <div class="flex">
         <div class="flex flex-wrap" ref="strokeOrderRef"></div>
@@ -135,16 +135,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.slide-enter-active {
-  transition: all 0.3s;
-}
-.slide-leave-active {
-  transition: all 0.3s;
-}
-.slide-enter-from, .slide-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(-1rem);
-  opacity: 0;
-}
-</style>
+<style scoped></style>

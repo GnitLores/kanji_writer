@@ -1,5 +1,5 @@
 <template>
-  <div class="border-2 border-red-700">
+  <div class="">
     <div class="inline-block">
       <ul class="list-none ml-4">
         <p
@@ -42,14 +42,14 @@
         <p
           class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
         >
-          Edit:
+          Edit selected:
         </p>
         <li>
           <div class="tooltip">
             <AppButton
               :disabled="nSelected === 0"
-              :text="'Set Known'"
-              class="w-32 text-base h-10 mb-2"
+              :text="'Mark as Known'"
+              class="w-36 text-base h-10 mb-2"
               @clicked="setKnownClicked"
             />
             <span class="tooltiptext tooltip-top arrow-bottom"
@@ -68,8 +68,8 @@
           <div class="tooltip">
             <AppButton
               :disabled="nSelected === 0"
-              :text="'Set Unknown '"
-              class="w-32 text-base h-10 mb-2"
+              :text="'Mark as Unknown '"
+              class="w-36 text-base h-10 mb-2"
               @clicked="setUnknownClicked"
             />
             <span class="tooltiptext tooltip-bottom arrow-top"
@@ -85,9 +85,10 @@
         </li>
       </ul>
     </div>
-    <div class="flex text-white text-opacity-80 font-semibold mx-2">
+    <div class="flex text-white text-opacity-80 font-semibold mx-2 mt-8">
       <p class="">
-        Click, click-and-drag, or right click elements to select kanji.
+        Click, click-and-drag, or right click elements below to select kanji to
+        learn.
       </p>
       <span class="grow"></span>
       <p>{{ nSelected }} kanji selected | {{ nKnown }} kanji known</p>

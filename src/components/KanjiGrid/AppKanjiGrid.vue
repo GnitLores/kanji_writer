@@ -19,7 +19,7 @@
       @option-clicked="detailsContextOptionClicked"
     />
 
-    <AppKanjiGridHeader :selectionType="`${selectionType}`" />
+    <AppKanjiGridHeader />
     <AppKanjiGridSearch />
     <div
       v-if="!storeOptions.allLevelsIgnored()"
@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, computed } from "vue";
+import { onMounted, onBeforeUnmount, computed, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
 import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
@@ -91,12 +91,7 @@ const storeUser = useStoreUser();
 
 const { displayData, getDisplayedKanjiByChar } = useDisplayData();
 
-const props = defineProps({
-  selectionType: {
-    type: String,
-    default: "range", // range or single
-  },
-});
+const { selectionType } = inject("selectionType");
 
 /*
 ===============
@@ -166,8 +161,8 @@ const isMouseKanji = (event) => {
   return event.target.classList.contains("kanji-character");
 };
 
-const rangeSelectionEnabled = computed(() => props.selectionType === "range");
-const singleSelectionEnabled = computed(() => props.selectionType === "single");
+const rangeSelectionEnabled = computed(() => selectionType === "range");
+const singleSelectionEnabled = computed(() => selectionType === "single");
 
 const onKanjiClicked = (event) => {
   if (!singleSelectionEnabled.value) return;
