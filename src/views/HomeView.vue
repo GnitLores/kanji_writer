@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref } from "vue";
 
 const quizRef = ref(null);
 </script>

@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 
 const storeOptions = useStoreOptions();

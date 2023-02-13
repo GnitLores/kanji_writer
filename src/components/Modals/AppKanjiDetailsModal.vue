@@ -9,8 +9,6 @@
 </template>
 
 <script setup>
-import { ref, reactive, provide } from "vue";
-import { storeToRefs } from "pinia";
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppBaseModal from "@/components/Modals/AppBaseModal.vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";

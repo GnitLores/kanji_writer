@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 const route = useRoute();
 </script>
 

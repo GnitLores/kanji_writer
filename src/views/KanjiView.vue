@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, provide } from "vue";
+import { reactive, provide } from "vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";

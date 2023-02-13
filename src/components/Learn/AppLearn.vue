@@ -9,7 +9,6 @@
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
 import { useSelection } from "@/use/useSelection";
-import AppButton from "@/components/AppButton.vue";
 import AppLearnHeader from "@/components/Learn/AppLearnHeader.vue";
 import AppLearnControls from "@/components/Learn/AppLearnControls.vue";
 

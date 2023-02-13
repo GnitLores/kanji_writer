@@ -25,19 +25,10 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  onUnmounted,
-  computed,
-} from "vue";
+import {} from "vue";
 
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppLevelsBar from "@/components/KanjiGrid/AppLevelsBar.vue";
-import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
-import AppButton from "@/components/AppButton.vue";
 
 const storeOptions = useStoreOptions();
 </script>

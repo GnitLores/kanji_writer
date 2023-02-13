@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useSearch } from "@/use/useSearch";
 import AppButton from "@/components/AppButton.vue";
 import { vAutofocus } from "@/directives/vAutofocus";

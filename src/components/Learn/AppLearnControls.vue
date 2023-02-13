@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
 import { useSelection } from "@/use/useSelection";

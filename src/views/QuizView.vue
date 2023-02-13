@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, provide } from "vue";
+import { provide } from "vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 

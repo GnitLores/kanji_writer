@@ -6,15 +6,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  onUnmounted,
-  computed,
-  provide,
-} from "vue";
+import { provide } from "vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import AppLearn from "@/components/Learn/AppLearn.vue";
 
