@@ -52,12 +52,12 @@
     </div>
 
     <div
-      class="grow flex flex-col border-2 border-gray-600 rounded ml-4 text-white text-opacity-80 font-semibold"
+      class="grow flex flex-col ml-4 text-white text-opacity-80 font-semibold"
     >
-      <div class="flex justify-center border-b-2 border-gray-600">
+      <div class="flex justify-start ml-2">
         <p class="text-lg">Options</p>
       </div>
-      <div class="grow flex">
+      <div class="grow flex border-2 border-gray-600 rounded">
         <div class="inline-block">
           <table class="text-center w-72 border-r-2 border-gray-600 h-full">
             <tr class="border-b border-gray-600">
@@ -202,7 +202,7 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-end border-t-2 border-gray-600">
+      <div class="flex justify-end pt-1">
         <p class="text-xl">
           {{
             nSelected === 0
