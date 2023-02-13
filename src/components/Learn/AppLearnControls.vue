@@ -85,13 +85,13 @@
         </li>
       </ul>
     </div>
-    <div class="flex text-white text-opacity-80 font-semibold mx-2 mt-8">
+    <div
+      class="flex justify-center text-white text-opacity-80 font-semibold mx-2 mt-8"
+    >
       <p class="">
-        Click, click-and-drag, or right click elements below to select kanji to
+        Click, click-and-drag, or right click controls below to select kanji to
         learn.
       </p>
-      <span class="grow"></span>
-      <p>{{ nSelected }} kanji selected | {{ nKnown }} kanji known</p>
     </div>
   </div>
 </template>

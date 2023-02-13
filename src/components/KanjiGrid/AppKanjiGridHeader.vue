@@ -23,7 +23,7 @@
     </transition>
 
     <div class="flex flex-wrap justify-center">
-      <div class="flex justify-start w-64">
+      <div class="flex justify-start w-[270px]">
         <div class="tooltip">
           <AppButton
             :disabled="nSelected === selected.length"
@@ -70,9 +70,9 @@
         <AppKanjiGridSearch />
       </div>
 
-      <div class="w-64 flex justify-end">
+      <div class="w-[270px] flex justify-end">
         <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
-          {{ nSelected }} kanji selected | {{ nKnown }} kanji known
+          {{ nSelected }} kanji selected | {{ nKnown }} known
         </p>
       </div>
     </div>
