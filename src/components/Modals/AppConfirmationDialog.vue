@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useMouse } from "@vueuse/core";
 import { useConfirmDialog } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
@@ -69,6 +69,19 @@ const showDialog = () => {
   modalY = y.value;
   reveal();
 };
+
+const keepInBounds = () => {
+  if (!modalRef.value) return;
+  const w = modalRef.value.offsetWidth;
+  const h = modalRef.value.offsetHeight;
+  const currentPos = modalRef.value.getBoundingClientRect();
+  if (currentPos.x + w > window.innerWidth)
+    modalRef.value.style.left = currentPos.x - w * 1.1 + "px";
+  if (currentPos.y + h > window.innerHeight)
+    modalRef.value.style.top = currentPos.y - h * 1.1 + "px";
+};
+
+watch(modalRef, keepInBounds);
 
 defineExpose({
   showDialog,
