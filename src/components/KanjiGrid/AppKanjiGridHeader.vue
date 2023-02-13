@@ -24,9 +24,21 @@
 
     <div class="flex flex-wrap justify-center">
       <div class="flex justify-start w-64">
-        <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
+        <div class="tooltip">
+          <AppButton
+            :disabled="nSelected === selected.length"
+            :text="'All'"
+            class="w-14"
+            @clicked="selectAllClicked"
+          />
+          <span class="tooltiptext tooltip-top arrow-bottom"
+            >Select all kanji</span
+          >
+        </div>
+
+        <!-- <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
           Select:
-        </p>
+        </p> -->
         <div class="tooltip">
           <AppButton
             :disabled="nKnown === 0 || nSelected === selected.length"
@@ -48,7 +60,7 @@
             class="w-20 ml-2"
             @clicked="selectUnknownClicked"
           />
-          <span class="tooltiptext tooltip-bottom arrow-top"
+          <span class="tooltiptext tooltip-top arrow-bottom"
             >Select all kanji marked as unknown</span
           >
         </div>
@@ -60,7 +72,7 @@
 
       <div class="w-64 flex justify-end">
         <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
-          {{ nSelected }} kanji selected
+          {{ nSelected }} kanji selected | {{ nKnown }} kanji known
         </p>
       </div>
     </div>
@@ -80,10 +92,14 @@ import AppButton from "@/components/AppButton.vue";
 const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
-const { selected, setSelectionAsSelected } = useSelection();
+const { selected, setSelectionAsSelected, selectAll } = useSelection();
 
 const nSelected = computed(() => selected.value.filter(Boolean).length);
 const nKnown = computed(() => storeUser.known.filter(Boolean).length);
+
+const selectAllClicked = () => {
+  selectAll();
+};
 
 const selectKnownClicked = () => {
   setSelectionAsSelected(storeUser.known, true, true);
