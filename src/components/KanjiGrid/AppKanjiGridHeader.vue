@@ -23,7 +23,10 @@
     </transition>
 
     <div class="flex flex-wrap justify-center">
-      <div class="flex justify-start w-[270px]">
+      <div
+        class="flex justify-start w-[270px]"
+        :class="selectionType === 'range' ? 'visible' : 'invisible'"
+      >
         <div class="tooltip">
           <AppButton
             :disabled="nSelected === selected.length"
@@ -42,7 +45,7 @@
         <div class="tooltip">
           <AppButton
             :disabled="nKnown === 0 || nSelected === selected.length"
-            :text="'Known'"
+            :text="'All'"
             class="w-20 ml-2"
             @clicked="selectKnownClicked"
           />
@@ -70,7 +73,10 @@
         <AppKanjiGridSearch />
       </div>
 
-      <div class="w-[270px] flex justify-end">
+      <div
+        class="w-[270px] flex justify-end"
+        :class="selectionType === 'range' ? 'visible' : 'invisible'"
+      >
         <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
           {{ nSelected }} kanji selected | {{ nKnown }} known
         </p>
@@ -80,7 +86,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, inject } from "vue";
 
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
@@ -93,6 +99,8 @@ const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
 const { selected, setSelectionAsSelected, selectAll } = useSelection();
+
+const { selectionType } = inject("selectionType");
 
 const nSelected = computed(() => selected.value.filter(Boolean).length);
 const nKnown = computed(() => storeUser.known.filter(Boolean).length);

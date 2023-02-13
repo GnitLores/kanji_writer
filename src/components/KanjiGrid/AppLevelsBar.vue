@@ -12,6 +12,7 @@
         :disabled="selectionStats.nSelected == 0"
         :text="'None'"
         class=""
+        :class="selectionType === 'range' ? 'visible' : 'invisible'"
         @clicked="selectAll(false)"
       />
       <div class="selection-bar grow mx-2">
