@@ -1,10 +1,12 @@
 <template>
   <div class="flex">
-    <div class="w-fit border-2 border-gray-600 p-2 rounded">
+    <div class="w-40 border-2 border-gray-600 p-2 rounded">
       <div
         class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
       >
-        Mark selected kanji as:
+        {{
+          nSelected === 0 ? "Select kanji to mark" : "Mark selected kanji as:"
+        }}
       </div>
       <div class="flex justify-center">
         <div class="tooltip">
@@ -51,7 +53,11 @@
     <div class="grow border-2 border-gray-600 p-2 rounded ml-4">
       <div class="mb-1 flex justify-end place-items-end h-full">
         <p class="text-white text-opacity-80 font-semibold text-center text-xl">
-          Start learning selected kanji:
+          {{
+            nSelected === 0
+              ? "Select kanji to start learning"
+              : "Start learning selected kanji:"
+          }}
         </p>
         <div class="tooltip">
           <AppButton
