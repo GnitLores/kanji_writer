@@ -26,6 +26,14 @@ export const useStoreOptions = defineStore("storeOptions", {
       // Details modal display:
       modalKanji: {},
       showDetailsModal: false,
+
+      // Learning quiz options:
+      learnShowLearningStep: true,
+      learnShowReinforceStep: true,
+      learnShowQuizStep: true,
+      learnLearningStepRepetitions: 1,
+      learnReinforcementStepRepetitions: 1,
+      learnQuizStepRepetitions: 1,
     };
   },
   actions: {
