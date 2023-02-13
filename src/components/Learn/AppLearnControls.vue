@@ -1,6 +1,6 @@
 <template>
   <div class="flex select-none">
-    <div class="w-40 border-2 border-gray-600 p-2 rounded">
+    <div class="w-36 border-2 border-gray-600 p-2 rounded">
       <div
         class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
       >
@@ -161,8 +161,8 @@
           </table>
         </div>
 
-        <div class="w-60 inline-block border-r-2 border-gray-600 ml-2 pt-2">
-          <div class="flex">
+        <div class="w-60 inline-block border-r-2 border-gray-600 pt-2">
+          <div class="flex mx-2">
             <span class="">Batch size (kanji):</span>
             <span class="grow"></span>
             <AppButton
@@ -181,7 +181,7 @@
               @clicked="storeOptions.learnBatchSize += 1"
             />
           </div>
-          <div class="flex">
+          <div class="flex mx-2">
             <span class="">Review delay (mins):</span>
             <span class="grow"></span>
             <AppButton
