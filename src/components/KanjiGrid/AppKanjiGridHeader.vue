@@ -21,16 +21,78 @@
         </div>
       </div>
     </transition>
+
+    <div class="flex flex-wrap justify-center">
+      <div class="flex justify-start w-64">
+        <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
+          Select:
+        </p>
+        <div class="tooltip">
+          <AppButton
+            :disabled="nKnown === 0 || nSelected === selected.length"
+            :text="'Known'"
+            class="w-20 ml-2"
+            @clicked="selectKnownClicked"
+          />
+          <span class="tooltiptext tooltip-top arrow-bottom"
+            >Select all kanji marked as known</span
+          >
+        </div>
+
+        <div class="tooltip">
+          <AppButton
+            :disabled="
+              nKnown === storeUser.known.length || nSelected === selected.length
+            "
+            :text="'Unknown'"
+            class="w-20 ml-2"
+            @clicked="selectUnknownClicked"
+          />
+          <span class="tooltiptext tooltip-bottom arrow-top"
+            >Select all kanji marked as unknown</span
+          >
+        </div>
+      </div>
+
+      <div class="grow flex justify-center">
+        <AppKanjiGridSearch />
+      </div>
+
+      <div class="w-64 flex justify-end">
+        <p class="text-white text-opacity-80 font-semibold mx-2 inline-block">
+          {{ nSelected }} kanji selected
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import {} from "vue";
+import { computed } from "vue";
 
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useStoreUser } from "@/stores/storeUser";
+import { useSelection } from "@/use/useSelection";
 import AppLevelsBar from "@/components/KanjiGrid/AppLevelsBar.vue";
+import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
+import AppButton from "@/components/AppButton.vue";
 
 const storeOptions = useStoreOptions();
+const storeUser = useStoreUser();
+
+const { selected, setSelectionAsSelected } = useSelection();
+
+const nSelected = computed(() => selected.value.filter(Boolean).length);
+const nKnown = computed(() => storeUser.known.filter(Boolean).length);
+
+const selectKnownClicked = () => {
+  setSelectionAsSelected(storeUser.known, true, true);
+};
+
+const selectUnknownClicked = () => {
+  const unknown = storeUser.known.map((val) => !val);
+  setSelectionAsSelected(unknown, true, true);
+};
 </script>
 
 <style scoped></style>

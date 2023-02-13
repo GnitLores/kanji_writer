@@ -20,7 +20,7 @@
     />
 
     <AppKanjiGridHeader />
-    <AppKanjiGridSearch />
+
     <div
       v-if="!storeOptions.allLevelsIgnored()"
       class="container mx-auto select-none"
@@ -76,7 +76,6 @@ import { onMounted, onBeforeUnmount, computed, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreUser } from "@/stores/storeUser";
 import AppKanjiGridHeader from "@/components/KanjiGrid/AppKanjiGridHeader.vue";
-import AppKanjiGridSearch from "@/components/KanjiGrid/AppKanjiGridSearch.vue";
 import VueSimpleContextMenu from "@/components/AppContextMenu.vue";
 import { useDisplayData } from "@/use/useDisplayData";
 import { useSelection } from "@/use/useSelection";

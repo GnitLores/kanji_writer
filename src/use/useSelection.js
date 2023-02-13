@@ -151,6 +151,7 @@ export function useSelection() {
       if (strict && !isSelected) return false;
       return isSelected ? toggle : selected.value[idx];
     });
+    refreshStats();
   };
 
   return {

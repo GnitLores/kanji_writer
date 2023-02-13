@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center">
-    <div class="relative">
+  <div>
+    <div class="relative inline-block">
       <input
         type="text"
         v-model="input"
@@ -26,7 +26,6 @@
       @clicked="startSearch()"
     />
   </div>
-  <div v-if="false" class="search-error"><p>No results found!</p></div>
 </template>
 
 <script setup>
