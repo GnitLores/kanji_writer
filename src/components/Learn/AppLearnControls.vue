@@ -1,6 +1,6 @@
 <template>
-  <div class="flex select-none">
-    <div class="w-36 border-2 border-gray-600 p-2 rounded">
+  <div class="flex select-none mt-8">
+    <div class="w-40 border-2 border-gray-600 p-2 rounded">
       <div
         class="text-white text-opacity-80 font-semibold text-center text-xl mb-1"
       >
@@ -54,8 +54,12 @@
     <div
       class="grow flex flex-col ml-4 text-white text-opacity-80 font-semibold"
     >
-      <div class="flex justify-start ml-2">
+      <div class="flex ml-2">
         <p class="text-lg">Options</p>
+        <div class="grow"></div>
+        <div>
+          <AppButton :text="'Reset'" class="" @clicked="resetClicked" />
+        </div>
       </div>
       <div class="grow flex border-2 border-gray-600 rounded">
         <div class="inline-block">
@@ -166,7 +170,7 @@
             <span class="">Batch size (kanji):</span>
             <span class="grow"></span>
             <AppButton
-              :disabled="storeOptions.learnBatchSize <= 0"
+              :disabled="storeOptions.learnBatchSize <= 1"
               :text="'-'"
               class="w-5 h-5 text-xs mr-1 ml-2 bg-gray-600"
               @clicked="storeOptions.learnBatchSize -= 1"
@@ -233,7 +237,7 @@
   </div>
 
   <div
-    class="flex justify-center text-white text-opacity-80 font-semibold mx-2 mt-8"
+    class="flex justify-center text-white text-opacity-80 font-semibold mx-2 mt-16"
   >
     <p class="">
       Click, click-and-drag, or right click controls below to select kanji to
@@ -279,6 +283,17 @@ const setUnknownConfirmed = () => {
 
 const startLearnClicked = () => {
   startDialogRef.value.showDialog();
+};
+
+const resetClicked = () => {
+  storeOptions.learnShowLearningStep = true;
+  storeOptions.learnShowReinforceStep = true;
+  storeOptions.learnShowQuizStep = true;
+  storeOptions.learnLearningStepRepetitions = 1;
+  storeOptions.learnReinforcementStepRepetitions = 1;
+  storeOptions.learnQuizStepRepetitions = 1;
+  storeOptions.learnBatchSize = 5;
+  storeOptions.learnReviewDelay = 5;
 };
 
 const startLearnConfirmed = () => {};
