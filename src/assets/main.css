@@ -1,7 +1,8 @@
 @import "./base.css";
 
+/* Always show vertical scrollbar to prevent the layout shifting due to the bar appearing only on some pages. */
 body {
-  overflow-y: scroll; /* Show scrollbars */
+  overflow-y: scroll;
 }
 
 /*
