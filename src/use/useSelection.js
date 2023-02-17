@@ -13,6 +13,8 @@ export function useSelection() {
   const initSelected = () => {
     const storeList = useStoreList();
     selected.value = new Array(storeList.kanjiList.length).fill(false);
+    detailsKanji.value = "";
+    modalKanji.value = "";
 
     updateSelectionStats(selected);
   };

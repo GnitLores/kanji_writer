@@ -5,9 +5,10 @@
 </template>
 
 <script setup>
-import { ref, provide, markRaw } from "vue";
+import { ref, provide, markRaw, onBeforeMount } from "vue";
 import AppLearn from "@/components/Learn/AppLearn.vue";
 import AppLearningQuiz from "@/components/Learn/AppLearningQuiz.vue";
+import { useSelection } from "@/use/useSelection";
 
 provide("selectionType", { selectionType: "range" });
 
@@ -23,6 +24,11 @@ changeComponent(AppLearn);
 const startLearningQuiz = () => {
   changeComponent(AppLearningQuiz);
 };
+
+const { initSelected } = useSelection();
+onBeforeMount(() => {
+  initSelected();
+});
 </script>
 
 <style scoped></style>

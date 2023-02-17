@@ -6,13 +6,19 @@
 </template>
 
 <script setup>
-import { provide } from "vue";
+import { provide, onBeforeMount } from "vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useSelection } from "@/use/useSelection";
 
 const storeOptions = useStoreOptions();
 
 provide("selectionType", { selectionType: "range" });
+
+const { initSelected } = useSelection();
+onBeforeMount(() => {
+  initSelected();
+});
 </script>
 
 <style scoped></style>

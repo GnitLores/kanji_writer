@@ -18,11 +18,12 @@
 </template>
 
 <script setup>
-import { reactive, provide } from "vue";
+import { reactive, provide, onBeforeMount } from "vue";
 import AppKanjiDetails from "@/components/KanjiDetails/AppKanjiDetails.vue";
 import AppKanjiGrid from "@/components/KanjiGrid/AppKanjiGrid.vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useKanji } from "@/use/useKanji";
+import { useSelection } from "@/use/useSelection";
 
 const storeOptions = useStoreOptions();
 
@@ -33,6 +34,11 @@ const selectChar = async (char) => {
 const kanji = reactive(useKanji());
 
 provide("selectionType", { selectionType: "single" });
+
+const { initSelected } = useSelection();
+onBeforeMount(() => {
+  initSelected();
+});
 </script>
 
 <style scoped></style>
