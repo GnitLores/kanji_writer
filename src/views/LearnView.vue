@@ -7,6 +7,7 @@
 <script setup>
 import { ref, provide, markRaw } from "vue";
 import AppLearn from "@/components/Learn/AppLearn.vue";
+import AppLearningQuiz from "@/components/Learn/AppLearningQuiz.vue";
 
 provide("selectionType", { selectionType: "range" });
 
@@ -20,7 +21,7 @@ const changeComponent = (newComponent) => {
 changeComponent(AppLearn);
 
 const startLearningQuiz = () => {
-  console.log("hej");
+  changeComponent(AppLearningQuiz);
 };
 </script>
 
