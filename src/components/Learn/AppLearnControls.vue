@@ -21,6 +21,12 @@
               >Reset to default settings</span
             >
           </div>
+          <AppConfirmationDialog
+            ref="resetDialogRef"
+            :text="'Reset to default learning quiz settings?'"
+            @onConfirm="resetConfirmed"
+            @onCancel=""
+          />
         </div>
         <div class="grow flex border-2 border-gray-600 rounded">
           <div class="inline-block">
@@ -302,12 +308,17 @@ const storeUser = useStoreUser();
 const { selected } = useSelection();
 
 const startDialogRef = ref(null);
+const resetDialogRef = ref(null);
 
 const startLearnClicked = () => {
   startDialogRef.value.showDialog();
 };
 
 const resetClicked = () => {
+  resetDialogRef.value.showDialog();
+};
+
+const resetConfirmed = () => {
   storeOptions.learnShowLearningStep = true;
   storeOptions.learnShowReinforceStep = true;
   storeOptions.learnShowQuizStep = true;
