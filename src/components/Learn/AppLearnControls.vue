@@ -268,7 +268,7 @@
               <br />
               - Kanji must be selected.
               <br />
-              - At least one step must be enabled.
+              - At least one learning quiz step must be shown.
             </span>
           </div>
           <AppConfirmationDialog
