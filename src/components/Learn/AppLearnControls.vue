@@ -299,29 +299,9 @@ import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue
 const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
-const { selected, initSelected } = useSelection();
+const { selected } = useSelection();
 
-const knownDialogRef = ref(null);
-const unknownDialogRef = ref(null);
 const startDialogRef = ref(null);
-
-const setKnownClicked = () => {
-  knownDialogRef.value.showDialog();
-};
-
-const setKnownConfirmed = () => {
-  storeUser.setSelectionAsKnown(selected.value, true);
-  initSelected();
-};
-
-const setUnknownClicked = () => {
-  unknownDialogRef.value.showDialog();
-};
-
-const setUnknownConfirmed = () => {
-  storeUser.setSelectionAsKnown(selected.value, false);
-  initSelected();
-};
 
 const startLearnClicked = () => {
   startDialogRef.value.showDialog();
