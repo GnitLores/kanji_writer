@@ -223,7 +223,17 @@
 
         <div class="w-60 inline-block border-r-2 border-gray-600 pt-2">
           <div class="flex mx-2">
-            <span class="">Batch size (kanji):</span>
+            <span class=""
+              ><div class="tooltip">
+                Batch size (kanji):
+                <span class="tooltiptext tooltip-left arrow-right"
+                  >Number of kanji to fully learn before moving on to next
+                  batch.
+                  <br />
+                  0 = don't batch kanji</span
+                >
+              </div></span
+            >
             <span class="grow"></span>
             <AppButton
               :disabled="storeOptions.learnBatchSize <= 1"
@@ -242,7 +252,17 @@
             />
           </div>
           <div class="flex mx-2">
-            <span class="">Review delay (mins):</span>
+            <span class=""
+              ><div class="tooltip">
+                Review delay (mins):
+                <span class="tooltiptext tooltip-left arrow-right"
+                  >Number of minutes to wait before pushing kanji to start of
+                  review queue.
+                  <br />
+                  0 = never push kanji to start of queue.</span
+                >
+              </div></span
+            >
             <span class="grow"></span>
             <AppButton
               :disabled="storeOptions.learnReviewDelay <= 0"
