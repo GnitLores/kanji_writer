@@ -16,10 +16,15 @@
           @clicked="quickStartClicked"
         />
         <span class="tooltiptext tooltip-bottom arrow-top"
-          >Start learning from first unknown kanji using current settings with
-          no need to select kanji</span
-        >
+          >Start learning from first unknown kanji with no need to select kanji.
+        </span>
       </div>
+      <AppConfirmationDialog
+        ref="quickstartDialogRef"
+        :text="'Start learning quiz using current settings?'"
+        @onConfirm="quickStartConfirmed"
+        @onCancel=""
+      />
     </div>
 
     <div class="flex-1 flex justify-center">
@@ -29,12 +34,20 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useStoreUser } from "@/stores/storeUser";
 import AppButton from "@/components/AppButton.vue";
+import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue";
 
 const storeUser = useStoreUser();
 
-const quickStartClicked = () => {};
+const quickstartDialogRef = ref(null);
+
+const quickStartClicked = () => {
+  quickstartDialogRef.value.showDialog();
+};
+
+const quickStartConfirmed = () => {};
 </script>
 
 <style scoped></style>
