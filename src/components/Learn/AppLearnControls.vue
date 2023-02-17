@@ -118,7 +118,7 @@
               <td>
                 <div class="flex justify-center">
                   <AppButton
-                    :disabled="storeOptions.learnLearningStepRepetitions <= 0"
+                    :disabled="storeOptions.learnLearningStepRepetitions <= 1"
                     :text="'-'"
                     class="w-5 h-5 text-xs mr-1 bg-gray-600"
                     @clicked="storeOptions.learnLearningStepRepetitions -= 1"
@@ -157,7 +157,7 @@
                 <div class="flex justify-center">
                   <AppButton
                     :disabled="
-                      storeOptions.learnReinforcementStepRepetitions <= 0
+                      storeOptions.learnReinforcementStepRepetitions <= 1
                     "
                     :text="'-'"
                     class="w-5 h-5 text-xs mr-1 bg-gray-600"
@@ -201,7 +201,7 @@
               <td>
                 <div class="flex justify-center">
                   <AppButton
-                    :disabled="storeOptions.learnQuizStepRepetitions <= 0"
+                    :disabled="storeOptions.learnQuizStepRepetitions <= 1"
                     :text="'-'"
                     class="w-5 h-5 text-xs mr-1 bg-gray-600"
                     @clicked="storeOptions.learnQuizStepRepetitions -= 1"
@@ -236,7 +236,7 @@
             >
             <span class="grow"></span>
             <AppButton
-              :disabled="storeOptions.learnBatchSize <= 1"
+              :disabled="storeOptions.learnBatchSize <= 0"
               :text="'-'"
               class="w-5 h-5 text-xs mr-1 ml-2 bg-gray-600"
               @clicked="storeOptions.learnBatchSize -= 1"
@@ -254,12 +254,12 @@
           <div class="flex mx-2">
             <span class=""
               ><div class="tooltip">
-                Review delay (mins):
+                Max delay (mins):
                 <span class="tooltiptext tooltip-left arrow-right"
-                  >Number of minutes to wait before pushing kanji to start of
-                  review queue.
+                  >Max number of minutes to wait before pushing kanji to start
+                  of review queue.
                   <br />
-                  0 = never push kanji to start of queue.</span
+                  0 = no delay before seeing kanji again.</span
                 >
               </div></span
             >
@@ -292,15 +292,23 @@
         </p>
         <div class="tooltip">
           <AppButton
-            :disabled="nSelected === 0"
+            :disabled="
+              nSelected === 0 ||
+              (!storeOptions.learnShowLearningStep &&
+                !storeOptions.learnShowReinforceStep &&
+                !storeOptions.learnShowQuizStep)
+            "
             :text="'Start'"
             class="w-24 h-8 text-lg ml-4"
             @clicked="startLearnClicked"
           />
           <span class="tooltiptext tooltip-left arrow-right"
             >Start learning quiz using all selected kanji and current settings.
-            Learning a kanji will mark it as known.</span
-          >
+            <br />
+            - Kanji must be selected.
+            <br />
+            - At least one step must be enabled.
+          </span>
         </div>
         <AppConfirmationDialog
           ref="startDialogRef"
