@@ -57,8 +57,15 @@
       <div class="flex ml-2">
         <p class="text-lg">Options</p>
         <div class="grow"></div>
-        <div>
-          <AppButton :text="'Reset'" class="" @clicked="resetClicked" />
+        <div class="tooltip">
+          <AppButton
+            :text="'Reset Options'"
+            class="w-28"
+            @clicked="resetClicked"
+          />
+          <span class="tooltiptext tooltip-left arrow-right"
+            >Reset to default settings</span
+          >
         </div>
       </div>
       <div class="grow flex border-2 border-gray-600 rounded">
@@ -92,41 +99,58 @@
             </tr>
             <tr>
               <td>
-                <label class="text-sky-100 font-bold">Reinforce</label>
+                <div class="tooltip">
+                  <label class="text-sky-100 font-bold">Reinforce</label>
+                  <span class="tooltiptext tooltip-bottom arrow-top"
+                    >Use quiz to reinforce writing. Auto hints but no
+                    outline.</span
+                  >
+                </div>
               </td>
               <td>
-                <input
-                  class=""
-                  type="checkbox"
-                  v-model="storeOptions.learnShowReinforceStep"
-                  @change=""
-                />
+                <div class="tooltip">
+                  <input
+                    class=""
+                    type="checkbox"
+                    v-model="storeOptions.learnShowReinforceStep"
+                    @change=""
+                  />
+                  <span class="tooltiptext tooltip-bottom arrow-top"
+                    >Toggle display of reinforcement step during learning
+                    quiz.</span
+                  >
+                </div>
               </td>
               <td>
-                <div class="flex justify-center">
-                  <AppButton
-                    :disabled="
-                      storeOptions.learnReinforcementStepRepetitions <= 1
-                    "
-                    :text="'-'"
-                    class="w-5 h-5 text-xs mr-1 bg-gray-600"
-                    @clicked="
-                      storeOptions.learnReinforcementStepRepetitions -= 1
-                    "
-                  />
-                  <span class="w-5 h-5">{{
-                    storeOptions.learnReinforcementStepRepetitions
-                  }}</span>
-                  <AppButton
-                    :disabled="
-                      storeOptions.learnReinforcementStepRepetitions >= 5
-                    "
-                    :text="'+'"
-                    class="w-5 h-5 text-xs ml-1 bg-gray-600"
-                    @clicked="
-                      storeOptions.learnReinforcementStepRepetitions += 1
-                    "
-                  />
+                <div class="tooltip">
+                  <div class="flex justify-center">
+                    <AppButton
+                      :disabled="
+                        storeOptions.learnReinforcementStepRepetitions <= 0
+                      "
+                      :text="'-'"
+                      class="w-5 h-5 text-xs mr-1 bg-gray-600"
+                      @clicked="
+                        storeOptions.learnReinforcementStepRepetitions -= 1
+                      "
+                    />
+                    <span class="w-5 h-5">{{
+                      storeOptions.learnReinforcementStepRepetitions
+                    }}</span>
+                    <AppButton
+                      :disabled="
+                        storeOptions.learnReinforcementStepRepetitions >= 5
+                      "
+                      :text="'+'"
+                      class="w-5 h-5 text-xs ml-1 bg-gray-600"
+                      @clicked="
+                        storeOptions.learnReinforcementStepRepetitions += 1
+                      "
+                    />
+                  </div>
+                  <span class="tooltiptext tooltip-bottom arrow-top"
+                    >Number of times to reinforce kanji during learning quiz.
+                  </span>
                 </div>
               </td>
             </tr>
@@ -221,7 +245,7 @@
             class="w-24 h-8 text-lg ml-4"
             @clicked="startLearnClicked"
           />
-          <span class="tooltiptext tooltip-bottom arrow-top"
+          <span class="tooltiptext tooltip-left arrow-right"
             >Start learning quiz using all selected kanji and current settings.
             Learning a kanji will mark it as known.</span
           >
