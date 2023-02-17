@@ -205,7 +205,6 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   document.removeEventListener("mouseup", onMouseUp);
-  initSelected();
 });
 </script>
 
