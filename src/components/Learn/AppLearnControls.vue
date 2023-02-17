@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppLearnHeader />
+    <AppLearnHeader @quickStart="quickStart()" />
 
     <div class="flex select-none mt-8">
       <AppMarkControls />
@@ -305,7 +305,7 @@ import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue
 const storeOptions = useStoreOptions();
 const storeUser = useStoreUser();
 
-const { selected } = useSelection();
+const { selected, setSelectionAsSelected } = useSelection();
 
 const startDialogRef = ref(null);
 const resetDialogRef = ref(null);
@@ -329,7 +329,20 @@ const resetConfirmed = () => {
   storeOptions.learnReviewDelay = 5;
 };
 
-const startLearnConfirmed = () => {};
+const startLearnConfirmed = () => {
+  startLearningQuiz();
+};
+
+const quickStart = () => {
+  const unknown = storeUser.known.map((val) => !val);
+  setSelectionAsSelected(unknown, true, true);
+  startLearningQuiz();
+};
+
+const emit = defineEmits(["startLearning"]);
+const startLearningQuiz = () => {
+  emit("startLearning");
+};
 
 const nSelected = computed(() => selected.value.filter(Boolean).length);
 const nKnown = computed(() => storeUser.known.filter(Boolean).length);

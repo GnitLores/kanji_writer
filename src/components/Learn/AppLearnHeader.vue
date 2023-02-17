@@ -43,11 +43,15 @@ const storeUser = useStoreUser();
 
 const quickstartDialogRef = ref(null);
 
+const emit = defineEmits(["quickStart"]);
+
 const quickStartClicked = () => {
   quickstartDialogRef.value.showDialog();
 };
 
-const quickStartConfirmed = () => {};
+const quickStartConfirmed = () => {
+  emit("quickStart");
+};
 </script>
 
 <style scoped></style>
