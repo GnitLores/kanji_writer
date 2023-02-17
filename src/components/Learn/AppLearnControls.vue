@@ -72,9 +72,30 @@
         <div class="inline-block">
           <table class="text-center w-72 border-r-2 border-gray-600 h-full">
             <tr class="border-b border-gray-600">
-              <th class="">Step</th>
-              <th>Show</th>
-              <th>Repetitions</th>
+              <th class="">
+                <div class="tooltip">
+                  Step<span class="tooltiptext tooltip-bottom arrow-top"
+                    >Steps to carry out during learning quiz.</span
+                  >
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Show
+                  <span class="tooltiptext tooltip-bottom arrow-top"
+                    >Toggle learning quiz step.</span
+                  >
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Repetitions
+                  <span class="tooltiptext tooltip-bottom arrow-top"
+                    >Number of times to repeat step during learning quiz before
+                    marking kanji as known.
+                  </span>
+                </div>
+              </th>
             </tr>
             <tr>
               <td>
@@ -102,55 +123,44 @@
                 <div class="tooltip">
                   <label class="text-sky-100 font-bold">Reinforce</label>
                   <span class="tooltiptext tooltip-bottom arrow-top"
-                    >Use quiz to reinforce writing. Auto hints but no
-                    outline.</span
+                    >Use quiz to reinforce writing. Auto hints but no outline.
+                    Quiz info only.</span
                   >
                 </div>
               </td>
               <td>
-                <div class="tooltip">
-                  <input
-                    class=""
-                    type="checkbox"
-                    v-model="storeOptions.learnShowReinforceStep"
-                    @change=""
+                <input
+                  class=""
+                  type="checkbox"
+                  v-model="storeOptions.learnShowReinforceStep"
+                  @change=""
+                />
+              </td>
+              <td>
+                <div class="flex justify-center">
+                  <AppButton
+                    :disabled="
+                      storeOptions.learnReinforcementStepRepetitions <= 0
+                    "
+                    :text="'-'"
+                    class="w-5 h-5 text-xs mr-1 bg-gray-600"
+                    @clicked="
+                      storeOptions.learnReinforcementStepRepetitions -= 1
+                    "
                   />
-                  <span class="tooltiptext tooltip-bottom arrow-top"
-                    >Toggle display of reinforcement step during learning
-                    quiz.</span
-                  >
-                </div>
-              </td>
-              <td>
-                <div class="tooltip">
-                  <div class="flex justify-center">
-                    <AppButton
-                      :disabled="
-                        storeOptions.learnReinforcementStepRepetitions <= 0
-                      "
-                      :text="'-'"
-                      class="w-5 h-5 text-xs mr-1 bg-gray-600"
-                      @clicked="
-                        storeOptions.learnReinforcementStepRepetitions -= 1
-                      "
-                    />
-                    <span class="w-5 h-5">{{
-                      storeOptions.learnReinforcementStepRepetitions
-                    }}</span>
-                    <AppButton
-                      :disabled="
-                        storeOptions.learnReinforcementStepRepetitions >= 5
-                      "
-                      :text="'+'"
-                      class="w-5 h-5 text-xs ml-1 bg-gray-600"
-                      @clicked="
-                        storeOptions.learnReinforcementStepRepetitions += 1
-                      "
-                    />
-                  </div>
-                  <span class="tooltiptext tooltip-bottom arrow-top"
-                    >Number of times to reinforce kanji during learning quiz.
-                  </span>
+                  <span class="w-5 h-5">{{
+                    storeOptions.learnReinforcementStepRepetitions
+                  }}</span>
+                  <AppButton
+                    :disabled="
+                      storeOptions.learnReinforcementStepRepetitions >= 5
+                    "
+                    :text="'+'"
+                    class="w-5 h-5 text-xs ml-1 bg-gray-600"
+                    @clicked="
+                      storeOptions.learnReinforcementStepRepetitions += 1
+                    "
+                  />
                 </div>
               </td>
             </tr>
@@ -169,7 +179,7 @@
               <td>
                 <div class="flex justify-center">
                   <AppButton
-                    :disabled="storeOptions.learnQuizStepRepetitions <= 1"
+                    :disabled="storeOptions.learnQuizStepRepetitions <= 0"
                     :text="'-'"
                     class="w-5 h-5 text-xs mr-1 bg-gray-600"
                     @clicked="storeOptions.learnQuizStepRepetitions -= 1"
