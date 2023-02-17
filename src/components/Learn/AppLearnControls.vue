@@ -99,14 +99,13 @@
             </tr>
             <tr>
               <td>
-                <label class="text-sky-100 font-bold"
-                  ><div class="tooltip">
-                    Learn<span class="tooltiptext tooltip-left arrow-right"
-                      >Memorize writing with kanji outline and auto hints. Full
-                      kanji info displayed.
-                    </span>
-                  </div></label
-                >
+                <div class="tooltip">
+                  <label class="text-sky-100 font-bold"> Learn</label>
+                  <span class="tooltiptext tooltip-left arrow-right"
+                    >Memorize writing with kanji outline and auto hints. Full
+                    kanji info displayed.
+                  </span>
+                </div>
               </td>
               <td>
                 <input
@@ -184,13 +183,12 @@
             </tr>
             <tr>
               <td>
-                <label class="text-sky-100 font-bold"
-                  ><div class="tooltip">
-                    Quiz<span class="tooltiptext tooltip-left arrow-right"
-                      >Test if kanji has been learned. No auto hints or outline.
-                    </span>
-                  </div></label
-                >
+                <div class="tooltip">
+                  <label class="text-sky-100 font-bold"> Quiz </label>
+                  <span class="tooltiptext tooltip-left arrow-right"
+                    >Test if kanji has been learned. No auto hints or outline.
+                  </span>
+                </div>
               </td>
               <td>
                 <input
