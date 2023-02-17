@@ -106,15 +106,26 @@
                   class=""
                   type="checkbox"
                   v-model="storeOptions.learnShowLearningStep"
-                  :disabled="true"
                   @change=""
                 />
               </td>
               <td>
                 <div class="flex justify-center">
+                  <AppButton
+                    :disabled="storeOptions.learnLearningStepRepetitions <= 0"
+                    :text="'-'"
+                    class="w-5 h-5 text-xs mr-1 bg-gray-600"
+                    @clicked="storeOptions.learnLearningStepRepetitions -= 1"
+                  />
                   <span class="w-5 h-5">{{
                     storeOptions.learnLearningStepRepetitions
                   }}</span>
+                  <AppButton
+                    :disabled="storeOptions.learnLearningStepRepetitions >= 5"
+                    :text="'+'"
+                    class="w-5 h-5 text-xs ml-1 bg-gray-600"
+                    @clicked="storeOptions.learnLearningStepRepetitions += 1"
+                  />
                 </div>
               </td>
             </tr>
