@@ -74,7 +74,7 @@
             <tr class="border-b border-gray-600">
               <th class="">
                 <div class="tooltip">
-                  Step<span class="tooltiptext tooltip-bottom arrow-top"
+                  Step<span class="tooltiptext tooltip-top arrow-bottom"
                     >Steps to carry out during learning quiz.</span
                   >
                 </div>
@@ -82,7 +82,7 @@
               <th>
                 <div class="tooltip">
                   Show
-                  <span class="tooltiptext tooltip-bottom arrow-top"
+                  <span class="tooltiptext tooltip-top arrow-bottom"
                     >Toggle learning quiz step.</span
                   >
                 </div>
@@ -90,7 +90,7 @@
               <th>
                 <div class="tooltip">
                   Repetitions
-                  <span class="tooltiptext tooltip-bottom arrow-top"
+                  <span class="tooltiptext tooltip-top arrow-bottom"
                     >Number of times to repeat step during learning quiz before
                     marking kanji as known.
                   </span>
@@ -99,7 +99,14 @@
             </tr>
             <tr>
               <td>
-                <label class="text-sky-100 font-bold">Learn</label>
+                <label class="text-sky-100 font-bold"
+                  ><div class="tooltip">
+                    Learn<span class="tooltiptext tooltip-left arrow-right"
+                      >Memorize writing with kanji outline and auto hints. Full
+                      kanji info displayed.
+                    </span>
+                  </div></label
+                >
               </td>
               <td>
                 <input
@@ -133,7 +140,7 @@
               <td>
                 <div class="tooltip">
                   <label class="text-sky-100 font-bold">Reinforce</label>
-                  <span class="tooltiptext tooltip-bottom arrow-top"
+                  <span class="tooltiptext tooltip-left arrow-right"
                     >Use quiz to reinforce writing. Auto hints but no outline.
                     Quiz info only.</span
                   >
@@ -177,7 +184,13 @@
             </tr>
             <tr>
               <td>
-                <label class="text-sky-100 font-bold">Quiz</label>
+                <label class="text-sky-100 font-bold"
+                  ><div class="tooltip">
+                    Quiz<span class="tooltiptext tooltip-left arrow-right"
+                      >Test if kanji has been learned. No auto hints or outline.
+                    </span>
+                  </div></label
+                >
               </td>
               <td>
                 <input
