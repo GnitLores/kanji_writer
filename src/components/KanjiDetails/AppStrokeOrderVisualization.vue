@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, inject } from "vue";
+import { ref, reactive, onMounted, watch, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 

@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, inject } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, watch, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useWrite } from "@/use/useWrite";
 import AppWritingField from "@/components/AppWritingField.vue";
