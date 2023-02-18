@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, inject } from "vue";
+import { ref, reactive, onMounted, inject, computed } from "vue";
 
 import { useKanjiWriter } from "@/use/useKanjiWriter";
 import { useStoreOptions } from "@/stores/storeOptions";
@@ -27,6 +27,7 @@ let customQuizOptions = {};
 let centerLines = [];
 
 const { kanji } = inject("kanji");
+const { writerSettings } = inject("writerSettings");
 
 const highlightStroke = (currentStroke) => {
   writer.highlightStroke(currentStroke);
@@ -114,9 +115,9 @@ const animate = (onCompleteFunction = () => {}) => {
 
   // This part makes sure the animation can execute with the outline shown or hidden and with the partially or completely written character instantly hidden before animating:
   writer.hideCharacter({ duration: 0 });
-  if (storeOptions.showDetailsOutline) writer.hideOutline({ duration: 0 });
+  if (writerSettings.showOutline) writer.hideOutline({ duration: 0 });
   createWriter(animationProps);
-  if (storeOptions.showDetailsOutline) writer.showOutline({ duration: 0 });
+  if (writerSettings.showOutline) writer.showOutline({ duration: 0 });
 
   writer.animateCharacter({
     onComplete: function () {
@@ -179,7 +180,7 @@ const drawCenterLines = () => {
 
 const toggleCenterLines = () => {
   centerLines.forEach((line) => {
-    line.style.display = storeOptions.showLines ? "" : "none";
+    line.style.display = writerSettings.showLines ? "" : "none";
   });
 };
 

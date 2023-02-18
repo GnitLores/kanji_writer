@@ -1,7 +1,7 @@
 <template>
   <div
     class="container"
-    :class="[storeOptions.showDetailsStrokeOrder ? 'h-[550px]' : 'h-[400px]']"
+    :class="[writerSettings.showStrokes ? 'h-[550px]' : 'h-[400px]']"
   >
     <div class="flex">
       <div class="flex-1 flex justify-center">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, provide, watch } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, provide, watch } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import AppWriting from "@/components/AppWriting.vue";
 import AppKanjiDetailsSelectBar from "@/components/KanjiDetails/AppKanjiDetailsSelectBar.vue";
@@ -53,6 +53,21 @@ const selectChar = async (char) => {
 };
 
 provide("kanji", { kanji: props.kanji, selectChar });
+
+const writerSettings = reactive({
+  canToggleHints: true,
+  showHints: true,
+  canToggleOutline: true,
+  showOutline: true,
+  canToggleStrokes: true,
+  showStrokes: true,
+  canToggleLines: true,
+  showLines: true,
+  canReset: true,
+  canAnimate: true,
+  canManualHint: true,
+});
+provide("writerSettings", { writerSettings });
 
 const setViewing = (value) => {
   if (props.detailsType === "view") detailsKanji.value = value;

@@ -1,8 +1,8 @@
 import { ref, computed } from "vue";
-import { useStoreOptions } from "@/stores/storeOptions";
+// import { useStoreOptions } from "@/stores/storeOptions";
 
-export function useWrite(writerRef, kanji) {
-  const storeOptions = useStoreOptions();
+export function useWrite(writerRef, writerSettings, kanji) {
+  // const storeOptions = useStoreOptions();
 
   const nStrokes = ref(0);
   const nMistakesTotal = ref(0);
@@ -53,7 +53,7 @@ export function useWrite(writerRef, kanji) {
     const writerProps = {
       showHintAfterMisses: 3,
       quizStartStrokeNum: strokeNr,
-      showOutline: storeOptions.showDetailsOutline,
+      showOutline: writerSettings.showOutline,
     };
     const quizOptions = {
       onCorrectStroke: (status) => {
@@ -78,9 +78,9 @@ export function useWrite(writerRef, kanji) {
   };
 
   const scheduleHint = () => {
-    if (!storeOptions.showDetailsHints || !writeIsActive.value) return;
+    if (!writerSettings.showHints || !writeIsActive.value) return;
     cancelHints();
-    hintTimer = setTimeout(giveHint, storeOptions.hintDelay);
+    hintTimer = setTimeout(giveHint, 500);
   };
 
   const cancelHints = () => {
@@ -98,7 +98,7 @@ export function useWrite(writerRef, kanji) {
   };
 
   const toggleHints = () => {
-    storeOptions.showDetailsHints ? giveHint() : cancelHints();
+    writerSettings.showHints ? giveHint() : cancelHints();
   };
 
   const toggleLines = () => {
@@ -106,7 +106,7 @@ export function useWrite(writerRef, kanji) {
   };
 
   const toggleOutline = () => {
-    writerRef.value.toggleOutline(storeOptions.showDetailsOutline);
+    writerRef.value.toggleOutline(writerSettings.showOutline);
   };
 
   const stopWriting = () => {

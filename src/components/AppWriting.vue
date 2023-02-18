@@ -4,44 +4,33 @@
       <div class="inline-block ml-2">
         <input
           class=""
+          :class="[writerSettings.canToggleLines ? '' : 'invisible']"
           type="checkbox"
-          v-model="storeOptions.showLines"
+          v-model="writerSettings.showLines"
           @change="onShowLinesChange()"
         />
         <label class="text-sky-100 font-bold ml-1">Lines</label>
       </div>
       <div
         class="inline-block ml-2"
-        :class="[
-          overrides.doOverrideOutline
-            ? overrides.showOutline
-              ? ''
-              : 'invisible'
-            : '',
-        ]"
+        :class="[writerSettings.canToggleOutline ? '' : 'invisible']"
       >
         <input
           class=""
           type="checkbox"
-          v-model="storeOptions.showDetailsOutline"
+          v-model="writerSettings.showOutline"
           @change="onShowOutlineChange()"
         />
         <label class="text-sky-100 font-bold ml-1">Outline</label>
       </div>
       <div
         class="inline-block ml-2"
-        :class="[
-          overrides.doOverrideHints
-            ? overrides.showHints
-              ? ''
-              : 'invisible'
-            : '',
-        ]"
+        :class="[writerSettings.canToggleHints ? '' : 'invisible']"
       >
         <input
           class=""
           type="checkbox"
-          v-model="storeOptions.showDetailsHints"
+          v-model="writerSettings.showHints"
           @change="onShowHintsChange()"
         />
         <label class="text-sky-100 font-bold ml-1">Hints</label>
@@ -49,18 +38,12 @@
 
       <div
         class="inline-block ml-2"
-        :class="[
-          overrides.doOverrideStrokes
-            ? overrides.showStrokes
-              ? ''
-              : 'invisible'
-            : '',
-        ]"
+        :class="[writerSettings.canToggleStrokes ? '' : 'invisible']"
       >
         <input
           class=""
           type="checkbox"
-          v-model="storeOptions.showDetailsStrokeOrder"
+          v-model="writerSettings.showStrokes"
           @change="onShowStrokesChange()"
         />
         <label class="text-sky-100 font-bold ml-1">Strokes</label>
@@ -124,14 +107,8 @@ const storeOptions = useStoreOptions();
 const writerRef = ref(null);
 
 const { kanji } = inject("kanji");
-const overrides = inject(
-  "overrides",
-  ref({
-    doOverrideOutline: false,
-    doOverrideHints: false,
-    doOverrideStrokes: false,
-  })
-);
+const { writerSettings } = inject("writerSettings");
+console.log(writerSettings);
 
 const {
   writeIsActive,
@@ -146,7 +123,7 @@ const {
   toggleLines,
   toggleOutline,
   stopWriting,
-} = useWrite(writerRef, kanji);
+} = useWrite(writerRef, writerSettings, kanji);
 
 const onHintClicked = () => {
   giveHint();

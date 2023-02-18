@@ -1,6 +1,6 @@
 <template>
   <transition name="slideDown">
-    <div v-show="storeOptions.showDetailsStrokeOrder" class="">
+    <div v-show="writerSettings.showStrokes" class="">
       <div class="flex">
         <div class="flex flex-wrap" ref="strokeOrderRef"></div>
       </div>
@@ -18,6 +18,8 @@ const emit = defineEmits(["strokeOrderClicked"]);
 const storeOptions = useStoreOptions();
 
 const strokeOrderRef = ref(null);
+
+const { writerSettings } = inject("writerSettings");
 
 const totalWidth = storeOptions.writerSize; // pixels
 const margin = 2; // pixels

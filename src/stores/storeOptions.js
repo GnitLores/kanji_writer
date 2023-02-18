@@ -15,7 +15,7 @@ export const useStoreOptions = defineStore("storeOptions", {
       reverseOrder: false,
 
       // Writing options:
-      hintDelay: 500,
+      // hintDelay: 500,
       showDetailsOutline: true,
       showDetailsHints: true,
       showDetailsStrokeOrder: true,

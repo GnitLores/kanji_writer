@@ -26,20 +26,27 @@ const loadKanji = async () => {
   await currentKanji.loadKanji(currentReview.value.char);
 };
 
-const overrides = ref({});
-provide("overrides", overrides);
+const writerSettings = reactive({
+  canToggleHints: true,
+  showHints: true,
+  canToggleOutline: true,
+  showOutline: true,
+  canToggleStrokes: true,
+  showStrokes: true,
+  canToggleLines: true,
+  showLines: true,
+  canReset: true,
+  canAnimate: true,
+  canManualHint: true,
+});
+provide("writerSettings", { writerSettings: writerSettings });
 
 const displayReview = async () => {
-  overrides.value = {
-    doOverrideOutline: false,
-    doOverrideHints: false,
-    doOverrideStrokes: false,
-  };
   if (currentReview.value.stepType === "learn") {
-    overrides.value.doOverrideOutline = true;
-    overrides.value.doOverrideHints = true;
-    overrides.value.showOutline = false;
-    overrides.value.showHints = false;
+    writerSettings.canToggleHints = false;
+    writerSettings.canToggleOutline = false;
+    writerSettings.showHints = true;
+    writerSettings.showOutline = true;
   }
   await loadKanji();
 };
