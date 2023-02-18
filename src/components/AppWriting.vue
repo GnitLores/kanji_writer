@@ -5,12 +5,39 @@
         <input
           class=""
           type="checkbox"
+          v-model="storeOptions.showLines"
+          @change="onShowLinesChange()"
+        />
+        <label class="text-sky-100 font-bold ml-1">Lines</label>
+      </div>
+      <div
+        class="inline-block ml-2"
+        :class="[
+          overrides.doOverrideOutline
+            ? overrides.showOutline
+              ? ''
+              : 'invisible'
+            : '',
+        ]"
+      >
+        <input
+          class=""
+          type="checkbox"
           v-model="storeOptions.showDetailsOutline"
           @change="onShowOutlineChange()"
         />
         <label class="text-sky-100 font-bold ml-1">Outline</label>
       </div>
-      <div class="inline-block ml-2">
+      <div
+        class="inline-block ml-2"
+        :class="[
+          overrides.doOverrideHints
+            ? overrides.showHints
+              ? ''
+              : 'invisible'
+            : '',
+        ]"
+      >
         <input
           class=""
           type="checkbox"
@@ -19,16 +46,17 @@
         />
         <label class="text-sky-100 font-bold ml-1">Hints</label>
       </div>
-      <div class="inline-block ml-2">
-        <input
-          class=""
-          type="checkbox"
-          v-model="storeOptions.showLines"
-          @change="onShowLinesChange()"
-        />
-        <label class="text-sky-100 font-bold ml-1">Lines</label>
-      </div>
-      <div class="inline-block ml-2">
+
+      <div
+        class="inline-block ml-2"
+        :class="[
+          overrides.doOverrideStrokes
+            ? overrides.showStrokes
+              ? ''
+              : 'invisible'
+            : '',
+        ]"
+      >
         <input
           class=""
           type="checkbox"
@@ -76,7 +104,15 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onBeforeUnmount, watch, inject } from "vue";
+import {
+  ref,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  inject,
+  computed,
+} from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useWrite } from "@/use/useWrite";
 import AppWritingField from "@/components/AppWritingField.vue";
@@ -88,6 +124,14 @@ const storeOptions = useStoreOptions();
 const writerRef = ref(null);
 
 const { kanji } = inject("kanji");
+const overrides = inject(
+  "overrides",
+  ref({
+    doOverrideOutline: false,
+    doOverrideHints: false,
+    doOverrideStrokes: false,
+  })
+);
 
 const {
   writeIsActive,

@@ -23,13 +23,29 @@ const currentKanji = reactive(useKanji());
 provide("kanji", { kanji: currentKanji });
 
 const loadKanji = async () => {
-  // console.log(currentReview, currentReview.value);
-
   await currentKanji.loadKanji(currentReview.value.char);
 };
 
+const overrides = ref({});
+provide("overrides", overrides);
+
+const displayReview = async () => {
+  overrides.value = {
+    doOverrideOutline: false,
+    doOverrideHints: false,
+    doOverrideStrokes: false,
+  };
+  if (currentReview.value.stepType === "learn") {
+    overrides.value.doOverrideOutline = true;
+    overrides.value.doOverrideHints = true;
+    overrides.value.showOutline = false;
+    overrides.value.showHints = false;
+  }
+  await loadKanji();
+};
+
 startQuiz();
-loadKanji();
+displayReview();
 </script>
 
 <style scoped></style>
