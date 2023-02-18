@@ -44,8 +44,6 @@
         ref="writerRef"
         @mistakeMade="addCorrect()"
         @correctStrokeMade="addMistake()"
-        :writeIsActive="writeIsActive"
-        :currentStroke="currentStroke"
       />
     </div>
 
@@ -103,7 +101,11 @@ let hintTimer = null;
 const { kanji } = inject("kanji");
 
 const onHintClicked = () => {
-  writerRef.value.giveHint();
+  giveHint();
+};
+
+const giveHint = () => {
+  if (writeIsActive.value) writerRef.value.highlightStroke(currentStroke.value);
 };
 
 const onShowClicked = () => {
@@ -122,7 +124,7 @@ const showWritingAnimation = () => {
 const scheduleHint = () => {
   if (!storeOptions.showDetailsHints || !writeIsActive.value) return;
   cancelHints();
-  hintTimer = setTimeout(writerRef.value.giveHint, storeOptions.hintDelay);
+  hintTimer = setTimeout(giveHint, storeOptions.hintDelay);
 };
 
 const cancelHints = () => {
@@ -165,7 +167,7 @@ const onShowOutlineChange = () => {
 };
 
 const onShowHintsChange = () => {
-  storeOptions.showDetailsHints ? writerRef.value.giveHint() : cancelHints();
+  storeOptions.showDetailsHints ? giveHint() : cancelHints();
 };
 
 const onShowLinesChange = () => {

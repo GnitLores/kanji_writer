@@ -26,21 +26,10 @@ let customQuizOptions = {};
 
 let centerLines = [];
 
-const props = defineProps({
-  writeIsActive: {
-    type: Boolean,
-    required: true,
-  },
-  currentStroke: {
-    type: Number,
-    required: true,
-  },
-});
-
 const { kanji } = inject("kanji");
 
-const giveHint = () => {
-  if (props.writeIsActive) writer.highlightStroke(props.currentStroke);
+const highlightStroke = (currentStroke) => {
+  writer.highlightStroke(currentStroke);
 };
 
 const createWriter = (writerProps = {}) => {
@@ -53,9 +42,7 @@ const createWriter = (writerProps = {}) => {
     showOutline: false,
     showHintAfterMisses: 3,
     strokeHighlightSpeed: 1,
-    // strokeColor: "#38BDF8",
     strokeColor: "#FFFFFF",
-    // highlightColor: "#FFFFFF",
     highlightColor: "#38BDF8",
     outlineColor: "#374151",
     drawingColor: "#38BDF8",
@@ -209,7 +196,7 @@ defineExpose({
   cancelQuiz,
   completeQuiz,
   setNewChar,
-  giveHint,
+  highlightStroke,
   animate,
   toggleOutline,
   toggleCenterLines,
