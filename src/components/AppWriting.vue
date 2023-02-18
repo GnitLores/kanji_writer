@@ -7,7 +7,7 @@
           :class="[writerSettings.canToggleLines ? '' : 'invisible']"
           type="checkbox"
           v-model="writerSettings.showLines"
-          @change="onShowLinesChange()"
+          @change="toggleLines()"
         />
         <label class="text-sky-100 font-bold ml-1">Lines</label>
       </div>
@@ -19,7 +19,7 @@
           class=""
           type="checkbox"
           v-model="writerSettings.showOutline"
-          @change="onShowOutlineChange()"
+          @change="toggleOutline()"
         />
         <label class="text-sky-100 font-bold ml-1">Outline</label>
       </div>
@@ -31,7 +31,7 @@
           class=""
           type="checkbox"
           v-model="writerSettings.showHints"
-          @change="onShowHintsChange()"
+          @change="toggleHints()"
         />
         <label class="text-sky-100 font-bold ml-1">Hints</label>
       </div>
@@ -44,7 +44,7 @@
           class=""
           type="checkbox"
           v-model="writerSettings.showStrokes"
-          @change="onShowStrokesChange()"
+          @change=""
         />
         <label class="text-sky-100 font-bold ml-1">Strokes</label>
       </div>
@@ -60,22 +60,24 @@
 
     <div class="flex justify-evenly mt-2">
       <AppButton
-        :disabled="!writeIsActive || animationIsPlaying"
+        :disabled="
+          !writerSettings.canManualHint || !writeIsActive || animationIsPlaying
+        "
         :text="'Hint'"
         class="w-20 py-1"
-        @clicked="onHintClicked()"
+        @clicked="giveHint()"
       />
       <AppButton
-        :disabled="!kanji.char === ''"
+        :disabled="!writerSettings.canAnimate || !kanji.char === ''"
         :text="'Animate'"
         class="w-20 py-1"
-        @clicked="onShowClicked()"
+        @clicked="showWritingAnimation()"
       />
       <AppButton
-        :disabled="!kanji.char === ''"
+        :disabled="!writerSettings.canReset || !kanji.char === ''"
         :text="'Reset'"
         class="w-20 py-1"
-        @clicked="onResetClicked()"
+        @clicked="startWriting()"
       />
     </div>
 
@@ -87,15 +89,7 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  inject,
-  computed,
-} from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, inject } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useWrite } from "@/use/useWrite";
 import AppWritingField from "@/components/AppWritingField.vue";
@@ -108,7 +102,6 @@ const writerRef = ref(null);
 
 const { kanji } = inject("kanji");
 const { writerSettings } = inject("writerSettings");
-console.log(writerSettings);
 
 const {
   writeIsActive,
@@ -124,32 +117,6 @@ const {
   toggleOutline,
   stopWriting,
 } = useWrite(writerRef, writerSettings, kanji);
-
-const onHintClicked = () => {
-  giveHint();
-};
-
-const onShowClicked = () => {
-  showWritingAnimation();
-};
-
-const onResetClicked = () => {
-  startWriting();
-};
-
-const onShowOutlineChange = () => {
-  toggleOutline();
-};
-
-const onShowHintsChange = () => {
-  toggleHints();
-};
-
-const onShowLinesChange = () => {
-  toggleLines();
-};
-
-const onShowStrokesChange = () => {};
 
 const onStrokeOrderClicked = (strokeNr, nStrokes) => {
   displayStroke(strokeNr, nStrokes);
