@@ -4,49 +4,59 @@
       <div class="inline-block ml-2">
         <input
           class=""
-          :class="[writerSettings.canToggleLines ? '' : 'invisible']"
           type="checkbox"
+          :disabled="!writerSettings.canToggleLines"
           v-model="writerSettings.showLines"
           @change="toggleLines()"
         />
-        <label class="text-sky-100 font-bold ml-1">Lines</label>
+        <label
+          class="text-sky-100 font-bold ml-1"
+          :class="{ 'text-opacity-50': !writerSettings.canToggleLines }"
+          >Lines</label
+        >
       </div>
-      <div
-        class="inline-block ml-2"
-        :class="[writerSettings.canToggleOutline ? '' : 'invisible']"
-      >
+      <div class="inline-block ml-2">
         <input
           class=""
           type="checkbox"
+          :disabled="!writerSettings.canToggleOutline"
           v-model="writerSettings.showOutline"
           @change="toggleOutline()"
         />
-        <label class="text-sky-100 font-bold ml-1">Outline</label>
+        <label
+          class="text-sky-100 font-bold ml-1"
+          :class="{ 'text-opacity-50': !writerSettings.canToggleOutline }"
+          >Outline</label
+        >
       </div>
-      <div
-        class="inline-block ml-2"
-        :class="[writerSettings.canToggleHints ? '' : 'invisible']"
-      >
+      <div class="inline-block ml-2">
         <input
           class=""
           type="checkbox"
+          :disabled="!writerSettings.canToggleHints"
           v-model="writerSettings.showHints"
           @change="toggleHints()"
         />
-        <label class="text-sky-100 font-bold ml-1">Hints</label>
+        <label
+          class="text-sky-100 font-bold ml-1"
+          :class="{ 'text-opacity-50': !writerSettings.canToggleHints }"
+          >Hints</label
+        >
       </div>
 
-      <div
-        class="inline-block ml-2"
-        :class="[writerSettings.canToggleStrokes ? '' : 'invisible']"
-      >
+      <div class="inline-block ml-2">
         <input
           class=""
           type="checkbox"
+          :disabled="!writerSettings.canToggleStrokes"
           v-model="writerSettings.showStrokes"
           @change=""
         />
-        <label class="text-sky-100 font-bold ml-1">Strokes</label>
+        <label
+          class="text-sky-100 font-bold ml-1"
+          :class="{ 'text-opacity-50': !writerSettings.canToggleStrokes }"
+          >Strokes</label
+        >
       </div>
     </div>
 
