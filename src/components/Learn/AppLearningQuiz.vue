@@ -13,6 +13,7 @@ import { useStoreOptions } from "@/stores/storeOptions";
 import AppWriting from "@/components/AppWriting.vue";
 import { useLearningQuiz } from "@/use/useLearningQuiz";
 import { useKanji } from "@/use/useKanji";
+import { useWriterSettings } from "@/use/useWriterSettings";
 
 const storeOptions = useStoreOptions();
 
@@ -26,28 +27,12 @@ const loadKanji = async () => {
   await currentKanji.loadKanji(currentReview.value.char);
 };
 
-const writerSettings = reactive({
-  canToggleHints: true,
-  showHints: true,
-  canToggleOutline: true,
-  showOutline: true,
-  canToggleStrokes: true,
-  showStrokes: true,
-  canToggleLines: true,
-  showLines: true,
-  canReset: true,
-  canAnimate: true,
-  canManualHint: true,
-});
-provide("writerSettings", { writerSettings: writerSettings });
+const writerSettings = reactive(useWriterSettings());
+provide("writerSettings", writerSettings);
 
 const displayReview = async () => {
-  if (currentReview.value.stepType === "learn") {
-    writerSettings.canToggleHints = false;
-    writerSettings.canToggleOutline = false;
-    writerSettings.showHints = true;
-    writerSettings.showOutline = true;
-  }
+  if (currentReview.value.stepType === "learn")
+    writerSettings.initLearningQuizLearn();
   await loadKanji();
 };
 

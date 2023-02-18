@@ -27,7 +27,7 @@ let customQuizOptions = {};
 let centerLines = [];
 
 const { kanji } = inject("kanji");
-const { writerSettings } = inject("writerSettings");
+const writerSettings = inject("writerSettings");
 
 const highlightStroke = (currentStroke) => {
   writer.highlightStroke(currentStroke);

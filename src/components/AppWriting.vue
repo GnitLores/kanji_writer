@@ -111,7 +111,8 @@ const storeOptions = useStoreOptions();
 const writerRef = ref(null);
 
 const { kanji } = inject("kanji");
-const { writerSettings } = inject("writerSettings");
+const writerSettings = inject("writerSettings");
+console.log(writerSettings.canAnimate);
 
 const {
   writeIsActive,

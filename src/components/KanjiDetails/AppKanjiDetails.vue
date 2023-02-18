@@ -30,6 +30,7 @@ import AppKanjiDetailsSelectBar from "@/components/KanjiDetails/AppKanjiDetailsS
 import AppDetailedInfoA from "@/components/KanjiDetails/AppDetailedInfoA.vue";
 import AppDetailedInfoB from "@/components/KanjiDetails/AppDetailedInfoB.vue";
 import { useSelection } from "@/use/useSelection";
+import { useWriterSettings } from "@/use/useWriterSettings";
 
 const { detailsKanji, modalKanji } = useSelection();
 
@@ -54,20 +55,8 @@ const selectChar = async (char) => {
 
 provide("kanji", { kanji: props.kanji, selectChar });
 
-const writerSettings = reactive({
-  canToggleHints: true,
-  showHints: true,
-  canToggleOutline: true,
-  showOutline: true,
-  canToggleStrokes: true,
-  showStrokes: true,
-  canToggleLines: true,
-  showLines: true,
-  canReset: true,
-  canAnimate: true,
-  canManualHint: true,
-});
-provide("writerSettings", { writerSettings });
+const writerSettings = reactive(useWriterSettings());
+provide("writerSettings", writerSettings);
 
 const setViewing = (value) => {
   if (props.detailsType === "view") detailsKanji.value = value;

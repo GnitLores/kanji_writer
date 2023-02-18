@@ -19,7 +19,7 @@ const storeOptions = useStoreOptions();
 
 const strokeOrderRef = ref(null);
 
-const { writerSettings } = inject("writerSettings");
+const writerSettings = inject("writerSettings");
 
 const totalWidth = storeOptions.writerSize; // pixels
 const margin = 2; // pixels
