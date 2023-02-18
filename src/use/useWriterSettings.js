@@ -27,12 +27,34 @@ export function useWriterSettings() {
     canManualHint.value = true;
   };
 
-  const initLearningQuizLearn = () => {
+  const initLearningStepLearn = () => {
     initSettings();
     canToggleHints.value = false;
     canToggleOutline.value = false;
     showHints.value = true;
     showOutline.value = true;
+  };
+  const initLearningStepReinforce = () => {
+    initSettings();
+    canToggleHints.value = false;
+    canToggleOutline.value = false;
+    canToggleStrokes.value = false;
+    showHints.value = true;
+    showOutline.value = false;
+    showStrokes.value = false;
+    canAnimate.value = false;
+    canReset.value = false;
+  };
+  const initLearningStepQuiz = () => {
+    initSettings();
+    canToggleHints.value = false;
+    canToggleOutline.value = false;
+    canToggleStrokes.value = false;
+    showHints.value = false;
+    showOutline.value = false;
+    showStrokes.value = false;
+    canAnimate.value = false;
+    canReset.value = false;
   };
 
   return {
@@ -48,6 +70,8 @@ export function useWriterSettings() {
     canAnimate,
     canManualHint,
     initSettings,
-    initLearningQuizLearn,
+    initLearningStepLearn,
+    initLearningStepReinforce,
+    initLearningStepQuiz,
   };
 }

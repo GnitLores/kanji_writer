@@ -32,7 +32,11 @@ provide("writerSettings", writerSettings);
 
 const displayReview = async () => {
   if (currentReview.value.stepType === "learn")
-    writerSettings.initLearningQuizLearn();
+    writerSettings.initLearningStepLearn();
+  if (currentReview.value.stepType === "reinforce")
+    writerSettings.initLearningStepReinforce();
+  if (currentReview.value.stepType === "quiz")
+    writerSettings.initLearningStepQuiz();
   await loadKanji();
 };
 
