@@ -85,27 +85,27 @@ import AppStrokeOrderVisualization from "@/components/KanjiDetails/AppStrokeOrde
 
 const storeOptions = useStoreOptions();
 
-const {
-  currentStroke,
-  writeIsActive,
-  initWrite,
-  completeWrite,
-  addMistake,
-  addCorrect,
-} = useWrite();
-
 const writerRef = ref(null);
-const animationIsPlaying = ref(false);
-let hintTimer = null;
 
 const { kanji } = inject("kanji");
 
+const {
+  writeIsActive,
+  animationIsPlaying,
+  addMistake,
+  addCorrect,
+  startWriting,
+  showWritingAnimation,
+  giveHint,
+  displayStroke,
+  toggleHints,
+  toggleLines,
+  toggleOutline,
+  stopWriting,
+} = useWrite(writerRef, kanji);
+
 const onHintClicked = () => {
   giveHint();
-};
-
-const giveHint = () => {
-  if (writeIsActive.value) writerRef.value.highlightStroke(currentStroke.value);
 };
 
 const onShowClicked = () => {
@@ -116,62 +116,16 @@ const onResetClicked = () => {
   startWriting();
 };
 
-const showWritingAnimation = () => {
-  animationIsPlaying.value = true;
-  writerRef.value.animate(startWriting);
-};
-
-const scheduleHint = () => {
-  if (!storeOptions.showDetailsHints || !writeIsActive.value) return;
-  cancelHints();
-  hintTimer = setTimeout(giveHint, storeOptions.hintDelay);
-};
-
-const cancelHints = () => {
-  if (hintTimer) clearTimeout(hintTimer);
-  hintTimer = null;
-};
-
-const startWriting = (strokeNr = 0) => {
-  cancelHints();
-  initWrite(kanji.nStrokes, strokeNr);
-
-  const writerProps = {
-    showHintAfterMisses: 3,
-    quizStartStrokeNum: strokeNr,
-    showOutline: storeOptions.showDetailsOutline,
-  };
-  const quizOptions = {
-    onCorrectStroke: (status) => {
-      addCorrect();
-      scheduleHint();
-    },
-  };
-
-  writerRef.value.startQuiz(writerProps, quizOptions);
-  animationIsPlaying.value = false;
-  scheduleHint();
-};
-
-const displayStroke = (strokeNr, nStrokes) => {
-  if (strokeNr < nStrokes) {
-    startWriting(strokeNr);
-  } else {
-    completeWrite();
-    writerRef.value.completeQuiz();
-  }
-};
-
 const onShowOutlineChange = () => {
-  writerRef.value.toggleOutline(storeOptions.showDetailsOutline);
+  toggleOutline();
 };
 
 const onShowHintsChange = () => {
-  storeOptions.showDetailsHints ? giveHint() : cancelHints();
+  toggleHints();
 };
 
 const onShowLinesChange = () => {
-  writerRef.value.toggleCenterLines();
+  toggleLines();
 };
 
 const onShowStrokesChange = () => {};
@@ -190,8 +144,7 @@ onMounted(() => {
   startWriting();
 });
 onBeforeUnmount(() => {
-  cancelHints();
-  writerRef.value.cancelQuiz();
+  stopWriting();
 });
 
 defineExpose({
