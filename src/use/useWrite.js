@@ -1,10 +1,16 @@
 import { ref, computed } from "vue";
+import { useStoreOptions } from "@/stores/storeOptions";
 
-export function useWrite() {
+export function useWrite(writerRef, kanji) {
+  const storeOptions = useStoreOptions();
+
   const nStrokes = ref(0);
   const nMistakesTotal = ref(0);
   const nMistakesCurrent = ref(0);
   const currentStroke = ref(0);
+  const animationIsPlaying = ref(false);
+
+  let hintTimer = null;
 
   const initWrite = (nrOfStrokes, startingStroke = 0) => {
     nStrokes.value = nrOfStrokes;
@@ -40,15 +46,91 @@ export function useWrite() {
     return writeIsInitialized && currentStroke.value < nStrokes.value;
   });
 
+  const startWriting = (strokeNr = 0) => {
+    cancelHints();
+    initWrite(kanji.nStrokes, strokeNr);
+
+    const writerProps = {
+      showHintAfterMisses: 3,
+      quizStartStrokeNum: strokeNr,
+      showOutline: storeOptions.showDetailsOutline,
+    };
+    const quizOptions = {
+      onCorrectStroke: (status) => {
+        addCorrect();
+        scheduleHint();
+      },
+    };
+
+    writerRef.value.startQuiz(writerProps, quizOptions);
+    animationIsPlaying.value = false;
+    scheduleHint();
+  };
+
+  const showWritingAnimation = () => {
+    animationIsPlaying.value = true;
+    writerRef.value.animate(startWriting);
+  };
+
+  const giveHint = () => {
+    if (writeIsActive.value)
+      writerRef.value.highlightStroke(currentStroke.value);
+  };
+
+  const scheduleHint = () => {
+    if (!storeOptions.showDetailsHints || !writeIsActive.value) return;
+    cancelHints();
+    hintTimer = setTimeout(giveHint, storeOptions.hintDelay);
+  };
+
+  const cancelHints = () => {
+    if (hintTimer) clearTimeout(hintTimer);
+    hintTimer = null;
+  };
+
+  const displayStroke = (strokeNr, nStrokes) => {
+    if (strokeNr < nStrokes) {
+      startWriting(strokeNr);
+    } else {
+      completeWrite();
+      writerRef.value.completeQuiz();
+    }
+  };
+
+  const toggleHints = () => {
+    storeOptions.showDetailsHints ? giveHint() : cancelHints();
+  };
+
+  const toggleLines = () => {
+    writerRef.value.toggleCenterLines();
+  };
+
+  const toggleOutline = () => {
+    writerRef.value.toggleOutline(storeOptions.showDetailsOutline);
+  };
+
+  const stopWriting = () => {
+    cancelHints();
+    writerRef.value.cancelQuiz();
+  };
+
   return {
     nMistakesTotal,
     nMistakesCurrent,
     currentStroke,
     writeIsActive,
-    initWrite,
+    animationIsPlaying,
     resetWrite,
     completeWrite,
     addMistake,
     addCorrect,
+    startWriting,
+    showWritingAnimation,
+    giveHint,
+    displayStroke,
+    toggleHints,
+    toggleLines,
+    toggleOutline,
+    stopWriting,
   };
 }
