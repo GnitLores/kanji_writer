@@ -10,7 +10,7 @@
         </span>
       </div>
       <div class="flex justify-center w-[300px]">
-        <span> <AppDetailsWriting ref="detailsWriterRef" /></span>
+        <span> <AppWriting ref="detailsWriterRef" /></span>
       </div>
       <div class="flex-1 flex justify-center">
         <span class="mr-auto w-full">
@@ -25,7 +25,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, provide, watch } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
-import AppDetailsWriting from "@/components/KanjiDetails/AppDetailsWriting.vue";
+import AppWriting from "@/components/AppWriting.vue";
 import AppKanjiDetailsSelectBar from "@/components/KanjiDetails/AppKanjiDetailsSelectBar.vue";
 import AppDetailedInfoA from "@/components/KanjiDetails/AppDetailedInfoA.vue";
 import AppDetailedInfoB from "@/components/KanjiDetails/AppDetailedInfoB.vue";
