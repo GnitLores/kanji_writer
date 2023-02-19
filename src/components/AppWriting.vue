@@ -147,6 +147,7 @@ onBeforeUnmount(() => {
 
 defineExpose({
   displayStroke,
+  stopWriting,
 });
 </script>
 

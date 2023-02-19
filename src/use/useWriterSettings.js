@@ -27,6 +27,19 @@ export function useWriterSettings() {
     canManualHint.value = true;
   };
 
+  const disableWriting = () => {
+    canToggleHints.value = false;
+    showHints.value = false;
+    canToggleOutline.value = false;
+    showOutline.value = false;
+    canToggleStrokes.value = false;
+    showStrokes.value = false;
+    canToggleLines.value = false;
+    canReset.value = false;
+    canAnimate.value = false;
+    canManualHint.value = false;
+  };
+
   const initLearningStepLearn = () => {
     initSettings();
     canToggleHints.value = false;
@@ -70,6 +83,7 @@ export function useWriterSettings() {
     canAnimate,
     canManualHint,
     initSettings,
+    disableWriting,
     initLearningStepLearn,
     initLearningStepReinforce,
     initLearningStepQuiz,

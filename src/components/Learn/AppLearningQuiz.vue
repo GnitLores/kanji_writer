@@ -42,7 +42,7 @@
             </span>
           </div>
         </div>
-        <AppWriting />
+        <AppWriting ref="writerRef" />
       </div>
       <div class="flex-1"></div>
     </div>
@@ -61,6 +61,8 @@ import AppButton from "@/components/AppButton.vue";
 import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue";
 
 const storeOptions = useStoreOptions();
+
+const writerRef = ref(null);
 
 const {
   currentReview,
@@ -83,6 +85,8 @@ provide("writerSettings", writerSettings);
 
 const displayReview = async () => {
   if (currentReview.value.stepType === "none") {
+    writerSettings.disableWriting();
+    writerRef.value.stopWriting();
     console.log("quiz over");
     return;
   }
