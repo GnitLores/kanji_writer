@@ -6,7 +6,7 @@ import { useSelection } from "@/use/useSelection";
 const kanjiToQuiz = ref([]);
 const batchReviewQueue = ref([]);
 const activeReviewQueue = ref([]);
-const currentReview = ref(null);
+const currentReview = ref({ stepType: "none", repetition: 0, char: "" });
 
 export function useLearningQuiz() {
   const storeOptions = useStoreOptions();
@@ -16,7 +16,6 @@ export function useLearningQuiz() {
   const startQuiz = () => {
     initQuiz();
     createReviewBatch();
-    popNextReview();
   };
 
   const initQuiz = () => {
@@ -46,6 +45,8 @@ export function useLearningQuiz() {
     } else if (storeOptions.learnShowQuizStep) {
       addStep(kanjiBatch, "quiz");
     }
+
+    popNextReview();
   };
 
   const addStep = (characters, stepType) => {
@@ -62,8 +63,12 @@ export function useLearningQuiz() {
     if (activeReviewQueue.value.length > 0) {
       const firstReviewTime = activeReviewQueue.value[0].time;
       const millisPassed = Date.now() - firstReviewTime;
-      const minsPassed = millisPassed * 1000 * 60;
-      if (minsPassed >= storeOptions.learnReviewDelay) {
+      const minsPassed = millisPassed / 1000 / 60;
+      console.log("mins passed", minsPassed, storeOptions.learnReviewDelay);
+      if (
+        minsPassed >= storeOptions.learnReviewDelay ||
+        batchReviewQueue.value.length === 0
+      ) {
         currentReview.value = activeReviewQueue.value.shift();
         return;
       }
@@ -76,10 +81,9 @@ export function useLearningQuiz() {
 
     if (kanjiToQuiz.value.length > 0) {
       createReviewBatch();
-      popNextReview();
     }
 
-    currentReview.value = null;
+    currentReview.value = { stepType: "none", repetition: 0, char: "" };
     return;
   };
 
@@ -100,18 +104,20 @@ export function useLearningQuiz() {
 
   const passLearnReview = () => {
     const char = currentReview.value.char;
-    const stepType = currentReview.value.stepType;
     const repetition = currentReview.value.repetition;
 
     if (repetition < storeOptions.learnLearningStepRepetitions) {
-      pushActiveReview(char, stepType, repetition + 1);
+      console.log("new rep");
+      pushActiveReview(char, "learn", repetition + 1);
       return;
     } else {
       if (storeOptions.learnShowReinforceStep) {
+        console.log("reinforce");
         pushActiveReview(char, "reinforce", 1);
         return;
       }
       if (storeOptions.learnShowQuizStep) {
+        console.log("quiz");
         pushActiveReview(char, "quiz", 1);
         return;
       }
@@ -120,11 +126,10 @@ export function useLearningQuiz() {
 
   const passReinforceReview = () => {
     const char = currentReview.value.char;
-    const stepType = currentReview.value.stepType;
     const repetition = currentReview.value.repetition;
 
     if (repetition < storeOptions.learnReinforcementStepRepetitions) {
-      pushActiveReview(char, stepType, repetition + 1);
+      pushActiveReview(char, "reinforce", repetition + 1);
       return;
     } else {
       if (storeOptions.learnShowQuizStep) {
@@ -136,11 +141,10 @@ export function useLearningQuiz() {
 
   const passQuizReview = () => {
     const char = currentReview.value.char;
-    const stepType = currentReview.value.stepType;
     const repetition = currentReview.value.repetition;
 
     if (repetition < storeOptions.learnQuizStepRepetitions) {
-      pushActiveReview(char, stepType, repetition + 1);
+      pushActiveReview(char, "quiz", repetition + 1);
       return;
     }
   };
@@ -154,5 +158,11 @@ export function useLearningQuiz() {
     });
   };
 
-  return { currentReview, startQuiz, failCurrentReview, passCurrentReview };
+  return {
+    currentReview,
+    startQuiz,
+    failCurrentReview,
+    passCurrentReview,
+    popNextReview,
+  };
 }

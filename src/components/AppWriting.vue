@@ -112,7 +112,6 @@ const writerRef = ref(null);
 
 const { kanji } = inject("kanji");
 const writerSettings = inject("writerSettings");
-console.log(writerSettings.canAnimate);
 
 const {
   writeIsActive,
