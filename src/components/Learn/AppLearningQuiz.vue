@@ -44,7 +44,7 @@
         <div class="flex justify-center w-full mt-2">
           <div class="tooltip">
             <AppButton
-              :disabled="currentReview.stepType === 'none'"
+              :disabled="!kanjiLoaded || currentReview.stepType === 'none'"
               :text="canFail ? 'Fail' : 'Repeat'"
               class="w-28 h-10 text-lg"
               @clicked="fail"
@@ -61,7 +61,7 @@
           </div>
           <div class="tooltip">
             <AppButton
-              :disabled="currentReview.stepType === 'none'"
+              :disabled="!kanjiLoaded || currentReview.stepType === 'none'"
               :text="isFinalReview ? 'Finish' : canFail ? 'Pass' : 'Ready'"
               class="w-28 h-10 text-lg ml-8"
               @clicked="pass"
@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, provide, markRaw, computed } from "vue";
+import { ref, reactive, provide, onMounted, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 // import AppLearningStepLearn from "@/components/Learn/AppLearningStepLearn.vue";
 import AppWriting from "@/components/AppWriting.vue";
@@ -104,6 +104,7 @@ const storeOptions = useStoreOptions();
 
 const writerRef = ref(null);
 const stopQuizDialogRef = ref(null);
+const kanjiLoaded = ref(false);
 
 const {
   currentReview,
@@ -130,18 +131,22 @@ const writerSettings = reactive(useWriterSettings());
 provide("writerSettings", writerSettings);
 
 const displayReview = async () => {
-  if (currentReview.value.stepType === "none") {
-    writerSettings.disableWriting();
-    writerRef.value.stopWriting();
-    return;
-  }
+  kanjiLoaded.value = false;
+  writerSettings.disableWriting();
+  writerRef.value.stopWriting();
+
+  if (currentReview.value.stepType === "none") return;
+
+  await loadCurrentKanji();
+
   if (currentReview.value.stepType === "learn")
     writerSettings.initLearningStepLearn();
   if (currentReview.value.stepType === "reinforce")
     writerSettings.initLearningStepReinforce();
   if (currentReview.value.stepType === "quiz")
     writerSettings.initLearningStepQuiz();
-  await loadCurrentKanji();
+
+  kanjiLoaded.value = true;
 };
 
 const fail = () => {
@@ -172,8 +177,10 @@ const stopQuiz = () => {
   emit("stopQuiz");
 };
 
-startQuiz();
-displayReview();
+onMounted(() => {
+  startQuiz();
+  displayReview();
+});
 </script>
 
 <style scoped></style>
