@@ -40,6 +40,16 @@ export function useWriterSettings() {
     canManualHint.value = false;
   };
 
+  const enableAllSettings = () => {
+    canToggleHints.value = true;
+    canToggleOutline.value = true;
+    canToggleStrokes.value = true;
+    canToggleLines.value = true;
+    canReset.value = true;
+    canAnimate.value = true;
+    canManualHint.value = true;
+  };
+
   const initLearningStepLearn = () => {
     initSettings();
     canToggleHints.value = false;
@@ -84,6 +94,7 @@ export function useWriterSettings() {
     canManualHint,
     initSettings,
     disableWriting,
+    enableAllSettings,
     initLearningStepLearn,
     initLearningStepReinforce,
     initLearningStepQuiz,
