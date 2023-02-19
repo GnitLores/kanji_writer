@@ -1,5 +1,6 @@
 import { ref, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
+import { useStoreUser } from "@/stores/storeUser";
 import { useStoreList } from "@/stores/storeList";
 import { useSelection } from "@/use/useSelection";
 
@@ -14,6 +15,7 @@ const nCorrectReviewsPrKanji = ref(new Map());
 
 export function useLearningQuiz() {
   const storeOptions = useStoreOptions();
+  const storeUser = useStoreUser();
   const storeList = useStoreList();
   const { selected } = useSelection();
 
@@ -120,6 +122,9 @@ export function useLearningQuiz() {
     const currentCorrect = nCorrectReviewsPrKanji.value.get(char);
     nCorrectReviewsPrKanji.value.set(char, currentCorrect + 1);
     nCorrectBatchReviews.value += 1;
+
+    if (isFinalReviewForKanji.value) storeUser.setKanjiAsKnown(char);
+
     currentReview.value = null;
   };
 
@@ -183,10 +188,10 @@ export function useLearningQuiz() {
   });
 
   const isFinalReviewForKanji = computed(() => {
-    if (currentReview.value.stepType !== finalStep) return false;
+    if (currentReview.value.stepType !== finalStep.value) return false;
 
     const rep = currentReview.value.repetition;
-    switch (finalStep) {
+    switch (finalStep.value) {
       case "learn":
         return rep === storeOptions.learnLearningStepRepetitions;
       case "reinforce":
@@ -202,7 +207,7 @@ export function useLearningQuiz() {
     if (kanjiToQuiz.value.length > 0) return false;
     if (batchReviewQueue.value.length > 0) return false;
     if (activeReviewQueue.value.length > 0) return false;
-    return isFinalReviewForKanji;
+    return isFinalReviewForKanji.value;
   });
 
   return {

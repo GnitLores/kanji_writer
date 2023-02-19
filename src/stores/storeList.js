@@ -81,5 +81,8 @@ export const useStoreList = defineStore("storeList", {
       const { initSelected } = useSelection();
       initSelected();
     },
+    getMainIndex(char) {
+      return this.indexMap.get(char);
+    },
   },
 });

@@ -20,5 +20,10 @@ export const useStoreUser = defineStore("storeUser", {
         isSelected ? toggle : this.known[idx]
       );
     },
+    setKanjiAsKnown(char, toggle = true) {
+      const storeList = useStoreList();
+      const mainIdx = storeList.getMainIndex(char);
+      this.known[mainIdx] = toggle;
+    },
   },
 });
