@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStoreOptions } from "@/stores/storeOptions";
 import { useStoreList } from "@/stores/storeList";
 import { useSelection } from "@/use/useSelection";
@@ -38,7 +38,7 @@ export function useLearningQuiz() {
     if (storeOptions.learnShowReinforceStep)
       nReviewsPrKanji.value += storeOptions.learnReinforcementStepRepetitions;
     if (storeOptions.learnShowQuizStep)
-      nReviewsPrKanji.value += storeOptions.learnReinforcementStepRepetitions;
+      nReviewsPrKanji.value += storeOptions.learnQuizStepRepetitions;
   };
 
   const createReviewBatch = () => {
@@ -114,7 +114,7 @@ export function useLearningQuiz() {
   const passCurrentReview = () => {
     if (currentReview.value.stepType === "learn") passLearnReview();
     if (currentReview.value.stepType === "reinforce") passReinforceReview();
-    if (currentReview.value.stepType === "quic") passQuizReview();
+    if (currentReview.value.stepType === "quiz") passQuizReview();
 
     const char = currentReview.value.char;
     const currentCorrect = nCorrectReviewsPrKanji.value.get(char);
@@ -176,12 +176,38 @@ export function useLearningQuiz() {
     });
   };
 
+  const isFinalReview = computed(() => {
+    if (kanjiToQuiz.value.length > 0) return false;
+    if (batchReviewQueue.value.length > 0) return false;
+    if (activeReviewQueue.value.length > 0) return false;
+
+    const rep = currentReview.value.repetition;
+    switch (currentReview.value.stepType) {
+      case "learn":
+        return (
+          !storeOptions.learnShowQuizStep &&
+          !storeOptions.learnShowReinforceStep &&
+          rep === storeOptions.learnLearningStepRepetitions
+        );
+      case "reinforce":
+        return (
+          !storeOptions.learnShowQuizStep &&
+          rep === storeOptions.learnReinforcementStepRepetitions
+        );
+      case "quiz":
+        return rep === storeOptions.learnQuizStepRepetitions;
+      default:
+        return false;
+    }
+  });
+
   return {
     currentReview,
     nBatchReviews,
     nCorrectBatchReviews,
     nReviewsPrKanji,
     nCorrectReviewsPrKanji,
+    isFinalReview,
     startQuiz,
     failCurrentReview,
     passCurrentReview,

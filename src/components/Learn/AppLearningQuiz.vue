@@ -62,7 +62,7 @@
           <div class="tooltip">
             <AppButton
               :disabled="currentReview.stepType === 'none'"
-              :text="canFail ? 'Pass' : 'Ready'"
+              :text="isFinalReview ? 'Finish' : canFail ? 'Pass' : 'Ready'"
               class="w-28 h-10 text-lg ml-8"
               @clicked="pass"
             >
@@ -106,6 +106,7 @@ const {
   nCorrectBatchReviews,
   nReviewsPrKanji,
   nCorrectReviewsPrKanji,
+  isFinalReview,
   startQuiz,
   failCurrentReview,
   passCurrentReview,
