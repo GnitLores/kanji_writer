@@ -61,7 +61,6 @@ onConfirm(() => {
 
 onCancel(() => {
   emit("onCancel");
-  console.log("canceled");
 });
 
 const showDialog = () => {

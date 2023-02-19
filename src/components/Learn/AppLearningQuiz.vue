@@ -9,7 +9,16 @@
       ></span>
     </div>
     <div class="flex justify-center">
-      <div class="text-white">{{ currentReview.stepType }}</div>
+      <div class="text-white text-xl font-semibold">
+        <span class="capitalize">{{ `${currentReview.stepType}` }}</span>
+        <span class="">
+          {{
+            ` (review ${
+              nCorrectReviewsPrKanji.get(currentReview.char) + 1
+            } of ${nReviewsPrKanji})`
+          }}
+        </span>
+      </div>
     </div>
     <div class="flex mt-2">
       <div class="flex-1"></div>
@@ -98,9 +107,7 @@ provide("writerSettings", writerSettings);
 const displayReview = async () => {
   if (currentReview.value.stepType === "none") {
     writerSettings.disableWriting();
-    console.log(writerRef.value);
     writerRef.value.stopWriting();
-    console.log("quiz over");
     return;
   }
   if (currentReview.value.stepType === "learn")
