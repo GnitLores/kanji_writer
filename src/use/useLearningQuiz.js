@@ -176,29 +176,33 @@ export function useLearningQuiz() {
     });
   };
 
-  const isFinalReview = computed(() => {
-    if (kanjiToQuiz.value.length > 0) return false;
-    if (batchReviewQueue.value.length > 0) return false;
-    if (activeReviewQueue.value.length > 0) return false;
+  const finalStep = computed(() => {
+    if (storeOptions.learnShowQuizStep) return "quiz";
+    if (storeOptions.learnShowReinforceStep) return "reinforce";
+    return "learn";
+  });
+
+  const isFinalReviewForKanji = computed(() => {
+    if (currentReview.value.stepType !== finalStep) return false;
 
     const rep = currentReview.value.repetition;
-    switch (currentReview.value.stepType) {
+    switch (finalStep) {
       case "learn":
-        return (
-          !storeOptions.learnShowQuizStep &&
-          !storeOptions.learnShowReinforceStep &&
-          rep === storeOptions.learnLearningStepRepetitions
-        );
+        return rep === storeOptions.learnLearningStepRepetitions;
       case "reinforce":
-        return (
-          !storeOptions.learnShowQuizStep &&
-          rep === storeOptions.learnReinforcementStepRepetitions
-        );
+        return rep === storeOptions.learnReinforcementStepRepetitions;
       case "quiz":
         return rep === storeOptions.learnQuizStepRepetitions;
       default:
         return false;
     }
+  });
+
+  const isFinalReview = computed(() => {
+    if (kanjiToQuiz.value.length > 0) return false;
+    if (batchReviewQueue.value.length > 0) return false;
+    if (activeReviewQueue.value.length > 0) return false;
+    return isFinalReviewForKanji;
   });
 
   return {
