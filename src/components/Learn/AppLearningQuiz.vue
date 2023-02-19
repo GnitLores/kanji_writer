@@ -77,7 +77,7 @@
             </span>
           </div>
         </div>
-        <AppWriting ref="writerRef" />
+        <AppWriting ref="writerRef" @writeComplete="onWriteComplete" />
       </div>
       <div class="flex-1"></div>
     </div>
@@ -152,6 +152,10 @@ const pass = () => {
 
 const stopQuizClicked = () => {
   stopQuizDialogRef.value.showDialog();
+};
+
+const onWriteComplete = () => {
+  writerSettings.enableAllSettings();
 };
 
 const emit = defineEmits(["stopQuiz"]);

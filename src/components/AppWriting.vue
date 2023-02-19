@@ -111,7 +111,7 @@ const writerSettings = inject("writerSettings");
 
 const {
   writeIsActive,
-  currentStroke,
+  writeIsComplete,
   animationIsPlaying,
   startWriting,
   showWritingAnimation,
@@ -127,15 +127,14 @@ const onStrokeOrderClicked = (strokeNr, nStrokes) => {
   displayStroke(strokeNr, nStrokes);
 };
 
-const onCorrectStroke = () => {
-  addCorrect();
-  console.log(kanji);
-  // if (currentStroke ==)
-};
-
 watch(kanji, () => {
   if (kanji.char === "") return;
   startWriting();
+});
+
+const emit = defineEmits(["writeComplete"]);
+watch(writeIsComplete, () => {
+  if (writeIsComplete.value) emit("writeComplete");
 });
 
 onMounted(() => {

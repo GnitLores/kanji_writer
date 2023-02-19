@@ -46,6 +46,10 @@ export function useWrite(writerRef, writerSettings, kanji) {
     return writeIsInitialized && currentStroke.value < nStrokes.value;
   });
 
+  const writeIsComplete = computed(() => {
+    return writeIsInitialized && currentStroke.value === nStrokes.value;
+  });
+
   const startWriting = (strokeNr = 0) => {
     cancelHints();
     initWrite(kanji.nStrokes, strokeNr);
@@ -122,6 +126,7 @@ export function useWrite(writerRef, writerSettings, kanji) {
     nMistakesCurrent,
     currentStroke,
     writeIsActive,
+    writeIsComplete,
     animationIsPlaying,
     resetWrite,
     completeWrite,
