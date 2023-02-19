@@ -81,6 +81,7 @@ export function useLearningQuiz() {
 
     if (kanjiToQuiz.value.length > 0) {
       createReviewBatch();
+      return;
     }
 
     currentReview.value = { stepType: "none", repetition: 0, char: "" };
