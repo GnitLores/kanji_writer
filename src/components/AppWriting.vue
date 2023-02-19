@@ -61,11 +61,7 @@
     </div>
 
     <div class="flex justify-center bg-darkmode-700">
-      <AppWritingField
-        ref="writerRef"
-        @mistakeMade="addCorrect()"
-        @correctStrokeMade="addMistake()"
-      />
+      <AppWritingField ref="writerRef" />
     </div>
 
     <div class="flex justify-evenly mt-2">
@@ -115,9 +111,8 @@ const writerSettings = inject("writerSettings");
 
 const {
   writeIsActive,
+  currentStroke,
   animationIsPlaying,
-  addMistake,
-  addCorrect,
   startWriting,
   showWritingAnimation,
   giveHint,
@@ -130,6 +125,12 @@ const {
 
 const onStrokeOrderClicked = (strokeNr, nStrokes) => {
   displayStroke(strokeNr, nStrokes);
+};
+
+const onCorrectStroke = () => {
+  addCorrect();
+  console.log(kanji);
+  // if (currentStroke ==)
 };
 
 watch(kanji, () => {

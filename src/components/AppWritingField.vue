@@ -62,22 +62,9 @@ const createWriter = (writerProps = {}) => {
   });
 };
 
-const emit = defineEmits(["mistakeMade", "correctStrokeMade"]);
-const reportMistake = () => {
-  emit("mistakeMade");
-};
-const reportCorrect = () => {
-  emit("correctStrokeMade");
-};
-
 const activateWriterQuiz = (quizOptions = {}) => {
-  const defaultOptions = {
-    onCorrectStroke: reportMistake,
-    onMistake: reportCorrect,
-  };
-
+  const defaultOptions = {};
   customQuizOptions = quizOptions;
-
   writer.quiz({
     ...defaultOptions,
     ...customQuizOptions,

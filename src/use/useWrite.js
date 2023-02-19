@@ -60,6 +60,9 @@ export function useWrite(writerRef, writerSettings, kanji) {
         addCorrect();
         scheduleHint();
       },
+      onMistake: (status) => {
+        addMistake();
+      },
     };
 
     writerRef.value.startQuiz(writerProps, quizOptions);
