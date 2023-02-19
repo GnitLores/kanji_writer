@@ -13,7 +13,9 @@
               :text="canFail ? 'Fail' : 'Repeat'"
               class="w-28 h-10 text-lg"
               @clicked="fail"
-            />
+            >
+              <i class="fas fa-times text-red-400 text-opacity-70 ml-2"></i>
+            </AppButton>
             <span class="tooltiptext tooltip-bottom arrow-top"
               >{{
                 canFail
@@ -28,7 +30,9 @@
               :text="canFail ? 'Pass' : 'Ready'"
               class="w-28 h-10 text-lg ml-8"
               @clicked="pass"
-            />
+            >
+              <i class="fas fa-check text-green-400 text-opacity-70 ml-2"></i
+            ></AppButton>
             <span class="tooltiptext tooltip-bottom arrow-top"
               >{{
                 canFail
@@ -65,7 +69,7 @@ const {
   passCurrentReview,
   popNextReview,
 } = useLearningQuiz();
-const canFail = computed(() => currentReview.stepType === "quiz");
+const canFail = computed(() => currentReview.value.stepType === "quiz");
 
 const currentKanji = reactive(useKanji());
 provide("kanji", { kanji: currentKanji });

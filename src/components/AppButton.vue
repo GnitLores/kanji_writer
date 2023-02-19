@@ -4,6 +4,7 @@
     @click.prevent="$emit('clicked')"
   >
     {{ text }}
+    <slot></slot>
   </button>
 </template>
 <!-- class="select-none bg-darkmode-500 hover:bg-blue-500 text-sky-100 text-s font-semibold hover:text-white border border-sky-700 hover:border-transparent rounded w-14 disabled:opacity-50" -->
