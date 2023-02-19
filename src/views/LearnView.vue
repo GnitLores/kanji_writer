@@ -1,6 +1,10 @@
 <template>
   <div class="select-none">
-    <component :is="activeComponent" @startLearning="startLearningQuiz" />
+    <component
+      :is="activeComponent"
+      @startLearning="startLearningQuiz"
+      @stopQuiz="stopLearningQuiz"
+    />
   </div>
 </template>
 
@@ -23,6 +27,11 @@ changeComponent(AppLearn);
 
 const startLearningQuiz = () => {
   changeComponent(AppLearningQuiz);
+};
+
+const stopLearningQuiz = () => {
+  initSelected();
+  changeComponent(AppLearn);
 };
 
 const { initSelected } = useSelection();

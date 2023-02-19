@@ -8,22 +8,36 @@
         }"
       ></span>
     </div>
-    <div class="flex justify-center">
-      <div class="text-white text-xl font-semibold">
-        <span class="capitalize">{{ `${currentReview.stepType}` }}</span>
-        <span class="">
-          {{
-            ` (review ${
-              nCorrectReviewsPrKanji.get(currentReview.char) + 1
-            } of ${nReviewsPrKanji})`
-          }}
-        </span>
-      </div>
-    </div>
     <div class="flex mt-2">
-      <div class="flex-1"></div>
+      <div class="flex-1 flex justify-start"></div>
       <div class="w-[300px] flex justify-center flex-wrap">
-        <div class="flex justify-center w-full">
+        <div class="flex w-full">
+          <div class="flex-1 border border-red-500"></div>
+          <div class="w-fit flex justify-center border border-red-500">
+            <div class="text-white text-xl font-semibold">
+              <span class="capitalize">{{ `${currentReview.stepType}` }}</span>
+              <span class="">
+                {{
+                  ` (rev ${
+                    nCorrectReviewsPrKanji.get(currentReview.char) + 1
+                  } of ${nReviewsPrKanji})`
+                }}
+              </span>
+            </div>
+          </div>
+          <div
+            class="flex-1 flex justify-end place-items-center border border-red-500"
+          >
+            <AppButton
+              :disabled="currentReview.stepType === 'none'"
+              :text="'Stop'"
+              class="w-14 h-6 text-sm"
+              @clicked="StopQuiz"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-center w-full mt-2">
           <div class="tooltip">
             <AppButton
               :disabled="currentReview.stepType === 'none'"
@@ -129,6 +143,11 @@ const pass = () => {
   passCurrentReview();
   popNextReview();
   displayReview();
+};
+
+const emit = defineEmits(["stopQuiz"]);
+const StopQuiz = () => {
+  emit("stopQuiz");
 };
 
 startQuiz();
