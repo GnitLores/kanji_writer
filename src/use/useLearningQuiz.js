@@ -7,6 +7,10 @@ const kanjiToQuiz = ref([]);
 const batchReviewQueue = ref([]);
 const activeReviewQueue = ref([]);
 const currentReview = ref({ stepType: "none", repetition: 0, char: "" });
+const nBatchReviews = ref(0);
+const nCorrectBatchReviews = ref(0);
+const nReviewsPrKanji = ref(0);
+const nCorrectReviewsPrKanji = ref(new Map());
 
 export function useLearningQuiz() {
   const storeOptions = useStoreOptions();
@@ -27,6 +31,14 @@ export function useLearningQuiz() {
         if (selected.value[kanji.mainIdx]) kanjiToQuiz.value.push(kanji.char);
       });
     });
+
+    nReviewsPrKanji.value = 0;
+    if (storeOptions.learnShowLearningStep)
+      nReviewsPrKanji.value += storeOptions.learnLearningStepRepetitions;
+    if (storeOptions.learnShowReinforceStep)
+      nReviewsPrKanji.value += storeOptions.learnReinforcementStepRepetitions;
+    if (storeOptions.learnShowQuizStep)
+      nReviewsPrKanji.value += storeOptions.learnReinforcementStepRepetitions;
   };
 
   const createReviewBatch = () => {
@@ -46,6 +58,10 @@ export function useLearningQuiz() {
       addStep(kanjiBatch, "quiz");
     }
 
+    nBatchReviews.value = nReviewsPrKanji.value * kanjiBatch.length;
+    nCorrectReviewsPrKanji.value = new Map();
+    nCorrectBatchReviews.value = 0;
+    kanjiBatch.forEach((char) => nCorrectReviewsPrKanji.value.set(char, 0));
     popNextReview();
   };
 
@@ -100,6 +116,10 @@ export function useLearningQuiz() {
     if (currentReview.value.stepType === "reinforce") passReinforceReview();
     if (currentReview.value.stepType === "quic") passQuizReview();
 
+    const char = currentReview.value.char;
+    const currentCorrect = nCorrectReviewsPrKanji.value.get(char);
+    nCorrectReviewsPrKanji.value.set(char, currentCorrect + 1);
+    nCorrectBatchReviews.value += 1;
     currentReview.value = null;
   };
 
@@ -161,6 +181,10 @@ export function useLearningQuiz() {
 
   return {
     currentReview,
+    nBatchReviews,
+    nCorrectBatchReviews,
+    nReviewsPrKanji,
+    nCorrectReviewsPrKanji,
     startQuiz,
     failCurrentReview,
     passCurrentReview,

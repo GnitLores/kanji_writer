@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="relative bg-gray-600 text-center h-1 w-full">
+      <span
+        class="absolute inset-0 bg-sky-700 bg-opacity-70 h-1"
+        :style="{
+          width: `${100 * (nCorrectBatchReviews / nBatchReviews)}%`,
+        }"
+      ></span>
+    </div>
     <div class="flex justify-center">
       <div class="text-white">{{ currentReview.stepType }}</div>
     </div>
@@ -66,6 +74,10 @@ const writerRef = ref(null);
 
 const {
   currentReview,
+  nBatchReviews,
+  nCorrectBatchReviews,
+  nReviewsPrKanji,
+  nCorrectReviewsPrKanji,
   startQuiz,
   failCurrentReview,
   passCurrentReview,
@@ -86,6 +98,7 @@ provide("writerSettings", writerSettings);
 const displayReview = async () => {
   if (currentReview.value.stepType === "none") {
     writerSettings.disableWriting();
+    console.log(writerRef.value);
     writerRef.value.stopWriting();
     console.log("quiz over");
     return;
