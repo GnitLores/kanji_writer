@@ -128,17 +128,14 @@ export function useLearningQuiz() {
     const repetition = currentReview.value.repetition;
 
     if (repetition < storeOptions.learnLearningStepRepetitions) {
-      console.log("new rep");
       pushActiveReview(char, "learn", repetition + 1);
       return;
     } else {
       if (storeOptions.learnShowReinforceStep) {
-        console.log("reinforce");
         pushActiveReview(char, "reinforce", 1);
         return;
       }
       if (storeOptions.learnShowQuizStep) {
-        console.log("quiz");
         pushActiveReview(char, "quiz", 1);
         return;
       }

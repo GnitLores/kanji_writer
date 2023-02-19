@@ -12,29 +12,33 @@
       <div class="flex-1 flex justify-start"></div>
       <div class="w-[300px] flex justify-center flex-wrap">
         <div class="flex w-full">
-          <div class="flex-1 border border-red-500"></div>
-          <div class="w-fit flex justify-center border border-red-500">
+          <div class="flex-1"></div>
+          <div class="w-fit flex justify-center">
             <div class="text-white text-xl font-semibold">
               <span class="capitalize">{{ `${currentReview.stepType}` }}</span>
               <span class="">
                 {{
-                  ` (rev ${
+                  ` (${
                     nCorrectReviewsPrKanji.get(currentReview.char) + 1
                   } of ${nReviewsPrKanji})`
                 }}
               </span>
             </div>
           </div>
-          <div
-            class="flex-1 flex justify-end place-items-center border border-red-500"
-          >
+          <div class="flex-1 flex justify-end place-items-center">
             <AppButton
               :disabled="currentReview.stepType === 'none'"
               :text="'Stop'"
               class="w-14 h-6 text-sm"
-              @clicked="StopQuiz"
+              @clicked="stopQuizClicked"
             />
           </div>
+          <AppConfirmationDialog
+            ref="stopQuizDialogRef"
+            :text="'Stop quiz without learning kanji with reviews remaining?'"
+            @onConfirm="stopQuiz"
+            @onCancel=""
+          />
         </div>
 
         <div class="flex justify-center w-full mt-2">
@@ -94,6 +98,7 @@ import AppConfirmationDialog from "@/components/Modals/AppConfirmationDialog.vue
 const storeOptions = useStoreOptions();
 
 const writerRef = ref(null);
+const stopQuizDialogRef = ref(null);
 
 const {
   currentReview,
@@ -145,8 +150,12 @@ const pass = () => {
   displayReview();
 };
 
+const stopQuizClicked = () => {
+  stopQuizDialogRef.value.showDialog();
+};
+
 const emit = defineEmits(["stopQuiz"]);
-const StopQuiz = () => {
+const stopQuiz = () => {
   emit("stopQuiz");
 };
 
