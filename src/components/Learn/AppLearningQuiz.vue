@@ -66,11 +66,16 @@
               class="w-28 h-10 text-lg ml-8"
               @clicked="pass"
             >
-              <i class="fas fa-check text-green-400 text-opacity-70 ml-2"></i
+              <i
+                class="fas fa-check text-opacity-70 ml-2"
+                :class="[isFinalReview ? 'text-sky-400' : 'text-green-400']"
+              ></i
             ></AppButton>
             <span class="tooltiptext tooltip-bottom arrow-top"
               >{{
-                canFail
+                isFinalReview
+                  ? "Pass final review and return to learning quiz setup."
+                  : canFail
                   ? "Pass review and continue."
                   : "Continue learning quiz."
               }}
@@ -148,6 +153,9 @@ const fail = () => {
 const pass = () => {
   passCurrentReview();
   popNextReview();
+
+  if (currentReview.value.stepType === "none") stopQuiz();
+
   displayReview();
 };
 
