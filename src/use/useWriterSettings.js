@@ -27,13 +27,10 @@ export function useWriterSettings() {
     canManualHint.value = true;
   };
 
-  const disableWriting = () => {
+  const disableAllSettings = () => {
     canToggleHints.value = false;
-    showHints.value = false;
     canToggleOutline.value = false;
-    showOutline.value = false;
     canToggleStrokes.value = false;
-    showStrokes.value = false;
     canToggleLines.value = false;
     canReset.value = false;
     canAnimate.value = false;
@@ -93,7 +90,7 @@ export function useWriterSettings() {
     canAnimate,
     canManualHint,
     initSettings,
-    disableWriting,
+    disableAllSettings,
     enableAllSettings,
     initLearningStepLearn,
     initLearningStepReinforce,

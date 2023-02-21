@@ -132,12 +132,10 @@ provide("writerSettings", writerSettings);
 
 const displayReview = async () => {
   kanjiLoaded.value = false;
-  writerSettings.disableWriting();
+  writerSettings.disableAllSettings();
   writerRef.value.stopWriting();
 
   if (currentReview.value.stepType === "none") return;
-
-  await loadCurrentKanji();
 
   if (currentReview.value.stepType === "learn")
     writerSettings.initLearningStepLearn();
@@ -145,6 +143,8 @@ const displayReview = async () => {
     writerSettings.initLearningStepReinforce();
   if (currentReview.value.stepType === "quiz")
     writerSettings.initLearningStepQuiz();
+
+  await loadCurrentKanji();
 
   kanjiLoaded.value = true;
 };
