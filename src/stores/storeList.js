@@ -7,6 +7,7 @@ import { useSelection } from "@/use/useSelection";
 export const useStoreList = defineStore("storeList", {
   state: () => {
     return {
+      isLoaded: false,
       kanjiList: [],
       indexMap: null,
       sortingName: "",
@@ -80,6 +81,8 @@ export const useStoreList = defineStore("storeList", {
 
       const { initSelected } = useSelection();
       initSelected();
+
+      this.isLoaded = true;
     },
     getMainIndex(char) {
       return this.indexMap.get(char);

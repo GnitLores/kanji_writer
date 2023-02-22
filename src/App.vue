@@ -1,7 +1,7 @@
 <template>
   <AppKanjiDetailsModal />
   <AppNavbar />
-  <router-view v-slot="{ Component }">
+  <router-view v-if="storeList.isLoaded" v-slot="{ Component }">
     <component :is="Component"></component>
   </router-view>
 </template>
