@@ -36,6 +36,15 @@ export const useStoreOptions = defineStore("storeOptions", {
       learnQuizStepRepetitions: 1,
       learnBatchSize: 5,
       learnReviewDelay: 5,
+
+      // Quiz Options:
+      quizConquest: false,
+      quizTestKanji: true,
+      quizTestWords: false,
+      quizTestSimilar: false,
+      quizKanjiPriority: 10,
+      quizWordsPriority: 4,
+      quizSimilarPriority: 1,
     };
   },
   actions: {
